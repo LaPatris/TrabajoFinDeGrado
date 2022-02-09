@@ -1525,6 +1525,7 @@ GameObject:
   - component: {fileID: 1090372508}
   - component: {fileID: 1090372509}
   - component: {fileID: 1090372510}
+  - component: {fileID: 1090372511}
   m_Layer: 0
   m_Name: txt
   m_TagString: Untagged
@@ -1577,26 +1578,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ad208ba0bf29e419b1abd24b781154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1090372510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090372506}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4964cc760dcfc46aeb75e63a325075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   numPoints: 0
   tiMax: 0
   animacionBezierHueso: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea,
     type: 2}
   newCurveX:
+    serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   newCurveY:
+    serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   newCurveZ:
+    serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   newTotalCurve:
+    serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -1604,14 +1621,7 @@ MonoBehaviour:
   curveDone: 0
   tiempo: 0
   finalizado: 0
-  curveCount: 0
-  SEGMENT_COUNT: 50
-  personaje: {fileID: 0}
-  srcInitPosition: {x: 0, y: 0, z: 0}
-  selfInitPosition: {x: 0, y: 0, z: 0}
-  srcRoot: {x: 0, y: 0, z: 0}
-  selfRoot: {fileID: 0}
---- !u!114 &1090372510
+--- !u!114 &1090372511
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1620,7 +1630,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1090372506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4964cc760dcfc46aeb75e63a325075, type: 3}
+  m_Script: {fileID: 11500000, guid: b211fa46023a2734cbbf77e1c5a69ec3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   numPoints: 0

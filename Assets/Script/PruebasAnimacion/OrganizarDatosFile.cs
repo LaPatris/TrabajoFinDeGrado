@@ -51,7 +51,7 @@ public class OrganizarDatosFile
     //frames
     [SerializeField] List<float> timesPerFrame = new List<float>();
     [SerializeField] public bool finalizado = false;
-      public void SetListBones(TextAsset TXT, CurveCreator curv, GameObject personaje)
+      public void SetListBones(TextAsset TXT, AngleCurveCreator curv, GameObject personaje)
         {
 
 
@@ -64,11 +64,13 @@ public class OrganizarDatosFile
                 string inp_ln = myTXT.ReadLine();
                 inp_ln = inp_ln.Replace("*\n", "");
                 inp_ln = inp_ln.Replace("*\r", "");
+            //sustituimos la coma del tiempo por un punto
             inp_ln = inp_ln.Replace(",", ".");
 
             auxValue = inp_ln.Split(' ');
             int hueso = int.Parse(auxValue[0], CultureInfo.InvariantCulture);
-            float time = float.Parse(auxValue[1], CultureInfo.InvariantCulture)*10;
+            //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
+            float time = float.Parse(auxValue[1], CultureInfo.InvariantCulture);
             float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture);/// 1500;
             float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
             float z = float.Parse(auxValue[4], CultureInfo.InvariantCulture);/// 1500;
@@ -165,7 +167,7 @@ public class OrganizarDatosFile
         myTXT.Close();
         SetDiccionario( curv, personaje);
     }
-      public void SetDiccionario( CurveCreator curv, GameObject personaje)
+      public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
     {
         totalBody.Add("Root", cadera);
         totalBody.Add("RightUpLeg", caderaD);
@@ -195,7 +197,7 @@ public class OrganizarDatosFile
         callBezierCurve( curv, personaje);
     }
         
-    public void callBezierCurve(CurveCreator curv, GameObject personaje)
+    public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)
     {
 
        
