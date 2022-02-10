@@ -21,6 +21,7 @@ public class AngleCurveCreator : MonoBehaviour
     [SerializeField] public AnimationCurve newCurveY;
     [SerializeField] public AnimationCurve newCurveZ;
     [SerializeField] public AnimationCurve newTotalCurve;
+    [SerializeField] Type tipoAnim;
     //[SerializeField] int SEGMENT_COUNT;
     [SerializeField] public bool curveDone;
     [SerializeField] public float tiempo;
@@ -39,7 +40,6 @@ public class AngleCurveCreator : MonoBehaviour
 
     void Start()
     {
-
         newCurveX = new AnimationCurve();
 
         newCurveY = new AnimationCurve();
@@ -50,7 +50,6 @@ public class AngleCurveCreator : MonoBehaviour
     public bool inicializarBezier(List<Vector3> puntosCuerpo, float tmin, float tmax, GameObject pers)
     {
         tiMax = tmax;
-        //curveCount = (int)puntosCuerpo.Count / 3;//va a ser una curva de 3 en 3
         personaje = pers;
 
         srcRoot = puntosCuerpo[0];
@@ -99,13 +98,7 @@ public class AngleCurveCreator : MonoBehaviour
     {
         int j = 0;
         while( (j+1)<puntosCuerpo.Count)
-        {/*
-            //punto inicio y fin colocados en la posición en la que se encuentra nuestro objeto
-            Vector3 inicio = SetPosition(puntosCuerpo[j]).normalized;
-            Vector3 fin = SetPosition(puntosCuerpo[j]).normalized;
-            float angle = Vector3.Angle(inicio, fin);
-            //este angulo lo metemos en nuestra curva 
-            SetNewCurve(timesXframe[j], angle);*/
+        {
             Vector3 dirX = new Vector3(puntosCuerpo[j].x - puntosCuerpo[j + 1].x, 0, 0);
             float angleX= Vector3.Angle(dirX, new Vector3(-1,0,0));
             Vector3 dirY= new Vector3(puntosCuerpo[j].y - puntosCuerpo[j + 1].y, 0, 0);
@@ -116,8 +109,6 @@ public class AngleCurveCreator : MonoBehaviour
             j++;
         }
 
-
-        //  Debug.Log("Tengo estos valores" + newCurveX.keys + newCurveX.length.ToString());
         if (newCurveX == null)
         {
 
@@ -131,7 +122,6 @@ public class AngleCurveCreator : MonoBehaviour
 
 
             curveDone = true;
-
 
         }
     }

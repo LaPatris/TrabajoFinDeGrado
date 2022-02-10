@@ -954,8 +954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   avatar: {fileID: 9000000, guid: 2a15e4e5900db6e4994d1d75c7e7b349, type: 3}
-  animacion: {fileID: -203655887218126122, guid: 2a15e4e5900db6e4994d1d75c7e7b349,
-    type: 3}
+  animacion: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea, type: 2}
   nuevo: 1
   anim: {fileID: 9100000, guid: 0302ced8d8496c14482d97c0317ce46e, type: 2}
   MyBones: []
@@ -973,7 +972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd19177aac54734b8100b07a7507a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationClipEmpty: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea, type: 2}
+  animationClipEmpty: {fileID: 7400000, guid: ef35d79b59a819745b77d2cf268bf8a3, type: 2}
   changeAnim: 0
   currentState: {fileID: 0}
   newTransition: {fileID: 0}
@@ -1524,7 +1523,6 @@ GameObject:
   - component: {fileID: 1090372507}
   - component: {fileID: 1090372508}
   - component: {fileID: 1090372509}
-  - component: {fileID: 1090372510}
   - component: {fileID: 1090372511}
   m_Layer: 0
   m_Name: txt
@@ -1578,49 +1576,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ad208ba0bf29e419b1abd24b781154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1090372510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1090372506}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4964cc760dcfc46aeb75e63a325075, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numPoints: 0
-  tiMax: 0
-  animacionBezierHueso: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea,
-    type: 2}
-  newCurveX:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  newCurveY:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  newCurveZ:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  newTotalCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  curveDone: 0
-  tiempo: 0
-  finalizado: 0
 --- !u!114 &1090372511
 MonoBehaviour:
   m_ObjectHideFlags: 0

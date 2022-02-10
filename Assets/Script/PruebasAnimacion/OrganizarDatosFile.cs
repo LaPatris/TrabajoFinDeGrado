@@ -65,12 +65,13 @@ public class OrganizarDatosFile
                 inp_ln = inp_ln.Replace("*\n", "");
                 inp_ln = inp_ln.Replace("*\r", "");
             //sustituimos la coma del tiempo por un punto
-            inp_ln = inp_ln.Replace(",", ".");
+           inp_ln = inp_ln.Replace(",", ".");
 
             auxValue = inp_ln.Split(' ');
             int hueso = int.Parse(auxValue[0], CultureInfo.InvariantCulture);
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
-            float time = float.Parse(auxValue[1], CultureInfo.InvariantCulture);
+            
+            
             float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture);/// 1500;
             float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
             float z = float.Parse(auxValue[4], CultureInfo.InvariantCulture);/// 1500;
@@ -151,9 +152,8 @@ public class OrganizarDatosFile
                     break;
                 case 31:
                     dedosD.Add(valores);
+                    timesPerFrame.Add(float.Parse(auxValue[1], CultureInfo.InvariantCulture));
                     i++;
-                    timesPerFrame.Add(time);
-                   
                     break;
 
 
@@ -204,6 +204,7 @@ public class OrganizarDatosFile
         foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
         {
                 if (curv.inicializarBezier(hueso.Value, timesPerFrame[0], timesPerFrame[timesPerFrame.Count - 1], personaje));
+
                     curv.Ready(hueso.Key, hueso.Value, timesPerFrame) ;
                 if (curv.curveDone) curv.SetNull();
           
