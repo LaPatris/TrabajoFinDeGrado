@@ -193,7 +193,7 @@ public class OrganizarDatosFile
         totalBody.Add("RightArm", codoD);
         totalBody.Add("RightForeArm", muñecaD);
         totalBody.Add("RightHand", pulgarD);
-        totalBody.Add("RightHanIndex1", dedosD);
+        totalBody.Add("RightHandIndex1", dedosD);
         callBezierCurve( curv, personaje);
     }
         

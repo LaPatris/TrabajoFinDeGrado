@@ -64,8 +64,8 @@ public class PruebaFBX : MonoBehaviour
     void Awake()
     {
 
-        hips = this.transform.Find("Hips");
-        RestartNames(hips);
+       // hips = this.transform.Find("Hips");
+        //RestartNames(hips);
        CreateAvatar();
         SetAnimator();
 
@@ -91,7 +91,7 @@ public class PruebaFBX : MonoBehaviour
         animator.Play("aux");
         InitBones();
     }
-    public void RestartNames(Transform child)
+   /* public void RestartNames(Transform child)
     {
         for (int i = 0; i < child.transform.childCount; i++)
         {
@@ -103,7 +103,7 @@ public class PruebaFBX : MonoBehaviour
             RestartNames(child.GetChild(i));
 
         }
-    }
+    }*/
     private void InitBones()
     {
         for (int i = 0; i < bonesToUse.Length; i++)

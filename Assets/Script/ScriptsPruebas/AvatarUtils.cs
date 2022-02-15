@@ -7,7 +7,7 @@ using UnityEngine;
 		//creamos una estructura de datos para todos los nombres de los huesos
 		public static Dictionary<string, string> HumanSkeletonNames = new Dictionary<string, string>()
 		{
-			{"Spine1", "Chest"},
+			{"Spine", "Chest"},
 			{"Head", "Head" },
 			{"Hips", "Hips" },
 			{"LeftHandIndex3", "Left Index Distal" },
@@ -57,7 +57,7 @@ using UnityEngine;
 			{"RightToeBase", "RightToes" },
 			{"RightArm", "RightUpperArm" },
 			{"RightUpLeg", "RightUpperLeg" },
-			{"Spine", "Spine" },
+			{"Spine1", "Spine" },
 			{"Spine2", "UpperChest" }
 		};
 
