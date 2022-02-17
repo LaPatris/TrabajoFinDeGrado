@@ -31,8 +31,8 @@ public class CurveCreator : MonoBehaviour
     GameObject personaje;
     Vector3 srcInitPosition = new Vector3();
     Vector3 selfInitPosition = new Vector3();
-    Vector3 srcRoot;
-    Transform selfRoot;
+    [SerializeField] Vector3 srcRoot;
+    [SerializeField] Transform selfRoot;
     // [SerializeField] public Dictionary<int, AnimationClip> animacionesBezier= new Dictionary<int, AnimationClip>();
     //[SerializeField] public List<AnimationClip> animacionBezier= new List<AnimationClip>();
     // [SerializeField] Dictionary<int, List<Vector3>> cuerpo;
@@ -42,11 +42,12 @@ public class CurveCreator : MonoBehaviour
     void Start()
     {
 
-        newCurveX = new AnimationCurve();
+        //newCurveX = new AnimationCurve();
 
-        newCurveY = new AnimationCurve();
+        //newCurveY = new AnimationCurve();
 
-        newCurveZ = new AnimationCurve();
+        // newCurveZ = new AnimationCurve();
+        newTotalCurve = new AnimationCurve();
 
     }
     public bool inicializarBezier(List<Vector3> puntosCuerpo, float tmin, float tmax, GameObject pers)
@@ -55,16 +56,17 @@ public class CurveCreator : MonoBehaviour
         //curveCount = (int)puntosCuerpo.Count / 3;//va a ser una curva de 3 en 3
         personaje = pers;
 
-        srcRoot = puntosCuerpo[0];
-        selfRoot = personaje.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.Hips);
-        SetInitPosition();
+       // srcRoot = puntosCuerpo[0];
+        //selfRoot = personaje.GetComponent<Transform>().Find("Hips");
+       // SetInitPosition();
         return inicializarAnimaciones(puntosCuerpo[0], puntosCuerpo[puntosCuerpo.Count - 1], tmin);
 
     }
 
     //creo las tres curvas
     public bool inicializarAnimaciones(Vector3 momento0, Vector3 momentoF, float tmin)
-    { //X
+    { /*
+        //X
         newCurveX = AnimationCurve.EaseInOut(momento0.x, momentoF.x, tmin / tiMax, 1);
         newCurveX.preWrapMode = WrapMode.Loop;
         //Y
@@ -73,6 +75,8 @@ public class CurveCreator : MonoBehaviour
         //z
         newCurveZ = AnimationCurve.EaseInOut(momento0.z, momentoF.z, tmin / tiMax, 1);
         newCurveZ.preWrapMode = WrapMode.Loop;
+    */
+        newTotalCurve = AnimationCurve.EaseInOut(momento0.magnitude, momentoF.magnitude, tmin / tiMax, 1);
         return true;
     }
 
@@ -93,6 +97,7 @@ public class CurveCreator : MonoBehaviour
         newCurveX = null;
         newCurveY = null;
         newCurveZ = null;
+        newTotalCurve = null;
         curveDone = false;
 
     }
@@ -172,10 +177,10 @@ public class CurveCreator : MonoBehaviour
     {
         if (temp < 1800)
         {
-            // newTotalCurve.AddKey(temp, value.magnitude);
-            //newTotalCurve.SmoothTangents(0, value.magnitude);
+             newTotalCurve.AddKey(temp, value.magnitude);
+            newTotalCurve.SmoothTangents(0, value.magnitude);
             //vamos a probar solo con la curva en X
-            newCurveX.AddKey(temp, value.x);//desnormalizamos
+           /* newCurveX.AddKey(temp, value.x);//desnormalizamos
                                             //vamos a probar solo con la curva en y
             newCurveY.AddKey(temp, value.y);//desnormalizamos
                                             //vamos a probar solo con la curva en y

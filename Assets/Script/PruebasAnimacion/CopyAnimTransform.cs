@@ -21,10 +21,10 @@ public class CopyAnimTransform : MonoBehaviour
     [Header("Animations")]
 
     [SerializeField] AnimationClip animationClipEmpty;// animación vacía que rellenaré
-    //lista de los datos de la animación que vamos a seleccionar
-    private static List<AnimationClipCurveData> animationCurveClipboard = new List<AnimationClipCurveData>();
-    private static List<AnimationClipCurveData> animationCurveClipboard2 = new List<AnimationClipCurveData>();
-    private static List<AnimationClipCurveData> animationCurveClipboard3 = new List<AnimationClipCurveData>();
+                                                      //lista de los datos de la animación que vamos a seleccionar
+    [SerializeField] private static List<AnimationClipCurveData> miAnimacion = new List<AnimationClipCurveData>();
+    [SerializeField] private static List<AnimationClipCurveData> animacionLeida = new List<AnimationClipCurveData>();
+    [SerializeField] private static List<AnimationClipCurveData> animacionFutura = new List<AnimationClipCurveData>();
 
     [Header("Others")]
     
@@ -37,45 +37,45 @@ public class CopyAnimTransform : MonoBehaviour
                                                       //object prueba 
     [SerializeField] PruebaFBX prueba;
 
-
+    //copiamos nuestra animacion en la futura
     public void ReadMyAnimAndChange(AnimationClip animacionNueva)
     {
         //si ya existe la animación( es decir se ha elegido otra antes)
-        if (changeAnim)
+        /*if (changeAnim)
         {
             animationClipEmpty.ClearCurves();
             //vacio la animación
-        }
+        }*/
         animationClipEmpty.wrapMode = WrapMode.Loop;
         // guardo toda la información de las curvas en una lista
-        animationCurveClipboard = AnimationUtility.GetAllCurves(prueba.animacion, true).ToList();
+        miAnimacion = AnimationUtility.GetAllCurves(prueba.animacion, true).ToList();
 
-        animationCurveClipboard3 = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
+        //animacionFutura = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
 
-        foreach (AnimationClipCurveData data in animationCurveClipboard)
+        foreach (AnimationClipCurveData data in miAnimacion)
         {
-            foreach (AnimationClipCurveData datos in animationCurveClipboard3)
-            {
-                if ( datos.path.Contains("Head") && data.propertyName.Contains("Head"))
-                    {
+            //foreach (AnimationClipCurveData datos in animacionFutura)
+            //{
+                //if ( datos.path.Contains("Head") && data.propertyName.Contains("Head"))
+                   // {
                  //  if (data.propertyName.Contains("Nod") && datos.path.Contains("Y"))
                    // {
-                        AnimationCurve curve = new AnimationCurve();
+                        /*AnimationCurve curve = new AnimationCurve();
                         foreach (Keyframe key in data.curve.keys)
                         {
-                            data.curve.RemoveKey(0);
+                            data.curve.RemoveKey(1);
                         }
                         foreach (Keyframe key in datos.curve.keys)
                         {
                             data.curve.AddKey(key.time, datos.curve.Evaluate(key.time));
                             //no setea nada
-                        }
+                        }*/
                         animationClipEmpty.SetCurve(data.path.ToString() + ": ", data.type, data.propertyName, data.curve);
                    // }
                         // animationClipEmpty.SetCurve
                         //animationClipEmpty.SetCurve(datos.path.ToString() + ": NUEVO", data.type, datos.propertyName, curve);
-                    }
-                else
+                    //}
+                /*else
                     {
                         foreach (Keyframe key in data.curve.keys)
                         {
@@ -84,19 +84,21 @@ public class CopyAnimTransform : MonoBehaviour
                         }
 
                         animationClipEmpty.SetCurve(data.path.ToString() + ": ", data.type, data.propertyName, data.curve);
-                    }
-                }
+                    }*/
+                //}
             
         }
     }
+    //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
     public void ChangeToMyAnim(AnimationClip animacionNueva)
     {
 
-        // guardo toda la información de las curvas en una lista
-        
-        foreach (AnimationClipCurveData data in animationCurveClipboard2)
+        animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
+
+        animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
+        foreach (AnimationClipCurveData data in animacionLeida)
         {
-            foreach (AnimationClipCurveData datos in animationCurveClipboard3)
+            foreach (AnimationClipCurveData datos in animacionFutura)
             {
                 if (data.propertyName.Contains(datos.path))
                 {
@@ -104,15 +106,15 @@ public class CopyAnimTransform : MonoBehaviour
                    
                     foreach (Keyframe key in data.curve.keys)
                     {
-                        data.curve.RemoveKey(0);
+                        datos.curve.RemoveKey(0);
                     }
                     foreach (Keyframe key in datos.curve.keys)
                     {
-                        data.curve.AddKey(key.time, datos.curve.Evaluate(key.time));
+                        datos.curve.AddKey(key.time, datos.curve.Evaluate(key.time));
                         //no setea nada
                         
                     }
-                    animationClipEmpty.SetCurve(data.propertyName + ": ", data.type, data.propertyName, data.curve);
+                    animationClipEmpty.SetCurve(datos.propertyName + ": ", datos.type, datos.propertyName, datos.curve);
                     // animationClipEmpty.SetCurve
                     //animationClipEmpty.SetCurve(datos.path.ToString() + ": NUEVO", data.type, datos.propertyName, curve);
                 }

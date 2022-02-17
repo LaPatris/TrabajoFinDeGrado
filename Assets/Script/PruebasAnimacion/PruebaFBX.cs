@@ -66,15 +66,15 @@ public class PruebaFBX : MonoBehaviour
 
        // hips = this.transform.Find("Hips");
         //RestartNames(hips);
-       CreateAvatar();
-        SetAnimator();
+      // CreateAvatar();
+       // SetAnimator();
 
     }
     void Update()
     {
     }
     #region crearAvatar
-    void CreateAvatar(){
+    /*void CreateAvatar(){
 
         description = AvatarUtils.CreateHumanDescription(gameObject);
          avatar = AvatarBuilder.BuildHumanAvatar(gameObject, description);
@@ -83,7 +83,7 @@ public class PruebaFBX : MonoBehaviour
         
      
 
-    }
+    }*/
     void SetAnimator()
     {
         animator = GetComponent<Animator>();

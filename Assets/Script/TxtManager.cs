@@ -9,8 +9,8 @@ public class TxtManager : MonoBehaviour
 
     [SerializeField] OrganizarDatosFile orgDatos;
 
-    //[SerializeField] CurveCreator curva;
-    [SerializeField] AngleCurveCreator curva;
+    [SerializeField] CurveCreator curva;
+    //[SerializeField] AngleCurveCreator curva;
     [SerializeField] TextAsset myTxt;
     [SerializeField] public bool finalizado = false;
     [SerializeField] GameObject personaje;
@@ -26,9 +26,9 @@ public class TxtManager : MonoBehaviour
         /*coger el txt, llamar organizar datos y después a curva de bezier*/
 
         orgDatos = new OrganizarDatosFile();
-        personaje = GameObject.Find("personaje4");
+        personaje = GameObject.Find("PruebaP43");
         copyAnimacion = personaje.GetComponent<CopyAnimTransform>();
-        curva = this.gameObject.GetComponent<AngleCurveCreator>();
+        curva = this.gameObject.GetComponent<CurveCreator>();
         orgDatos.SetListBones(myTxt, curva, personaje);
         //orgDatos totalbody es un dicchionario de nombre de hueso y lista de transforms de ese hueso
         //curva --> tiene la animación total 
@@ -63,7 +63,7 @@ public class TxtManager : MonoBehaviour
                 //llamo a la accion de cambiar de estado
                 //copiar la animación por defecto en otra animación 
                 copyAnimacion.ReadMyAnimAndChange(totalAnimaciomaciones[index]);
-               // copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index]);
+               copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index]);
 
                 if (!copyAnimacion.creadoStado)
                   { //si no habia estado creado lo creo
