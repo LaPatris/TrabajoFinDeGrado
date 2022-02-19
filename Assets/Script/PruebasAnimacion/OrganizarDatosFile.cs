@@ -51,7 +51,7 @@ public class OrganizarDatosFile
     //frames
     [SerializeField] List<float> timesPerFrame = new List<float>();
     [SerializeField] public bool finalizado = false;
-      public void SetListBones(TextAsset TXT, CurveCreator curv, GameObject personaje)
+      public void SetListBones(TextAsset TXT, CreateNewCurve curv, GameObject personaje)
         {
 
 
@@ -167,7 +167,7 @@ public class OrganizarDatosFile
         myTXT.Close();
         SetDiccionario( curv, personaje);
     }
-      public void SetDiccionario(CurveCreator curv, GameObject personaje)
+      public void SetDiccionario(CreateNewCurve curv, GameObject personaje)
     {
         totalBody.Add("Root", cadera);
         totalBody.Add("RightUpLeg", caderaD);
@@ -197,7 +197,7 @@ public class OrganizarDatosFile
         callBezierCurve( curv, personaje);
     }
         
-    public void callBezierCurve(CurveCreator curv, GameObject personaje)
+    public void callBezierCurve(CreateNewCurve curv, GameObject personaje)
     {
 
        
