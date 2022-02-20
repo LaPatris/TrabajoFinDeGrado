@@ -81,7 +81,7 @@ public class CreateNewCurve : MonoBehaviour
         {
 
 
-            Vector3 punto = SetPosition(puntosCuerpo[j]).normalized;
+            Vector3 punto = SetPosition(puntosCuerpo[j]).normalized;//estaba antes normalizado
 
             SetNewCurve(timesXframe[j], punto);
 

@@ -63,37 +63,33 @@ public class CopyAnim1 : MonoBehaviour
         animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
 
         animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
+        animationClipEmpty.ClearCurves();
         foreach (AnimationClipCurveData data in animacionLeida)
         {
             foreach (AnimationClipCurveData datos in animacionFutura)
             {
-                //se tiene qeu poner así porque el path que contienen las animaciones se llama root idk 
-                /*if (data.path.Contains("Root") && datos.path.Contains("Hips"))
-                {
-                    CalculateNewC(datos, data);
-                }
-                else
-                {*/
-                    if (data.path.Contains(datos.path))
+                    if (datos.path.Contains(data.path))
                     {
                     AnimationCurve curve = new AnimationCurve();
+                    
 
                     foreach (Keyframe key in datos.curve.keys)
                     {
                         datos.curve.RemoveKey(0);
+     
                     }
-                    foreach (Keyframe key in datos.curve.keys)
-                    {
-                        datos.curve.AddKey(key.time, data.curve.Evaluate(key.time));
-                        //no setea nada
+                     foreach (Keyframe key in data.curve.keys)
+                     {
+                         datos.curve.AddKey(key.time, data.curve.Evaluate(key.time));
+                         //no setea nada
 
-                    }
-                    animationClipEmpty.SetCurve(datos.propertyName + ": ", datos.type, datos.propertyName, datos.curve);
+                     }
+
+                    Debug.Log(datos.curve.keys.Length);
+                    animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, datos.curve);
 
 
                 }
-                // }
-
             }
         }
 

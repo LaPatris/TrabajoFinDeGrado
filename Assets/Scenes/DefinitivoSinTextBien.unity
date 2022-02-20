@@ -1204,7 +1204,7 @@ MonoBehaviour:
   tiempo: 0
   finalizado: 0
   srcRoot: {x: 0, y: 0, z: 0}
-  selfRoot: {fileID: 0}
+  selfRoot: {fileID: 1152806562}
 --- !u!114 &1090372510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1250,6 +1250,12 @@ MonoBehaviour:
   finalizado: 0
   srcRoot: {x: 0, y: 0, z: 0}
   selfRoot: {fileID: 0}
+--- !u!4 &1152806562 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3742407835892290726, guid: 6498e786462289a489cbc27ee5baa292,
+    type: 3}
+  m_PrefabInstance: {fileID: 2079259918}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1352547708 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e96495142d4b6b34c8d910d7bc76db39,
@@ -1674,7 +1680,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943030075}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b8421c06ae9dbb948984e9964b5a20ba, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 6498e786462289a489cbc27ee5baa292, type: 3}
   m_Controller: {fileID: 9100000, guid: 0302ced8d8496c14482d97c0317ce46e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0

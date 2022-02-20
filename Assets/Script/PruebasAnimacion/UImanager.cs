@@ -19,7 +19,7 @@ public class UImanager : MonoBehaviour
         personajeSeleccionado[0] = GameObject.Find("personaje1");
         personajeSeleccionado[1] = GameObject.Find("personaje2");
         personajeSeleccionado[2] = GameObject.Find("personaje3");
-        personajeSeleccionado[3] = GameObject.Find("PruebaP43");
+        personajeSeleccionado[3] = GameObject.Find("P4DEF");
         botonVieja.onClick.AddListener(()=> {
             if (!presionado[2])
             {
