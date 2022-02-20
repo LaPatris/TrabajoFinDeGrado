@@ -52,6 +52,10 @@ public class CopyAnim1 : MonoBehaviour
            
         }
     }
+    public void CalculateNewC(AnimationClipCurveData datos, AnimationClipCurveData data)
+    {
+       
+    }
     //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
     public void ChangeToMyAnim(AnimationClip animacionNueva)
     {
@@ -63,8 +67,15 @@ public class CopyAnim1 : MonoBehaviour
         {
             foreach (AnimationClipCurveData datos in animacionFutura)
             {
-                if (datos.propertyName.Contains(data.path))
+                //se tiene qeu poner así porque el path que contienen las animaciones se llama root idk 
+                /*if (data.path.Contains("Root") && datos.path.Contains("Hips"))
                 {
+                    CalculateNewC(datos, data);
+                }
+                else
+                {*/
+                    if (data.path.Contains(datos.path))
+                    {
                     AnimationCurve curve = new AnimationCurve();
 
                     foreach (Keyframe key in datos.curve.keys)
@@ -78,9 +89,11 @@ public class CopyAnim1 : MonoBehaviour
 
                     }
                     animationClipEmpty.SetCurve(datos.propertyName + ": ", datos.type, datos.propertyName, datos.curve);
-                  
+
+
                 }
-               
+                // }
+
             }
         }
 

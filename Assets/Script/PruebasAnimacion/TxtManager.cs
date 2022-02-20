@@ -26,7 +26,7 @@ public class TxtManager : MonoBehaviour
         /*coger el txt, llamar organizar datos y después a curva de bezier*/
 
         orgDatos = new OrganizarDatosFile();
-        personaje = GameObject.Find("PruebaP43");
+        personaje = GameObject.Find("P4DEF");
         copyAnimacion = personaje.GetComponent<CopyAnim1>();
         curva = this.gameObject.GetComponent<CreateNewCurve>();
         orgDatos.SetListBones(myTxt, curva, personaje);

@@ -169,7 +169,7 @@ public class OrganizarDatosFile
     }
       public void SetDiccionario(CreateNewCurve curv, GameObject personaje)
     {
-        totalBody.Add("Root", cadera);
+        totalBody.Add("Hips", cadera);
         totalBody.Add("RightUpLeg", caderaD);
         totalBody.Add("RightLeg", rodillaD);
         totalBody.Add("RightFoot", tobilloD);
