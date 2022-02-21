@@ -31,7 +31,7 @@ public class ConvertidorFichero : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        duracionAnim = 1;
+        duracionAnim = 3745;
         actualFrame = 1;
     }
     void Update()

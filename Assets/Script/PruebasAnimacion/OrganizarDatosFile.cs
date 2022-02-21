@@ -170,7 +170,7 @@ public class OrganizarDatosFile
       public void SetDiccionario(CreateNewCurve curv, GameObject personaje)
     {
         totalBody.Add("Hips", cadera);
-        totalBody.Add("RightUpLeg", caderaD);
+        /*totalBody.Add("RightUpLeg", caderaD);
         totalBody.Add("RightLeg", rodillaD);
         totalBody.Add("RightFoot", tobilloD);
         totalBody.Add("RightToe", empeineD);
@@ -193,7 +193,7 @@ public class OrganizarDatosFile
         totalBody.Add("RightArm", codoD);
         totalBody.Add("RightForeArm", muñecaD);
         totalBody.Add("RightHand", pulgarD);
-        totalBody.Add("RightHandIndex1", dedosD);
+        totalBody.Add("RightHandIndex1", dedosD);*/
         callBezierCurve( curv, personaje);
     }
         

@@ -68,8 +68,11 @@ public class CopyAnim1 : MonoBehaviour
         {
             foreach (AnimationClipCurveData datos in animacionFutura)
             {
-                    if (datos.path.Contains(data.path))
-                    {
+                String[] datosPath= datos.path.Split('/');
+
+
+                   if (datosPath[datosPath.Length-1].Contains(data.path))
+                   {
                     AnimationCurve curve = new AnimationCurve();
                     
 
