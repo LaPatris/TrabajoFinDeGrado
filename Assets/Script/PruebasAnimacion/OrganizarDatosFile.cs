@@ -51,7 +51,7 @@ public class OrganizarDatosFile
     //frames
     [SerializeField] List<float> timesPerFrame = new List<float>();
     [SerializeField] public bool finalizado = false;
-      public void SetListBones(TextAsset TXT, CreateNewCurve curv, GameObject personaje)
+      public void SetListBones(TextAsset TXT, AngleCurveCreator curv, GameObject personaje)
         {
 
 
@@ -59,7 +59,7 @@ public class OrganizarDatosFile
         StreamReader myTXT = new StreamReader(pathTxt);
         string[] auxValue;
         int i = 0; 
-            while (!myTXT.EndOfStream )
+            while (/*!myTXT.EndOfStream*/i<3201 )
             {
                 string inp_ln = myTXT.ReadLine();
                 inp_ln = inp_ln.Replace("*\n", "");
@@ -72,9 +72,9 @@ public class OrganizarDatosFile
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
             
             
-            float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture);/// 1500;
-            float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
-            float z = float.Parse(auxValue[4], CultureInfo.InvariantCulture);/// 1500;
+            float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture)/ 100;
+            float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture)/ 100;
+            float z = 0.0f;//float.Parse(auxValue[4], CultureInfo.InvariantCulture);/// 1500;
             Vector3 valores = new Vector3(x, y, z);
             switch (hueso)
             {
@@ -167,10 +167,10 @@ public class OrganizarDatosFile
         myTXT.Close();
         SetDiccionario( curv, personaje);
     }
-      public void SetDiccionario(CreateNewCurve curv, GameObject personaje)
+      public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
     {
         totalBody.Add("Hips", cadera);
-        /*totalBody.Add("RightUpLeg", caderaD);
+        totalBody.Add("RightUpLeg", caderaD);
         totalBody.Add("RightLeg", rodillaD);
         totalBody.Add("RightFoot", tobilloD);
         totalBody.Add("RightToe", empeineD);
@@ -193,11 +193,11 @@ public class OrganizarDatosFile
         totalBody.Add("RightArm", codoD);
         totalBody.Add("RightForeArm", muñecaD);
         totalBody.Add("RightHand", pulgarD);
-        totalBody.Add("RightHandIndex1", dedosD);*/
+        totalBody.Add("RightHandIndex1", dedosD);
         callBezierCurve( curv, personaje);
     }
         
-    public void callBezierCurve(CreateNewCurve curv, GameObject personaje)
+    public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)
     {
 
        

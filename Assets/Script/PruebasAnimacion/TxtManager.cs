@@ -9,7 +9,7 @@ public class TxtManager : MonoBehaviour
 
     [SerializeField] OrganizarDatosFile orgDatos;
 
-    [SerializeField] CreateNewCurve curva;
+    [SerializeField] AngleCurveCreator curva;
     //[SerializeField] AngleCurveCreator curva;
     [SerializeField] TextAsset myTxt;
     [SerializeField] public bool finalizado = false;
@@ -28,13 +28,14 @@ public class TxtManager : MonoBehaviour
         orgDatos = new OrganizarDatosFile();
         personaje = GameObject.Find("P4DEF");
         copyAnimacion = personaje.GetComponent<CopyAnim1>();
-        curva = this.gameObject.GetComponent<CreateNewCurve>();
+        curva = this.gameObject.GetComponent<AngleCurveCreator>();
         orgDatos.SetListBones(myTxt, curva, personaje);
         //orgDatos totalbody es un dicchionario de nombre de hueso y lista de transforms de ese hueso
         //curva --> tiene la animación total 
         if (orgDatos.finalizado)
         {
-            totalAnimaciomaciones.Add(curva.animacionFinal);
+            //totalAnimaciomaciones.Add(curva.animacionFinal);
+            totalAnimaciomaciones.Add(curva.animacionBezierHueso);
             totalAnimaciomacionesNombres.Add(myTxt.name);
             finalizado = orgDatos.finalizado;
         }

@@ -36,8 +36,18 @@ public class CopyAnim1 : MonoBehaviour
     [SerializeField] AnimatorState defaultState; // el prmer estado por defecto del animator
     [SerializeField] public bool creadoStado = false; // para saber si se ha creado el nuevo estado de la animación
                                                       //object prueba 
-                                                      //[SerializeField] PruebaFBX prueba;
+    [SerializeField] Transform myHips;
+    [SerializeField] Vector3 animHips;
+    //[SerializeField] PruebaFBX prueba;
+    
 
+    public void changePosition()
+    {
+        // setea la nueva posicion( posicion root local- la inicial del origen)+ la inicial del destino
+        //mi posicion= posicion root de elctura- su posicion inicial + mi opsicion inicial
+            //selfRoot.localPosition = (srcRoot.localPosition - srcInitPosition) + selfInitPosition;
+        
+    }
     //copiamos nuestra animacion en la futura
     public void ReadMyAnimAndChange()
     {
@@ -63,39 +73,44 @@ public class CopyAnim1 : MonoBehaviour
         animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
 
         animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
-        animationClipEmpty.ClearCurves();
-        foreach (AnimationClipCurveData data in animacionLeida)
+        //estoy hay que pasarselo por parametro
+        animHips = new Vector3(-233.588f, 66.7051f, 935.858f);
+        float distancia = Vector3.Distance(animHips, myHips.position);
+        
+     animationClipEmpty.ClearCurves();
+       foreach (AnimationClipCurveData data in animacionLeida)
         {
+           
             foreach (AnimationClipCurveData datos in animacionFutura)
             {
                 String[] datosPath= datos.path.Split('/');
 
 
-                   if (datosPath[datosPath.Length-1].Contains(data.path))
+                /*foreach (Keyframe key in datos.curve.keys)
+                {
+                    datos.curve.RemoveKey(0);
+
+                }*/
+
+                if (datosPath[datosPath.Length-1].Contains(data.path) )
                    {
-                    AnimationCurve curve = new AnimationCurve();
-                    
-
-                    foreach (Keyframe key in datos.curve.keys)
+                    Debug.Log("datos ppname"+datos.propertyName);
+                   // AnimationCurve curve = new AnimationCurve();
+                    if (datos.propertyName.Contains( "Rotation"))
                     {
-                        datos.curve.RemoveKey(0);
-     
+                        foreach (Keyframe key in data.curve.keys)
+                        {
+                            datos.curve.AddKey(key.time, data.curve.Evaluate(key.time));
+                            //no setea nada
+
+                        }
                     }
-                     foreach (Keyframe key in data.curve.keys)
-                     {
-                         datos.curve.AddKey(key.time, data.curve.Evaluate(key.time));
-                         //no setea nada
-
-                     }
-
-                    Debug.Log(datos.curve.keys.Length);
                     animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, datos.curve);
 
 
                 }
             }
         }
-
     }
     public void CreateNewStateAndConexion()
     {

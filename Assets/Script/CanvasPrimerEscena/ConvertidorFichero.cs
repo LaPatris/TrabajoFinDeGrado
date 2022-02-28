@@ -31,7 +31,7 @@ public class ConvertidorFichero : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        duracionAnim = 3745;
+        duracionAnim = 8000;
         actualFrame = 1;
     }
     void Update()
@@ -64,6 +64,7 @@ public class ConvertidorFichero : MonoBehaviour
         if (!File.Exists(myPath)) { 
             File.Create(myPath);
           string[] lineas = File.ReadAllLines(firstFilePath);
+            int numLineas = 3200;
            for (int linea = 0; linea < lineas.Length; linea++)
              {
                             bones++;

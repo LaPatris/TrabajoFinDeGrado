@@ -17,9 +17,6 @@ public class AngleCurveCreator : MonoBehaviour
     //[SerializeField] int curveCount;
     [SerializeField] float tiMax;
     [SerializeField] public AnimationClip animacionBezierHueso;
-    [SerializeField] public AnimationCurve newCurveX;
-    [SerializeField] public AnimationCurve newCurveY;
-    [SerializeField] public AnimationCurve newCurveZ;
     [SerializeField] public AnimationCurve newTotalCurve;
     [SerializeField] Type tipoAnim;
     //[SerializeField] int SEGMENT_COUNT;
@@ -40,11 +37,8 @@ public class AngleCurveCreator : MonoBehaviour
 
     void Start()
     {
-        newCurveX = new AnimationCurve();
 
-        newCurveY = new AnimationCurve();
-
-        newCurveZ = new AnimationCurve();
+        newTotalCurve = new AnimationCurve();
 
     }
     public bool inicializarBezier(List<Vector3> puntosCuerpo, float tmin, float tmax, GameObject pers)
@@ -54,22 +48,16 @@ public class AngleCurveCreator : MonoBehaviour
 
         srcRoot = puntosCuerpo[0];
         selfRoot = personaje.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.Hips);
-        SetInitPosition();
+        //SetInitPosition();
         return inicializarAnimaciones(puntosCuerpo[0], puntosCuerpo[puntosCuerpo.Count - 1], tmin);
 
     }
 
     //creo las tres curvas
     public bool inicializarAnimaciones(Vector3 momento0, Vector3 momentoF, float tmin)
-    { //X
-        newCurveX = AnimationCurve.EaseInOut(momento0.x, momentoF.x, tmin / tiMax, 1);
-        newCurveX.preWrapMode = WrapMode.Loop;
-        //Y
-        newCurveY = AnimationCurve.EaseInOut(momento0.y, momentoF.y, tmin / tiMax, 1);
-        newCurveY.preWrapMode = WrapMode.Loop;
-        //z
-        newCurveZ = AnimationCurve.EaseInOut(momento0.z, momentoF.z, tmin / tiMax, 1);
-        newCurveZ.preWrapMode = WrapMode.Loop;
+    { 
+        newTotalCurve = AnimationCurve.EaseInOut(momento0.z, momentoF.z, tmin / tiMax, 1);
+        newTotalCurve.preWrapMode = WrapMode.Loop;
         return true;
     }
 
@@ -86,10 +74,8 @@ public class AngleCurveCreator : MonoBehaviour
 
     public void SetNull()
     {
-        //animacionBezier.Clear();
-        newCurveX = null;
-        newCurveY = null;
-        newCurveZ = null;
+
+        newTotalCurve = null;
         curveDone = false;
 
     }
@@ -99,43 +85,32 @@ public class AngleCurveCreator : MonoBehaviour
         int j = 0;
         while( (j+1)<puntosCuerpo.Count)
         {
-            Vector3 dirX = new Vector3(puntosCuerpo[j].x - puntosCuerpo[j + 1].x, 0, 0);
-            float angleX= Vector3.Angle(dirX, new Vector3(-1,0,0));
-            Vector3 dirY= new Vector3(puntosCuerpo[j].y - puntosCuerpo[j + 1].y, 0, 0);
-            float angleY = Vector3.Angle(dirY, transform.up);
-            Vector3 dirZ= new Vector3(puntosCuerpo[j].z - puntosCuerpo[j + 1].z, 0, 0);
-            float angleZ = Vector3.Angle(dirZ, transform.forward);
-            SetNewCurve(timesXframe[j], angleX, angleY, angleZ);
+            float angle= Vector3.Angle(puntosCuerpo[j], puntosCuerpo[j + 1]);
+            SetNewCurve(timesXframe[j], angle);
             j++;
         }
 
-        if (newCurveX == null)
+        if (newTotalCurve == null)
         {
 
             Debug.Log("NEWcurve ES NULL");
         }
         else
         {
-            animacionBezierHueso.SetCurve(hueso.ToString() + "X: ", transform.GetType(), newCurveX.length.ToString(), newCurveX);
-            animacionBezierHueso.SetCurve(hueso.ToString() + "Y: ", transform.GetType(), newCurveY.length.ToString(), newCurveY);
-            animacionBezierHueso.SetCurve(hueso.ToString() + "Z: ", transform.GetType(), newCurveZ.length.ToString(), newCurveZ);
+            animacionBezierHueso.SetCurve(hueso.ToString() + ": ", transform.GetType(), newTotalCurve.length.ToString(), newTotalCurve);
 
 
             curveDone = true;
 
         }
     }
- private void SetNewCurve(float temp, float valueX, float valueY, float valueZ)
+ private void SetNewCurve(float temp, float value)
     {
-        if (temp < 30)
-        {
+        
             //para curva X
-            newCurveX.AddKey(temp, valueX);//desnormalizamos
+            newTotalCurve.AddKey(temp, value);//desnormalizamos
             //para curva X
-            newCurveX.AddKey(temp, valueY);//desnormalizamos
-            //para curva X
-            newCurveX.AddKey(temp, valueZ);//desnormalizamos
-        }
+         
 
     }
 }

@@ -105,8 +105,8 @@ public class CreateNewCurve : MonoBehaviour
     {
         if (temp < 1800)
         {
-            newTotalCurve.AddKey(temp, value.magnitude);
-            newTotalCurve.SmoothTangents(0, value.magnitude);
+            newTotalCurve.AddKey(temp, (value-personaje.transform.position).magnitude);
+            newTotalCurve.SmoothTangents(0, (value - personaje.transform.position).magnitude);
         }
     }
 }
