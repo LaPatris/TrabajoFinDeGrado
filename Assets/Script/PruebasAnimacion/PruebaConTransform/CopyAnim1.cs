@@ -91,12 +91,16 @@ public class CopyAnim1 : MonoBehaviour
                     datos.curve.RemoveKey(0);
 
                 }*/
-
-                if (datosPath[datosPath.Length-1].Contains(data.path) )
+                String[] subString = data.path.Split(':');
+                Debug.Log("SUBSTRING0" + subString[0]);
+                Debug.Log("SUBSTRING1" + subString[1]);
+                if (datosPath[datosPath.Length-1].Contains(subString[0]) )
                    {
                     Debug.Log("datos ppname"+datos.propertyName);
-                   // AnimationCurve curve = new AnimationCurve();
-                    if (datos.propertyName.Contains( "Rotation"))
+
+                    
+                    // AnimationCurve curve = new AnimationCurve();
+                    if (datos.propertyName.Contains(subString[1]))
                     {
                         foreach (Keyframe key in data.curve.keys)
                         {
