@@ -51,14 +51,13 @@ public class CopyAnim1 : MonoBehaviour
     //copiamos nuestra animacion en la futura
     public void ReadMyAnimAndChange()
     {
-        animationClipEmpty.wrapMode = WrapMode.Loop;
-       
-        miAnimacion = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
+        aniationSelf.ClearCurves();
+       animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
 
 
-        foreach (AnimationClipCurveData data in miAnimacion)
+        foreach (AnimationClipCurveData data in animacionFutura)
         {
-            animationClipEmpty.SetCurve(data.path.ToString(), data.type, data.propertyName, data.curve);
+            aniationSelf.SetCurve(data.path.ToString(), data.type, data.propertyName, data.curve);
            
         }
     }
@@ -72,46 +71,44 @@ public class CopyAnim1 : MonoBehaviour
 
         animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
 
-        animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
+        //animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
+        miAnimacion = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
         //estoy hay que pasarselo por parametro
         animHips = new Vector3(-233.588f, 66.7051f, 935.858f);
         float distancia = Vector3.Distance(animHips, myHips.position);
         
-     animationClipEmpty.ClearCurves();
        foreach (AnimationClipCurveData data in animacionLeida)
         {
            
-            foreach (AnimationClipCurveData datos in animacionFutura)
+            foreach (AnimationClipCurveData datos in miAnimacion)
             {
                 String[] datosPath= datos.path.Split('/');
 
 
-                /*foreach (Keyframe key in datos.curve.keys)
-                {
-                    datos.curve.RemoveKey(0);
-
-                }*/
+              
                 String[] subString = data.path.Split(':');
-                Debug.Log("SUBSTRING0" + subString[0]);
-                Debug.Log("SUBSTRING1" + subString[1]);
-                if (datosPath[datosPath.Length-1].Contains(subString[0]) )
-                   {
-                    Debug.Log("datos ppname"+datos.propertyName);
 
-                    
-                    // AnimationCurve curve = new AnimationCurve();
-                    if (datos.propertyName.Contains(subString[1]))
+                // AnimationCurve curve = new AnimationCurve();
+                if (datos.path.Contains(subString[0]) && datos.propertyName.Contains("Rotation"))
+                {
+                    foreach (Keyframe key in datos.curve.keys)
                     {
+                        datos.curve.RemoveKey(0);
+
+                    }
+                    // if (datos.propertyName.ToString().Contains(subString[1]))
+                    //{
                         foreach (Keyframe key in data.curve.keys)
                         {
                             datos.curve.AddKey(key.time, data.curve.Evaluate(key.time));
                             //no setea nada
 
                         }
-                    }
-                    animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, datos.curve);
 
+                    aniationSelf.SetCurve(datos.path, datos.type, datos.propertyName, datos.curve);
+                    //}
 
+                
                 }
             }
         }

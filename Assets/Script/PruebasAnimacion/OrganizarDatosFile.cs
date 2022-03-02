@@ -59,7 +59,7 @@ public class OrganizarDatosFile
         StreamReader myTXT = new StreamReader(pathTxt);
         string[] auxValue;
         int i = 0; 
-            while (/*!myTXT.EndOfStream*/i<3201 )
+            while (/*!myTXT.EndOfStream*/i<100 )
             {
                 string inp_ln = myTXT.ReadLine();
                 inp_ln = inp_ln.Replace("*\n", "");
