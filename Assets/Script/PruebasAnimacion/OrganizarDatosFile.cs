@@ -59,7 +59,7 @@ public class OrganizarDatosFile
         StreamReader myTXT = new StreamReader(pathTxt);
         string[] auxValue;
         int i = 0; 
-            while (/*!myTXT.EndOfStream*/i<100 )
+            while (/*!myTXT.EndOfStream*/i<2 )
             {
                 string inp_ln = myTXT.ReadLine();
                 inp_ln = inp_ln.Replace("*\n", "");
@@ -72,8 +72,8 @@ public class OrganizarDatosFile
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
             
             
-            float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture)/ 100;
-            float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture)/ 100;
+            float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture);
+            float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);
             float z = 0.0f;//float.Parse(auxValue[4], CultureInfo.InvariantCulture);/// 1500;
             Vector3 valores = new Vector3(x, y, z);
             switch (hueso)
@@ -203,9 +203,12 @@ public class OrganizarDatosFile
        
         foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
         {
-                if (curv.inicializarBezier(hueso.Value, timesPerFrame[0], timesPerFrame[timesPerFrame.Count - 1], personaje));
-
-                    curv.Ready(hueso.Key, hueso.Value, timesPerFrame) ;
+            if (curv.inicializarBezier(hueso.Value, timesPerFrame[0], timesPerFrame[timesPerFrame.Count - 1], personaje))
+            //if (curv.inicializarBezier(hueso.Value, 0, 1, personaje))
+            {
+                Debug.Log("estoy en el hueso ");
+                curv.Ready(hueso.Key, hueso.Value, timesPerFrame);
+            }
                 if (curv.curveDone) curv.SetNull();
           
         }

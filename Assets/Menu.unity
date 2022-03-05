@@ -229,6 +229,7 @@ MonoBehaviour:
   barraDeCarga: {fileID: 570860673}
   carga: {fileID: 1794990279}
   textoRellenar: {fileID: 1595219234}
+  totalTime: 0
   ficheroALeer: {fileID: 4900000, guid: a6d9cf516b1018e4394d3bee762fc6cf, type: 3}
   cf: {fileID: 0}
   ficheroAdvertencia: {fileID: 1277300484}
@@ -261,11 +262,14 @@ MonoBehaviour:
   myPath: 
   firstFileName: 
   firstFilePath: 
-  newFile: {fileID: 0}
+  newFile: {fileID: 4900000, guid: a6d9cf516b1018e4394d3bee762fc6cf, type: 3}
   terminado: 0
-  frames: 0
+  bones: 0
   duracionAnim: 0
   timePerFrame: 0
+  totalFrames: 0
+  lineas: 0
+  actualFrame: 0
 --- !u!1 &237575216
 GameObject:
   m_ObjectHideFlags: 0

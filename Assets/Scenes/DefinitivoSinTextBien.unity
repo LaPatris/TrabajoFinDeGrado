@@ -1194,6 +1194,12 @@ MonoBehaviour:
   tiMax: 0
   animacionBezierHueso: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea,
     type: 2}
+  newTotalCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   newCurveX:
     serializedVersion: 2
     m_Curve: []

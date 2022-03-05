@@ -114,10 +114,11 @@ public class AngleCurveCreator : MonoBehaviour
             //float angleX = Vector3.Angle(puntosCuerpo[j], puntosCuerpo[j + 1]);
 
            SetNewCurve(timesXframe[j], pos.magnitude);
-           // SetNewCurve(timesXframe[j], rotaciOnDefinitiva);
-            
+            //SetNewCurve(j, pos.magnitude);
+            //SetNewCurve(timesXframe[j], rotaciOnDefinitiva);
+            j++;
             //SetNewCurve(timesXframe[j], angleX, angleY, angleZ);
-            j=j+2;
+           // j=j+2;
         }
 
         if (newCurveX == null)
