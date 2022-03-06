@@ -51,6 +51,8 @@ public class CreateNewCurve : MonoBehaviour
     //creo las tres curvas
     public bool inicializarAnimaciones(Vector3 momento0, Vector3 momentoF, float tmin)
     { //inicializamos la curva
+        /* newTotalCurve = AnimationCurve.EaseInOut(tmin,momento0.magnitude, tiMax, momentoF.magnitude );
+        newTotalCurve.preWrapMode = WrapMode.Loop;*/
         newTotalCurve = AnimationCurve.EaseInOut(momento0.magnitude, momentoF.magnitude, tmin / tiMax, 1);
         newTotalCurve.preWrapMode = WrapMode.Loop;
         return true;

@@ -55,23 +55,23 @@ public class AngleCurveCreator : MonoBehaviour
         //srcRoot = puntosCuerpo[0];
         //selfRoot = personaje.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.Hips);
         //SetInitPosition();
-        return inicializarAnimaciones(puntosCuerpo[0], puntosCuerpo[puntosCuerpo.Count - 1], tmin);
+        return inicializarAnimaciones(tmin, puntosCuerpo[0], tmax, puntosCuerpo[puntosCuerpo.Count - 1]);
 
     }
 
     //creo las tres curvas
-    public bool inicializarAnimaciones(Vector3 momento0, Vector3 momentoF, float tmin)
+    public bool inicializarAnimaciones(float tmin, Vector3 momento0,float tmax, Vector3 momentoF )
     {
-        newTotalCurve = AnimationCurve.EaseInOut(momento0.magnitude, momentoF.magnitude, tmin / tiMax, 1);
+        newTotalCurve = AnimationCurve.EaseInOut(tmin,momento0.magnitude, tiMax, momentoF.magnitude );
         newTotalCurve.preWrapMode = WrapMode.Loop;
         //x
-        newCurveX = AnimationCurve.EaseInOut(momento0.z, momentoF.z, tmin / tiMax, 1);
+        newCurveX = AnimationCurve.EaseInOut(tmin, momento0.x, tiMax, momentoF.x);
         newCurveX.preWrapMode = WrapMode.Loop;
         //Y
-        newCurveY = AnimationCurve.EaseInOut(momento0.z, momentoF.z, tmin / tiMax, 1);
+        newCurveY = AnimationCurve.EaseInOut(tmin, momento0.y, tiMax, momentoF.y);
         newCurveX.preWrapMode = WrapMode.Loop;
         //Z
-        newCurveZ = AnimationCurve.EaseInOut(momento0.z, momentoF.z, tmin / tiMax, 1);
+        newCurveZ = AnimationCurve.EaseInOut(tmin, momento0.z, tiMax, momentoF.z);
         newCurveZ.preWrapMode = WrapMode.Loop;
         return true;
     }
@@ -129,11 +129,11 @@ public class AngleCurveCreator : MonoBehaviour
         else
         {
            animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation ", transform.GetType(), newTotalCurve.length.ToString(), newTotalCurve);
-          /*  animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.x ", transform.GetType(), newCurveX.length.ToString(), newCurveX);
-            animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.y ", transform.GetType(), newCurveY.length.ToString(), newCurveY);
-            animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.z", transform.GetType(), newCurveZ.length.ToString(), newCurveZ);
-          */
-
+            /*  animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.x ", transform.GetType(), newCurveX.length.ToString(), newCurveX);
+              animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.y ", transform.GetType(), newCurveY.length.ToString(), newCurveY);
+              animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.z", transform.GetType(), newCurveZ.length.ToString(), newCurveZ);
+            */
+            newTotalCurve = null;
 
             curveDone = true;
 
@@ -146,7 +146,6 @@ public class AngleCurveCreator : MonoBehaviour
 
         //para curva X
         // Debug.Log("Def: x" + def.x + "y" + def.y + "z" + def.z + "magni" + def.magnitude);
-        Debug.Log(def);
         newTotalCurve.AddKey(temp, def);
         /*
             newCurveX.AddKey(temp, valueX);//desnormalizamos

@@ -43,9 +43,7 @@ public class ConvertidorFichero : MonoBehaviour
         firstFileName = fileRead.name;
         firstFilePath = AssetDatabase.GetAssetPath(fileRead);
         lineas = File.ReadAllLines(firstFilePath).Length;
-        timePerFrame = timeXframe();
-
-          bool sol=CreateFile();
+        bool sol=CreateFile();
         return sol;
     }
 
@@ -75,7 +73,7 @@ public class ConvertidorFichero : MonoBehaviour
                 if (bones != 12 && bones != 17 && bones != 21 && bones != 24 && bones != 25 && bones != 29 && bones != 32)
                 {
                    
-                    lineas[linea] = bones +" " + timePerFrame*(actualFrame-1) +" "+ lineas[linea];
+                    lineas[linea] = bones +" "+ lineas[linea];
                 }
                 else
                 {
@@ -92,12 +90,6 @@ public class ConvertidorFichero : MonoBehaviour
             return false;
         }
 
-    }
-    public float timeXframe()
-    {
-        totalFrames = lineas / 32;
-        timePerFrame = duracionAnim / totalFrames;
-        return timePerFrame;
     }
 }
 /*

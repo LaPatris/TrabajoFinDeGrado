@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TxtManager : MonoBehaviour
 {
@@ -16,7 +18,10 @@ public class TxtManager : MonoBehaviour
     [SerializeField] GameObject personaje;
     [SerializeField] CopyAnim1 copyAnimacion;
 
+    [SerializeField] GameObject elegido;
+
     int index = 0;
+    [SerializeField] float selectedTime = 0f;
     [SerializeField] List<AnimationClip> totalAnimaciomaciones = new List<AnimationClip>();
 
     [SerializeField] List<string> totalAnimaciomacionesNombres = new List<string>();
@@ -48,40 +53,63 @@ public class TxtManager : MonoBehaviour
         EditorWindow.GetWindow(typeof(CopyAnim));
 
     }
+
+    public void entrada(float timeValue)
+    {
+        selectedTime = timeValue;
+    }
+    public bool selectTime()
+    {
+        return selectedTime == 0.0f ? false : true;
+
+    }
     public void OnGUI()
     {
-        if (finalizado)
+        if ( finalizado)
         {
+            
             EditorGUILayout.LabelField("Select");
             GUILayout.BeginVertical("Box");
             //guardo el indice de la animación que he seleccionado
             index = GUILayout.SelectionGrid(index, totalAnimaciomacionesNombres.Select(x => x).ToArray(), 1);
-            if (GUILayout.Button("Copy"))
-            {// si doy a copiar guardo la animacion
-             //selectedAnimationClip = animationClips[index];
+            if (GUILayout.Button("Copy") && selectTime() )
+            {
+                elegido.active = false;
+                // si doy a copiar guardo la animacion
+                //selectedAnimationClip = animationClips[index];
                 Debug.Log("indice " + index);
                 Debug.Log("La aniamcion seleccionada es  : " + totalAnimaciomacionesNombres[index]);
                 //llamo a la accion de cambiar de estado
                 //copiar la animación por defecto en otra animación 
                 copyAnimacion.ReadMyAnimAndChange();
-               copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index]);
+                copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index], selectedTime);
 
                 if (!copyAnimacion.creadoStado)
-                  { //si no habia estado creado lo creo
+                { //si no habia estado creado lo creo
                     copyAnimacion.CreateNewStateAndConexion();
-                  }
+                }
                 //cambio el valor del estado
                 copyAnimacion.ChangeStateValue();
-              }
-              if (GUILayout.Button("Remove"))
-              {// si damos a remove solo si el estado esta creado eliminamos el estado y la transición 
-                  if (copyAnimacion.creadoStado)
-                    copyAnimacion.RemoveState();
-              }
-                GUILayout.EndVertical();
+            }
+            else
+            {
+                if (!selectTime())
+                {
+                    elegido.active = true;
+                }
 
             }
+            if (GUILayout.Button("Remove"))
+            {// si damos a remove solo si el estado esta creado eliminamos el estado y la transición 
+                if (copyAnimacion.creadoStado)
+                    copyAnimacion.RemoveState();
+            }
+            GUILayout.EndVertical();
+
         }
+        
+
     }
+}
 
 

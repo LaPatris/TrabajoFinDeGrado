@@ -51,68 +51,78 @@ public class CopyAnim1 : MonoBehaviour
     //copiamos nuestra animacion en la futura
     public void ReadMyAnimAndChange()
     {
-        aniationSelf.ClearCurves();
-       animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
+        /*
+      animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
 
-
+        //aniationSelf.ClearCurves();
         foreach (AnimationClipCurveData data in animacionFutura)
         {
             aniationSelf.SetCurve(data.path.ToString(), data.type, data.propertyName, data.curve);
            
-        }
-    }
-    public void CalculateNewC(AnimationClipCurveData datos, AnimationClipCurveData data)
-    {
-       
+        }*/
     }
     //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
-    public void ChangeToMyAnim(AnimationClip animacionNueva)
+    public void ChangeToMyAnim(AnimationClip animacionNueva, float selectedTime)
     {
-
+     
         animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
-
-        //animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
-        miAnimacion = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
+        float timeXFrame = selectedTime / animacionLeida[0].curve.keys.Length;
+        float timeTotal = 0f;
+        animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
+        //miAnimacion = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
         //estoy hay que pasarselo por parametro
         animHips = new Vector3(-233.588f, 66.7051f, 935.858f);
         float distancia = Vector3.Distance(animHips, myHips.position);
-        
-       foreach (AnimationClipCurveData data in animacionLeida)
+        //eliminamos cada frame
+        //eliminamosFrames();
+
+        foreach (AnimationClipCurveData data in animacionLeida)
         {
-           
-            foreach (AnimationClipCurveData datos in miAnimacion)
+            rellenamosFrames(data,timeTotal, timeXFrame);
+          }
+    }
+    public void rellenamosFrames(AnimationClipCurveData data, float timeTotal, float timeXFrame)
+    {
+        foreach (AnimationClipCurveData datos in animacionFutura)
+        {
+            String[] datosPath = datos.path.Split('/');
+            String[] subString = data.path.Split(':');
+            String dataPath = datos.path;
+            Type dataType = datos.type;
+            String dataPropertyName = datos.propertyName;
+           // AnimationCurve nuevaC = new AnimationCurve();
+           // nuevaC = AnimationCurve.EaseInOut(0, data.curve.Evaluate(0), timeTotal, data.curve.Evaluate(timeTotal));
+           // nuevaC.preWrapMode = WrapMode.Loop;
+            if (datos.path.Contains(subString[0]) && datos.propertyName.Contains("Rotation"))
             {
-                String[] datosPath= datos.path.Split('/');
 
-
-              
-                String[] subString = data.path.Split(':');
-
-                // AnimationCurve curve = new AnimationCurve();
-                if (datos.path.Contains(subString[0]) && datos.propertyName.Contains("Rotation"))
+                //datos.curve = data.curve;
+                /*foreach (Keyframe key in data.curve.keys)
                 {
-                    foreach (Keyframe key in datos.curve.keys)
-                    {
-                        datos.curve.RemoveKey(0);
-
-                    }
-                    // if (datos.propertyName.ToString().Contains(subString[1]))
-                    //{
-                        foreach (Keyframe key in data.curve.keys)
-                        {
-                            datos.curve.AddKey(key.time, data.curve.Evaluate(key.time));
-                            //no setea nada
-
-                        }
-
-                    aniationSelf.SetCurve(datos.path, datos.type, datos.propertyName, datos.curve);
-                    //}
-
-                
-                }
+                   // nuevaC.AddKey(timeTotal, data.curve.Evaluate(key.time));
+                    timeTotal += timeXFrame;
+                }*/
+                animationClipEmpty.SetCurve(dataPath, dataType, dataPropertyName, data.curve);
+                //timeTotal = 0;
+               // nuevaC = null;
             }
         }
     }
+    /*public void eliminamosFrames()
+    {
+        foreach (AnimationClipCurveData datos in animacionFutura)
+        {
+            
+                foreach (Keyframe key in datos.curve.keys)
+                {
+                if (datos.curve.keys.Length > 1)
+                    KeyCode.Delete;
+
+                }
+
+            animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, datos.curve);
+        }
+    }*/
     public void CreateNewStateAndConexion()
     {
 

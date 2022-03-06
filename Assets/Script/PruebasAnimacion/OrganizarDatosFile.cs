@@ -58,28 +58,27 @@ public class OrganizarDatosFile
         string pathTxt = AssetDatabase.GetAssetPath(TXT);
         StreamReader myTXT = new StreamReader(pathTxt);
         string[] auxValue;
-        int i = 0; 
-            while (/*!myTXT.EndOfStream*/i<2 )
+        int i = 0;
+            //while (/*!myTXT.EndOfStream*/i<2)
+            while (!myTXT.EndOfStream)
             {
                 string inp_ln = myTXT.ReadLine();
                 inp_ln = inp_ln.Replace("*\n", "");
                 inp_ln = inp_ln.Replace("*\r", "");
             //sustituimos la coma del tiempo por un punto
-           inp_ln = inp_ln.Replace(",", ".");
-
+            inp_ln = inp_ln.Replace(",", ".");
             auxValue = inp_ln.Split(' ');
             int hueso = int.Parse(auxValue[0], CultureInfo.InvariantCulture);
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
             
-            
-            float x = float.Parse(auxValue[2], CultureInfo.InvariantCulture);
-            float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);
-            float z = 0.0f;//float.Parse(auxValue[4], CultureInfo.InvariantCulture);/// 1500;
+            float x = float.Parse(auxValue[1], CultureInfo.InvariantCulture);
+            float y = float.Parse(auxValue[2], CultureInfo.InvariantCulture);
+            float z = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
             Vector3 valores = new Vector3(x, y, z);
             switch (hueso)
             {
                 case 1:
-                    cadera.Add(valores);
+                   cadera.Add(valores);                    
                 break;
                 case 2:
                     caderaD.Add(valores);
@@ -152,8 +151,7 @@ public class OrganizarDatosFile
                     break;
                 case 31:
                     dedosD.Add(valores);
-                    timesPerFrame.Add(float.Parse(auxValue[1], CultureInfo.InvariantCulture));
-                    i++;
+                    i++;//i llega a 3
                     break;
 
 
@@ -161,11 +159,27 @@ public class OrganizarDatosFile
             }
                  
                 auxValue = null;
+                inp_ln = null;
+                x = 0f;
+                y = 0f;
+                z = 0f;
                 valores = Vector3.zero;
             }
 
         myTXT.Close();
+        calcularTiempo();
         SetDiccionario( curv, personaje);
+    }
+    public void calcularTiempo()
+    {//todos tienen el mismo numero
+        int total = cadera.Count;
+        float timexFrame = 1.0f / total;// 1 es igual a un minuto
+        for(float tiempoActual=0; tiempoActual< 1.0f; tiempoActual+=timexFrame)
+        {
+            timesPerFrame.Add(tiempoActual);
+
+        }
+
     }
       public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
     {
@@ -200,7 +214,7 @@ public class OrganizarDatosFile
     public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)
     {
 
-       
+       //recorremos el diccionario teniendo en cuenta el nombre del hueso y la lista de vectores 3
         foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
         {
             if (curv.inicializarBezier(hueso.Value, timesPerFrame[0], timesPerFrame[timesPerFrame.Count - 1], personaje))
