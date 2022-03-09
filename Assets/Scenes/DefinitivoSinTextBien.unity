@@ -1597,7 +1597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90c90b80c190e2748b095a7c4efcf110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curva: {fileID: 0}
+  curva: {fileID: 1090372509}
   myTxt: {fileID: 4900000, guid: d2760c7e0ed3c734ba23fff8bc4ab7d7, type: 3}
   finalizado: 0
   personaje: {fileID: 2079259919}
@@ -2755,6 +2755,7 @@ MonoBehaviour:
   animationClipEmpty: {fileID: 7400000, guid: ef35d79b59a819745b77d2cf268bf8a3, type: 2}
   aniationSelf: {fileID: -623603649343465320, guid: 6498e786462289a489cbc27ee5baa292,
     type: 3}
+  animacionTEMPORAL: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea, type: 2}
   changeAnim: 0
   currentState: {fileID: 0}
   newTransition: {fileID: 0}
