@@ -22,8 +22,9 @@ public class CopyAnim1 : MonoBehaviour
     [SerializeField] AnimationClip animationClipEmpty;// animación vacía que rellenaré
     [SerializeField] AnimationClip aniationSelf;//MI ANIMACION
 
-                                                      //lista de los datos de la animación que vamos a seleccionar
-    [SerializeField] private static List<AnimationClipCurveData> miAnimacion = new List<AnimationClipCurveData>();
+    [SerializeField] AnimationClip animacionTEMPORAL;//MI ANIMACION
+
+    //lista de los datos de la animación que vamos a seleccionar
     [SerializeField] private static List<AnimationClipCurveData> animacionLeida = new List<AnimationClipCurveData>();
     [SerializeField] private static List<AnimationClipCurveData> animacionFutura = new List<AnimationClipCurveData>();
 
@@ -51,23 +52,25 @@ public class CopyAnim1 : MonoBehaviour
     //copiamos nuestra animacion en la futura
     public void ReadMyAnimAndChange()
     {
-        /*
-      animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
-
+       
+      animacionFutura = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
+        AnimationCurve auxAnim = AnimationCurve.EaseInOut(0, 0, 0, 0);
+        auxAnim.preWrapMode = WrapMode.Loop;
         //aniationSelf.ClearCurves();
         foreach (AnimationClipCurveData data in animacionFutura)
         {
-            aniationSelf.SetCurve(data.path.ToString(), data.type, data.propertyName, data.curve);
+            animationClipEmpty.SetCurve(data.path.ToString(), data.type, data.propertyName, auxAnim);
            
-        }*/
+        }
     }
     //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
     public void ChangeToMyAnim(AnimationClip animacionNueva, float selectedTime)
     {
-     
-        animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
+        //comprobar si animacion nueva es la correcta
+        //animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
+        animacionLeida = AnimationUtility.GetAllCurves(animacionTEMPORAL, true).ToList();
+
         float timeXFrame = selectedTime / animacionLeida[0].curve.keys.Length;
-        float timeTotal = 0f;
         animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
         //miAnimacion = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
         //estoy hay que pasarselo por parametro
@@ -78,33 +81,20 @@ public class CopyAnim1 : MonoBehaviour
 
         foreach (AnimationClipCurveData data in animacionLeida)
         {
-            rellenamosFrames(data,timeTotal, timeXFrame);
-          }
-    }
-    public void rellenamosFrames(AnimationClipCurveData data, float timeTotal, float timeXFrame)
-    {
-        foreach (AnimationClipCurveData datos in animacionFutura)
-        {
-            String[] datosPath = datos.path.Split('/');
-            String[] subString = data.path.Split(':');
-            String dataPath = datos.path;
-            Type dataType = datos.type;
-            String dataPropertyName = datos.propertyName;
-           // AnimationCurve nuevaC = new AnimationCurve();
-           // nuevaC = AnimationCurve.EaseInOut(0, data.curve.Evaluate(0), timeTotal, data.curve.Evaluate(timeTotal));
-           // nuevaC.preWrapMode = WrapMode.Loop;
-            if (datos.path.Contains(subString[0]) && datos.propertyName.Contains("Rotation"))
+            foreach (AnimationClipCurveData datos in animacionFutura)
             {
-
-                //datos.curve = data.curve;
-                /*foreach (Keyframe key in data.curve.keys)
-                {
-                   // nuevaC.AddKey(timeTotal, data.curve.Evaluate(key.time));
-                    timeTotal += timeXFrame;
-                }*/
-                animationClipEmpty.SetCurve(dataPath, dataType, dataPropertyName, data.curve);
-                //timeTotal = 0;
-               // nuevaC = null;
+                String[] datosPath = datos.path.Split('/');
+                String[] subString = data.path.Split(':');
+                String dataPath = datos.path;
+                Type dataType = datos.type;
+                String dataPropertyName = datos.propertyName;
+                Debug.Log("DATOS: "+datosPath[datosPath.Length-1]+" data: "+subString[0]);
+                if (datosPath[datosPath.Length - 1].Equals(subString[0]) && dataPropertyName.Contains("Rotation"))
+                {//si coincide entonces setear la curva, porqué no la setea bien 
+                    
+                    animationClipEmpty.SetCurve(dataPath, dataType, dataPropertyName, data.curve);
+                 
+                }
             }
         }
     }
