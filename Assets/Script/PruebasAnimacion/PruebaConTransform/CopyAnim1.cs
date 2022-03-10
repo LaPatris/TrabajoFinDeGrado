@@ -22,7 +22,6 @@ public class CopyAnim1 : MonoBehaviour
     [SerializeField] AnimationClip animationClipEmpty;// animación vacía que rellenaré
     [SerializeField] AnimationClip aniationSelf;//MI ANIMACION
 
-    [SerializeField] AnimationClip animacionTEMPORAL;//MI ANIMACION
 
     //lista de los datos de la animación que vamos a seleccionar
     [SerializeField] private static List<AnimationClipCurveData> animacionLeida = new List<AnimationClipCurveData>();
@@ -68,7 +67,7 @@ public class CopyAnim1 : MonoBehaviour
     {
         //comprobar si animacion nueva es la correcta
         //animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
-        animacionLeida = AnimationUtility.GetAllCurves(animacionTEMPORAL, true).ToList();
+        animacionLeida = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
 
         float timeXFrame = selectedTime / animacionLeida[0].curve.keys.Length;
         animacionFutura = AnimationUtility.GetAllCurves(animationClipEmpty, true).ToList();
@@ -79,20 +78,27 @@ public class CopyAnim1 : MonoBehaviour
         //eliminamos cada frame
         //eliminamosFrames();
 
-        foreach (AnimationClipCurveData data in animacionLeida)
+        foreach (AnimationClipCurveData datos in animacionFutura)
         {
-            foreach (AnimationClipCurveData datos in animacionFutura)
+            String[] datosPath = datos.path.Split('/');
+            String dataPath = datos.path;
+            Type dataType = datos.type;
+            String dataPropertyName = datos.propertyName;
+            Debug.Log("Cuantas curvas quedan: " +animacionLeida.Count);
+            foreach (AnimationClipCurveData data in animacionLeida)
             {
-                String[] datosPath = datos.path.Split('/');
+               
                 String[] subString = data.path.Split(':');
-                String dataPath = datos.path;
-                Type dataType = datos.type;
-                String dataPropertyName = datos.propertyName;
+                
                 Debug.Log("DATOS: "+datosPath[datosPath.Length-1]+" data: "+subString[0]);
                 if (datosPath[datosPath.Length - 1].Equals(subString[0]) && dataPropertyName.Contains("Rotation"))
                 {//si coincide entonces setear la curva, porqué no la setea bien 
-                    
+
+                    Debug.Log("Curva copiada: " + data);
+                 
                     animationClipEmpty.SetCurve(dataPath, dataType, dataPropertyName, data.curve);
+                  //  animacionLeida.Remove(data);
+                    break;
                  
                 }
             }

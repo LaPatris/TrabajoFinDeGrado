@@ -2755,7 +2755,6 @@ MonoBehaviour:
   animationClipEmpty: {fileID: 7400000, guid: ef35d79b59a819745b77d2cf268bf8a3, type: 2}
   aniationSelf: {fileID: -623603649343465320, guid: 6498e786462289a489cbc27ee5baa292,
     type: 3}
-  animacionTEMPORAL: {fileID: 7400000, guid: 4016e7c232750794e91356a04228a5ea, type: 2}
   changeAnim: 0
   currentState: {fileID: 0}
   newTransition: {fileID: 0}
