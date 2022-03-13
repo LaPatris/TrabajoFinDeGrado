@@ -220,7 +220,6 @@ public class OrganizarDatosFile
             if (curv.inicializarBezier(hueso.Value, timesPerFrame[0], timesPerFrame[timesPerFrame.Count - 1], personaje))
             //if (curv.inicializarBezier(hueso.Value, 0, 1, personaje))
             {
-                Debug.Log("estoy en el hueso ");
                 curv.Ready(hueso.Key, hueso.Value, timesPerFrame);
             }
                 if (curv.curveDone) curv.SetNull();

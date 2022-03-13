@@ -77,7 +77,6 @@ public class TxtManager : MonoBehaviour
                 elegido.active = false;
                 // si doy a copiar guardo la animacion
                 //selectedAnimationClip = animationClips[index];
-                Debug.Log("indice " + index);
                 Debug.Log("La aniamcion seleccionada es  : " + totalAnimaciomacionesNombres[index]);
                 //llamo a la accion de cambiar de estado
                 //copiar la animación por defecto en otra animación 
