@@ -55,11 +55,12 @@ public class CopyAnim1 : MonoBehaviour
 
         }*/
     }
-    private void SetNewCurve(float temp, float def, AnimationCurve auxAnim)
+    //private void SetNewCurve(float temp, float def, AnimationCurve auxAnim)
+    private void SetNewCurve(float temp, Vector3 def, AnimationCurve auxAnim)
     {
-        auxAnim.AddKey(temp, def);
+        auxAnim.AddKey(temp, def.magnitude);
      }
-    private void setearCurve(string nombre, AnimationCurve auxAnim)
+   /* private void setearCurve(string nombre, AnimationCurve auxAnim)
     {
         //copia la animación de 
         animacionFutura = AnimationUtility.GetAllCurves(animationSelf, true).ToList();
@@ -72,36 +73,100 @@ public class CopyAnim1 : MonoBehaviour
 
                // animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
                
-                animationClipEmpty.SetCurve(datos.path, datos.type, /*datos.propertyName*/"a", auxAnim);
+                animationClipEmpty.SetCurve(datos.path, datos.type, /*datos.propertyName"a", auxAnim);
 
                 break;
 
             }
         }
-    }
+    }*/
     //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
-    public void ChangeToMyAnim(AnimationClip animacionNueva, float selectedTime)
+    public void ChangeToMyAnim(Dictionary<String,List<Vector3>>totalBody, float selectedTime)
     {
-       //gardamos todas las animaciones en animacion leida
-        animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
+
+
+        int i = 0;
+        float timeXFrame = 0;
+        float timeD = 0;
+        Quaternion antiguoRotHips = myHips.rotation;
+        animacionFutura = AnimationUtility.GetAllCurves(animationSelf, true).ToList();
+        foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
+        {       if(i==0)
+                 timeXFrame = selectedTime / hueso.Value.Count;
+            i++;//por cada curva dentro de la animación 
+            //creamos una animación de curva auxiliar que va del 0 0 al 1,0 
+            AnimationCurve auxAnim = AnimationCurve.EaseInOut(0, 0, 1, 0);
+            auxAnim.preWrapMode = WrapMode.Loop;
+            //Debug.Log("La curva:" + data.path);
+            foreach (AnimationClipCurveData datos in animacionFutura)
+            {
+                String[] datosPath = datos.path.Split('/');
+                if (datosPath[datosPath.Length - 1].Equals(hueso.Key))
+                {//copiamos el nombre, el property name y la animación ponemos la que no sllega por parametro
+                    foreach (Vector3 vectores in hueso.Value)
+                    {//añadimos el valor en nuestra animacion auxiliar
+                        var binding = EditorCurveBinding.FloatCurve(datos.path, typeof(Transform), datos.propertyName);
+                        AnimationCurve curve = AnimationUtility.GetEditorCurve(animationClipEmpty, binding);
+                        Keyframe key = curve.keys[0];
+                        key.value = 103f;
+                        curve.MoveKey(0, key);
+                        AnimationUtility.SetEditorCurve(animationClipEmpty, binding, curve);
+                        timeD += timeXFrame;
+                    }
+                   
+                    animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
+
+                    break;
+
+                }
+            }
+            timeD = 0;
+            
+        }
+       
+    }
+ /*   public void ChangeToMyAnim(/*AnimationClip animacionNuevaDictionary<String, List<Vector3>> totalBody, float selectedTime)
+    {
+        //gardamos todas las animaciones en animacion leida
+        //animacionLeida = AnimationUtility.GetAllCurves(animacionNueva, true).ToList();
         //calculamos el tiempo por frame en función del tiempo seleccionado
         float timeXFrame = selectedTime / animacionLeida[0].curve.keys.Length;
         //seteamos la cadera por defecto
         //animHips = new Vector3(-233.588f, 66.7051f, 935.858f);
         //calculamos la distancia entre la cadeta de la animacion que leemos y la de nuestro objeto
         //float distancia = Vector3.Distance(animHips, myHips.position);
-        foreach (AnimationClipCurveData data in animacionLeida)
+        //foreach (AnimationClipCurveData data in animacionLeida)
+
+        animacionFutura = AnimationUtility.GetAllCurves(animationSelf, true).ToList();
+        foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
         {//por cada curva dentro de la animación 
             //creamos una animación de curva auxiliar que va del 0 0 al 1,0 
             AnimationCurve auxAnim = AnimationCurve.EaseInOut(0, 0, 1, 0);
             auxAnim.preWrapMode = WrapMode.Loop;
             Debug.Log("vamos a evaluar cada uno de los datos que se encuentran en la animación leida");
-            Debug.Log("La curva:" + data.path);
+            //Debug.Log("La curva:" + data.path);
+            foreach (AnimationClipCurveData datos in animacionFutura)
+            {
+                String[] datosPath = datos.path.Split('/');
+                if (datosPath[datosPath.Length - 1].Equals(hueso.Key))
+                {//copiamos el nombre, el property name y la animación ponemos la que no sllega por parametro
+                 //parece que está normalizado por qué???
+                    foreach (Vector3 vectores in hueso.Value)
+                    {//añadimos el valor en nuestra animacion auxiliar
+                        SetNewCurve(timeXFrame, vectores, auxAnim);
+                    }
+                    // animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
 
-           /* foreach (Keyframe key in data.curve.keys)
-            {//añadimos el valor en nuestra animacion auxiliar
-                SetNewCurve(key.time, key.value, auxAnim);
-            }*/
+                    animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
+
+                    break;
+
+                }
+            }
+            /* foreach (Keyframe key in data.curve.keys)
+             {//añadimos el valor en nuestra animacion auxiliar
+                 SetNewCurve(key.time, key.value, auxAnim);
+             }
             //esto funciona, el problema es que nos pone las curvas al final de las cosas 
             String[] subString = data.path.Split(':');
             String nombreCurva = subString[0];
@@ -109,8 +174,8 @@ public class CopyAnim1 : MonoBehaviour
             setearCurve(nombreCurva, data.curve);
             auxAnim = null;
         }
-       
-    }
+
+    }*/
     public void CreateNewStateAndConexion()
     {
 
