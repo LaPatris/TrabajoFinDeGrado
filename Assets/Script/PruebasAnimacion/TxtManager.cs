@@ -81,7 +81,8 @@ public class TxtManager : MonoBehaviour
                 //llamo a la accion de cambiar de estado
                 //copiar la animación por defecto en otra animación 
                 copyAnimacion.ReadMyAnimAndChange();
-                copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index], selectedTime);
+                //copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index], selectedTime);
+                copyAnimacion.ChangeToMyAnim(orgDatos.totalBody, selectedTime);
 
                 if (!copyAnimacion.creadoStado)
                 { //si no habia estado creado lo creo

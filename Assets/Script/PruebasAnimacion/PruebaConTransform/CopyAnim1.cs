@@ -42,16 +42,16 @@ public class CopyAnim1 : MonoBehaviour
 
     //copiamos nuestra animacion en la futura
     public void ReadMyAnimAndChange()
-    {
+    {/*
         //sObject.Instantiate(aniationSelf);
         // SE VA COPIAR LA ANIMACIÓN DEL PERSONAJE EN VACIO
-       /* animacionFutura = AnimationUtility.GetAllCurves(aniationSelf, true).ToList();
+       animacionFutura = AnimationUtility.GetAllCurves(animationSelf, true).ToList();
         AnimationCurve auxAnim = AnimationCurve.EaseInOut(0, 0, 0, 0);
         auxAnim.preWrapMode = WrapMode.Loop;
         //aniationSelf.ClearCurves();
         foreach (AnimationClipCurveData data in animacionFutura)
         {
-            animationClipEmpty.SetCurve(data.path.ToString(), data.type, data.propertyName, auxAnim);
+            animationClipEmpty.SetCurve(data.path.ToString(), data.type, data.propertyName, data.curve);
 
         }*/
     }
@@ -83,8 +83,6 @@ public class CopyAnim1 : MonoBehaviour
     //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
     public void ChangeToMyAnim(Dictionary<String,List<Vector3>>totalBody, float selectedTime)
     {
-
-
         int i = 0;
         float timeXFrame = 0;
         float timeD = 0;
@@ -95,26 +93,37 @@ public class CopyAnim1 : MonoBehaviour
                  timeXFrame = selectedTime / hueso.Value.Count;
             i++;//por cada curva dentro de la animación 
             //creamos una animación de curva auxiliar que va del 0 0 al 1,0 
-            AnimationCurve auxAnim = AnimationCurve.EaseInOut(0, 0, 1, 0);
-            auxAnim.preWrapMode = WrapMode.Loop;
+         
             //Debug.Log("La curva:" + data.path);
             foreach (AnimationClipCurveData datos in animacionFutura)
             {
                 String[] datosPath = datos.path.Split('/');
                 if (datosPath[datosPath.Length - 1].Equals(hueso.Key))
                 {//copiamos el nombre, el property name y la animación ponemos la que no sllega por parametro
-                    foreach (Vector3 vectores in hueso.Value)
+                    var binding = EditorCurveBinding.FloatCurve(datos.path, typeof(Transform), datos.propertyName);
+                    AnimationCurve curve = AnimationUtility.GetEditorCurve(animationClipEmpty, binding);
+                    curve = AnimationCurve.EaseInOut(0, 0, 1, 0);
+                    curve.preWrapMode = WrapMode.Loop;
+                    for (int pos=0; pos<hueso.Value.Count;pos++)
+                   // foreach (Vector3 vectores in hueso.Value)
                     {//añadimos el valor en nuestra animacion auxiliar
-                        var binding = EditorCurveBinding.FloatCurve(datos.path, typeof(Transform), datos.propertyName);
-                        AnimationCurve curve = AnimationUtility.GetEditorCurve(animationClipEmpty, binding);
+                       /* Keyframe key = curve.keys[0];
+                        
+                        key.value = 103f;*/
                         Keyframe key = curve.keys[0];
-                        key.value = 103f;
-                        curve.MoveKey(0, key);
-                        AnimationUtility.SetEditorCurve(animationClipEmpty, binding, curve);
+                        Quaternion nuevaRot = new Quaternion(hueso.Value[pos].x, hueso.Value[pos].y, hueso.Value[pos].z,0);
+           
+                        key.value =nuevaRot.eulerAngles.magnitude;
+                        key.time = timeD;
+                        curve.AddKey(key);
+                        //sino usar el remplace
                         timeD += timeXFrame;
                     }
-                   
-                    animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
+
+                    AnimationUtility.SetEditorCurve(animationClipEmpty, binding, curve);
+
+                    curve = null;
+                    //animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
 
                     break;
 
@@ -123,6 +132,7 @@ public class CopyAnim1 : MonoBehaviour
             timeD = 0;
             
         }
+       
        
     }
  /*   public void ChangeToMyAnim(/*AnimationClip animacionNuevaDictionary<String, List<Vector3>> totalBody, float selectedTime)

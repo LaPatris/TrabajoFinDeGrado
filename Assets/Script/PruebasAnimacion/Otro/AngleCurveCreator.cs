@@ -109,7 +109,7 @@ public class AngleCurveCreator : MonoBehaviour
             j+=1;
         }
         //EditorCurveBinding.FloatCurve(hueso.ToString(), transform.GetType(), "rotation");
-                animacionBezierHueso.SetCurve(hueso.ToString() + ": Position ", transform.rotation.GetType(), newTotalCurve.length.ToString(), newTotalCurve);
+                animacionBezierHueso.SetCurve(hueso.ToString() + ": Position ", transform.GetType(), newTotalCurve.length.ToString(), newTotalCurve);
               /*animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.x ", transform.GetType(), newCurveX.length.ToString(), newCurveX);
               animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.y ", transform.GetType(), newCurveY.length.ToString(), newCurveY);
               animacionBezierHueso.SetCurve(hueso.ToString() + ": Rotation.z", transform.GetType(), newCurveZ.length.ToString(), newCurveZ);

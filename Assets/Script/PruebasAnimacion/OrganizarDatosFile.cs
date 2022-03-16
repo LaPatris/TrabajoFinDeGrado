@@ -47,7 +47,7 @@ public class OrganizarDatosFile
     [SerializeField] List<Vector3> dedosD = new List<Vector3>();
     #endregion
     //total
-    [SerializeField]  Dictionary<string, List<Vector3> > totalBody = new Dictionary<string, List<Vector3>>();
+    [SerializeField] public Dictionary<string, List<Vector3> > totalBody = new Dictionary<string, List<Vector3>>();
     //frames
     [SerializeField] List<float> timesPerFrame = new List<float>();
     [SerializeField] public bool finalizado = false;
