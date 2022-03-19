@@ -184,31 +184,32 @@ public class OrganizarDatosFile
       public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
     {
         totalBody.Add("Hips", cadera);
-        totalBody.Add("RightUpLeg", caderaD);
-        totalBody.Add("RightLeg", rodillaD);
+        totalBody.Add("RightUpperLeg", caderaD);
+        totalBody.Add("RightLowerLeg", rodillaD);
         totalBody.Add("RightFoot", tobilloD);
-        totalBody.Add("RightToe", empeineD);
+        totalBody.Add("RightToes", empeineD);
         totalBody.Add("RightEnd", puntaD);
-        totalBody.Add("LeftUpLeg", caderaI);
-        totalBody.Add("LeftLeg", rodillaI);
+        totalBody.Add("LeftUpperLeg", caderaI);
+        totalBody.Add("LeftLowerLeg", rodillaI);
         totalBody.Add("LeftFoot", tobilloI);
-        totalBody.Add("LeftToe", empeineI);
+        totalBody.Add("LeftToes", empeineI);
         totalBody.Add("LeftEnd", puntaI);
-        totalBody.Add("Spine1", pecho);
-        totalBody.Add("Spine2", cuellobajo);
+        totalBody.Add("Spine", pecho);
+        totalBody.Add("Chest", cuellobajo);
         totalBody.Add("Neck", barbilla);
         totalBody.Add("Head", cabeza);
         totalBody.Add("LeftShoulder", hombroI);
-        totalBody.Add("LeftArm", codoI);
-        totalBody.Add("LeftForeArm", muñecaI);
+        totalBody.Add("LeftUpperArm", codoI);
+        totalBody.Add("LeftLowerArm", muñecaI);
         totalBody.Add("LeftHand", pulgarI);
         totalBody.Add("LeftHandIndex1", dedosI);
         totalBody.Add("RightShoulder", hombroD);
-        totalBody.Add("RightArm", codoD);
-        totalBody.Add("RightForeArm", muñecaD);
+        totalBody.Add("RightUpperArm", codoD);
+        totalBody.Add("RightLowerArm", muñecaD);
         totalBody.Add("RightHand", pulgarD);
         totalBody.Add("RightHandIndex1", dedosD);
-        callBezierCurve( curv, personaje);
+        finalizado = true;
+        // callBezierCurve( curv, personaje);
     }
         
     public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)

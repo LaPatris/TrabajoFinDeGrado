@@ -1160,7 +1160,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 1
+          m_FloatArgument: 10
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -1637,6 +1637,7 @@ MonoBehaviour:
   finalizado: 0
   personaje: {fileID: 2079259919}
   copyAnimacion: {fileID: 2079259920}
+  copyA: {fileID: 0}
   elegido: {fileID: 341426873}
   selectedTime: 0
   totalAnimaciomaciones: []
@@ -2840,7 +2841,7 @@ Animator:
   m_GameObject: {fileID: 2079259919}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6498e786462289a489cbc27ee5baa292, type: 3}
-  m_Controller: {fileID: 9100000, guid: 0302ced8d8496c14482d97c0317ce46e, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2849,6 +2850,37 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!4 &2079259922 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6498e786462289a489cbc27ee5baa292,
+    type: 3}
+  m_PrefabInstance: {fileID: 2079259918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2079259923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079259919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77c99274e5cefd4daf72a22f34d9fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  srcModel: {fileID: 2079259922}
+  selfJoints: []
+  srcJoints: []
+  srcInitRotation: {x: 0, y: 0, z: 0, w: 0}
+  selfInitRotation: {x: 0, y: 0, z: 0, w: 0}
+  srcJointsInitRotation: []
+  selfJointsInitRotation: []
+  srcRoot: {fileID: 832181187}
+  selfRoot: {fileID: 0}
+  srcInitPosition: {x: 0, y: 0, z: 0}
+  selfInitPosition: {x: 0, y: 0, z: 0}
+  ejecutar: 0
+  posicion: 0
 --- !u!1 &2104993423
 GameObject:
   m_ObjectHideFlags: 0

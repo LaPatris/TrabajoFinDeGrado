@@ -49,7 +49,6 @@ public class CopyAnim : MonoBehaviour
     [SerializeField] String path;
     [SerializeField] Type myType;
 
-    [SerializeField] RunTimeChangePosition changePosition;
 
     private AnimationClip selectedAnimationClip;//para guardara la animacion seleccionada
     private TxtManager txtmanager;

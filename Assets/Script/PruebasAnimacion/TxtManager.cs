@@ -17,6 +17,7 @@ public class TxtManager : MonoBehaviour
     [SerializeField] public bool finalizado = false;
     [SerializeField] GameObject personaje;
     [SerializeField] CopyAnim1 copyAnimacion;
+    [SerializeField] animacion copyA;
 
     [SerializeField] GameObject elegido;
 
@@ -33,6 +34,7 @@ public class TxtManager : MonoBehaviour
         orgDatos = new OrganizarDatosFile();
         personaje = GameObject.Find("P4DEF");
         copyAnimacion = personaje.GetComponent<CopyAnim1>();
+        copyA = personaje.GetComponent<animacion>();
         curva = this.gameObject.GetComponent<AngleCurveCreator>();
         orgDatos.SetListBones(myTxt, curva, personaje);
         //orgDatos totalbody es un dicchionario de nombre de hueso y lista de transforms de ese hueso
@@ -40,7 +42,7 @@ public class TxtManager : MonoBehaviour
         if (orgDatos.finalizado)
         {
             //totalAnimaciomaciones.Add(curva.animacionFinal);
-            totalAnimaciomaciones.Add(curva.animacionBezierHueso);
+//totalAnimaciomaciones.Add(curva.animacionBezierHueso);
             totalAnimaciomacionesNombres.Add(myTxt.name);
             finalizado = orgDatos.finalizado;
         }
@@ -80,16 +82,18 @@ public class TxtManager : MonoBehaviour
                 Debug.Log("La aniamcion seleccionada es  : " + totalAnimaciomacionesNombres[index]);
                 //llamo a la accion de cambiar de estado
                 //copiar la animación por defecto en otra animación 
-                copyAnimacion.ReadMyAnimAndChange();
+                //copyAnimacion.ReadMyAnimAndChange();
                 //copyAnimacion.ChangeToMyAnim(totalAnimaciomaciones[index], selectedTime);
-                copyAnimacion.ChangeToMyAnim(orgDatos.totalBody, selectedTime);
+                //copyAnimacion.ChangeToMyAnim(orgDatos.totalBody, selectedTime);
+                copyA.initAll(orgDatos.totalBody);
 
-                if (!copyAnimacion.creadoStado)
+                /*if (!copyAnimacion.creadoStado)
                 { //si no habia estado creado lo creo
                     copyAnimacion.CreateNewStateAndConexion();
                 }
                 //cambio el valor del estado
-                copyAnimacion.ChangeStateValue();
+                copyAnimacion.ChangeStateValue();*/
+
             }
             else
             {

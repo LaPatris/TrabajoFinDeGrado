@@ -105,25 +105,30 @@ public class CopyAnim1 : MonoBehaviour
                     curve = AnimationCurve.EaseInOut(0, 0, 1, 0);
                     curve.preWrapMode = WrapMode.Loop;
                     for (int pos=0; pos<hueso.Value.Count;pos++)
-                   // foreach (Vector3 vectores in hueso.Value)
-                    {//añadimos el valor en nuestra animacion auxiliar
-                       /* Keyframe key = curve.keys[0];
-                        
-                        key.value = 103f;*/
-                        Keyframe key = curve.keys[0];
-                        Quaternion nuevaRot = new Quaternion(hueso.Value[pos].x, hueso.Value[pos].y, hueso.Value[pos].z,0);
-           
-                        key.value =nuevaRot.eulerAngles.magnitude;
+                    {
+                        Keyframe key = curve.keys[pos];
+                        Quaternion currentRotation;
+                        float x=  Vector3.Angle(hueso.Value[pos], Vector3.left);
+
+                        float y = Vector3.Angle(hueso.Value[pos], Vector3.up);
+
+                        float z = Vector3.Angle(hueso.Value[pos], Vector3.forward);
+                        Vector3  currentEulerAngles = new Vector3(x, y, z);
+
+
+                        Quaternion nuevaRot = new Quaternion();
+                        nuevaRot.eulerAngles = currentEulerAngles;
+                        Debug.Log("rotx "+nuevaRot.eulerAngles.x+" roty "+ nuevaRot.eulerAngles.y+" rotz "+ nuevaRot.eulerAngles.z);
+                        myHips.rotation = nuevaRot;
+                        key.value =myHips.eulerAngles.magnitude;
                         key.time = timeD;
                         curve.AddKey(key);
-                        //sino usar el remplace
                         timeD += timeXFrame;
                     }
 
                     AnimationUtility.SetEditorCurve(animationClipEmpty, binding, curve);
 
                     curve = null;
-                    //animationClipEmpty.SetCurve(datos.path, datos.type, datos.propertyName, auxAnim);
 
                     break;
 
