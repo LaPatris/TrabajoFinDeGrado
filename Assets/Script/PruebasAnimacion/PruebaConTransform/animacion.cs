@@ -104,12 +104,13 @@ public class animacion : MonoBehaviour
         selfInitPosition = selfRoot.localPosition;
     }
     //se tiene que llamar desde fuera para inicializar los valores
-    private Quaternion calculateRotation(Vector3 vector)
+    private Quaternion calculateRotation(Vector3 vector1, Vector3 vector2)
     {
-        float x = Vector3.Angle(vector, Vector3.left);
-        float y = Vector3.Angle(vector, Vector3.up);
-        float z = Vector3.Angle(vector, Vector3.forward);
+        float x = Vector3.Angle(vector1, Vector3.left);
+        float y = Vector3.Angle(vector1, Vector3.up);
+        float z = Vector3.Angle(vector1, Vector3.forward);
         Vector3 aux = new Vector3(x, y, z).normalized;
+
         return new Quaternion(aux.x, aux.y, aux.z, 1);
     }
     public void initAll(Dictionary<String, List<Vector3>> totalBody)
@@ -119,7 +120,8 @@ public class animacion : MonoBehaviour
         totalBody.TryGetValue("Hips",out temp);
         Vector3 newPosition = new Vector3(temp[0].x, temp[0].y, 0);
         srcRoot.position = newPosition;
-        srcInitRotation = calculateRotation(temp[0]);
+        srcRoot.rotation = calculateRotation(temp[0], new Vector3(0f,0f,0f));
+        srcInitRotation = srcRoot.localRotation;
         srcInitPosition = srcRoot.localPosition;
         SetJointsInitRotation( );
         SetInitPosition();
@@ -133,12 +135,18 @@ public class animacion : MonoBehaviour
                 if (hueso.Key.Equals(nombre[0]))
                 {
                     //seleccionamos la rotación inicial de cada uno de los huesos
-                    srcJointsInitRotation.Add(calculateRotation(hueso.Value[0]));
+                    srcJointsInitRotation.Add(calculateRotation(hueso.Value[0], new Vector3(0f, 0f, 0f)));
+                    int auxiliarContador = 0;
                     foreach (Vector3 vec in hueso.Value)
                     {
                         //leemos todo y lo metemos en auxlist
-                        auxList.Add(calculateRotation(vec));
+                        if(auxiliarContador==0)
+                        auxList.Add(calculateRotation(vec, new Vector3(0f, 0f, 0f)));
+                        else
+                           auxList.Add(calculateRotation(vec, hueso.Value[auxiliarContador]));
+                        auxiliarContador++;
                     }
+
                     //se lo metemos a total rotation
                     totalRotation.Add(nombre[0], auxList);
                     
@@ -169,12 +177,17 @@ public class animacion : MonoBehaviour
                 {
                     if (posicion == hueso.Value.Count) posicion = 0;
                     String[] nombre = selfJoints[i].ToString().Split(' ');
-                    if (nombre[0].Equals(hueso.Key))
+                    if (nombre[0].Equals(hueso.Key)&& !nombre[0].Equals("Hips"))
                     {
-                        selfJoints[i].rotation = selfInitRotation;// setea la rotacion inicial del destino
-                        selfJoints[i].rotation *= (hueso.Value[posicion]);// la multiplica por la rotacion del hueso del orgen
+                        Debug.Log(nombre[0]);
+                       selfJoints[i].rotation = selfInitRotation;// setea la rotacion inicial del destino
+                       // selfJoints[i].rotation *= (hueso.Value[posicion]);// la multiplica por la rotacion del hueso del orgen
+                        
+                            selfJoints[i].rotation *= (srcJointsInitRotation[j] * Quaternion.Inverse(hueso.Value[posicion]));
+                          
                         selfJoints[i].rotation *= selfJointsInitRotation[j];// y la multiplica por la rotacion inicial del hueso destino}
-                      
+                          
+                        
                     }
                 }
                 j++;
@@ -182,6 +195,7 @@ public class animacion : MonoBehaviour
         }
     }
 
+   
 
     private void SetPosition()
     {// setea la nueva posicion( posicion root local- la inicial del origen)+ la inicial del destino
