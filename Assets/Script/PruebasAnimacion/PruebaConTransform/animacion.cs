@@ -177,7 +177,7 @@ public class animacion : MonoBehaviour
                 {
                     if (posicion == hueso.Value.Count) posicion = 0;
                     String[] nombre = selfJoints[i].ToString().Split(' ');
-                    if (nombre[0].Equals(hueso.Key)&& !nombre[0].Equals("Hips"))
+                    if (nombre[0].Equals(hueso.Key))
                     {
                         Debug.Log(nombre[0]);
                        selfJoints[i].rotation = selfInitRotation;// setea la rotacion inicial del destino
