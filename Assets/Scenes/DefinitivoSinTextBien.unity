@@ -1686,12 +1686,6 @@ MonoBehaviour:
   curveDone: 0
   tiempo: 0
   finalizado: 0
---- !u!4 &1152806562 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3742407835892290726, guid: 6498e786462289a489cbc27ee5baa292,
-    type: 3}
-  m_PrefabInstance: {fileID: 2079259918}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1352547708 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e96495142d4b6b34c8d910d7bc76db39,
@@ -2891,7 +2885,7 @@ MonoBehaviour:
   animatorController: {fileID: 9100000, guid: 0302ced8d8496c14482d97c0317ce46e, type: 2}
   defaultState: {fileID: 0}
   creadoStado: 0
-  myHips: {fileID: 1152806562}
+  myHips: {fileID: 0}
   misHuesos:
   - {fileID: 0}
   - {fileID: 0}

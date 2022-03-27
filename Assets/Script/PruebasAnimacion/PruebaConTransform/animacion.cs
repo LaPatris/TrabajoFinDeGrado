@@ -14,7 +14,6 @@ public class animacion : MonoBehaviour
     Animator selfAnimator;
     //listas con los joins tanto del origen como del destino
     [SerializeField] List<Transform> selfJoints = new List<Transform>();
-    List<Quaternion> auxList = new List<Quaternion>();
     [SerializeField] List<Transform> srcJoints = new List<Transform>();
     [SerializeField] Dictionary<String, List<Quaternion>> totalRotation = new Dictionary<string, List<Quaternion>>();
 
@@ -125,28 +124,34 @@ public class animacion : MonoBehaviour
         SetJointsInitRotation( );
         SetInitPosition();
         //initRotation and initPosition
-        for (int i = 0; i < bonesToUse.Length; i++)
+        for (int i = 0; i < srcJoints.Count; i++)
         {// poniendo antes bonesToUse tendrá su organización 
 
-            String[] nombre = bonesToUse[i].ToString().Split(' ');
-            foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
-            {          
-                if (hueso.Key.Equals(nombre[0]))
+            if (srcJoints[i] != null)
+            {
+                String[] nombre = selfJoints[i].ToString().Split(' ');
+                foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
                 {
-                    //seleccionamos la rotación inicial de cada uno de los huesos
-                    srcJointsInitRotation.Add(calculateRotation(hueso.Value[0]));
-                    foreach (Vector3 vec in hueso.Value)
-                    {
-                        auxList.Add(calculateRotation(vec));
-                    }
+                    //mete todo bien
 
-                    //se lo metemos a total rotation
-                    totalRotation.Add(nombre[0], auxList);
-                    
-                } 
-            }                    
+                    if (hueso.Key.Equals(nombre[0]))
+                    {
+                        List<Quaternion> auxList = new List<Quaternion>();
+
+                        //seleccionamos la rotación inicial de cada uno de los huesos
+                        srcJointsInitRotation.Add(calculateRotation(hueso.Value[0]));
+                        foreach (Vector3 vec in hueso.Value)
+                        {
+                            auxList.Add(calculateRotation(vec));
+                        }
+
+                        totalRotation.Add(nombre[0], auxList);
+                        break;
+                    }
+                }
+            }
         }
-        ejecutar= true;
+        ejecutar = true;
     }
     void LateUpdate()
     {
@@ -171,34 +176,40 @@ public class animacion : MonoBehaviour
         int j = 0;
         terminado = true;
        for (int i = 0; i < selfJoints.Count; i++)
-         {    //setea todas las futuras rotaciones
+         {   
             if (selfJoints[i] != null)
             {
                 String[] nombre = selfJoints[i].ToString().Split(' ');
-            
+               
                 List<Quaternion> aux = new List<Quaternion>();
-                if (!nombre[0].Equals("Hips") && totalRotation.TryGetValue(nombre[0], out aux))
+
+              // Debug.Log("estoy en :" + selfJoints[i]+ "tiene en lista"+ totalRotation[selfJoints[i].ToString()].ToString());
+                if (totalRotation.TryGetValue(nombre[0], out aux))
                 {
                     if (posicion == totalRotation[nombre[0]].Count) posicion = 0;
 
                     if (totalRotation[nombre[0]].Count > 0)
                     {
-                        Debug.Log("estoy en :" + nombre[0]);
+                        Debug.Log("entro en :" + nombre[0]);
                         selfJoints[i].rotation = selfInitRotation;// setea la rotacion inicial del destino
                                                                   // selfJoints[i].rotation *= (hueso.Value[posicion]);// la multiplica por la rotacion del hueso del orgen
 
                         selfJoints[i].rotation *= (srcJointsInitRotation[j] * Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
 
                         selfJoints[i].rotation *= selfJointsInitRotation[j];// y la multiplica por la rotacion inicial del hueso destino}
-
-
+                       
                     }
-                    
+
                 }
                 j++;
             }
+
+            if (i + 1 >= selfJoints.Count)
+            { terminado = false; 
+            }
+
         }
-        terminado = false;
+       
        
 
     }

@@ -184,30 +184,30 @@ public class OrganizarDatosFile
       public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
     {
         totalBody.Add("Hips", cadera);
-        totalBody.Add("RightUpperLeg", caderaD);
-        totalBody.Add("RightLowerLeg", rodillaD);
+        totalBody.Add("RightUpLeg", caderaD);
+        totalBody.Add("RightLeg", rodillaD);
         totalBody.Add("RightFoot", tobilloD);
-        totalBody.Add("RightToes", empeineD);
+        totalBody.Add("RightToeBase", empeineD);
         totalBody.Add("RightEnd", puntaD);
-        totalBody.Add("LeftUpperLeg", caderaI);
-        totalBody.Add("LeftLowerLeg", rodillaI);
+        totalBody.Add("LeftUpLeg", caderaI);
+        totalBody.Add("LeftLeg", rodillaI);
         totalBody.Add("LeftFoot", tobilloI);
-        totalBody.Add("LeftToes", empeineI);
+        totalBody.Add("LeftToeBase", empeineI);
         totalBody.Add("LeftEnd", puntaI);
         totalBody.Add("Spine", pecho);
         totalBody.Add("Chest", cuellobajo);
         totalBody.Add("Neck", barbilla);
         totalBody.Add("Head", cabeza);
         totalBody.Add("LeftShoulder", hombroI);
-        totalBody.Add("LeftUpperArm", codoI);
-        totalBody.Add("LeftLowerArm", muñecaI);
+        totalBody.Add("LeftArm", codoI);
+        totalBody.Add("LeftForeArm", muñecaI);
         totalBody.Add("LeftHand", pulgarI);
-        totalBody.Add("LeftHandIndex1", dedosI);
+        totalBody.Add("LeftHandThumb1", dedosI);
         totalBody.Add("RightShoulder", hombroD);
-        totalBody.Add("RightUpperArm", codoD);
-        totalBody.Add("RightLowerArm", muñecaD);
+        totalBody.Add("RightArm", codoD);
+        totalBody.Add("RightForeArm", muñecaD);
         totalBody.Add("RightHand", pulgarD);
-        totalBody.Add("RightHandIndex1", dedosD);
+        totalBody.Add("RightHandThumb1", dedosD);
         finalizado = true;
         // callBezierCurve( curv, personaje);
     }
