@@ -63,13 +63,16 @@ public class ConvertidorFichero : MonoBehaviour
             File.Create(myPath);
           string[] lineas = File.ReadAllLines(firstFilePath);
             int numLineas = 3200;
+            bones = 1;
            for (int linea = 0; linea < lineas.Length; linea++)
              {
-                            bones++;
+                           
                 if (bones == 33) {
                     bones = 1;
                     actualFrame += 1;
                         };
+                //evitamos repetidos
+                //cabeza superior, cuello bajo, muñecas, cadera,dedos
                 if (bones != 12 && bones != 17 && bones != 21 && bones != 24 && bones != 25 && bones != 29 && bones != 32)
                 {
                    
@@ -79,6 +82,7 @@ public class ConvertidorFichero : MonoBehaviour
                 {
                     lineas[linea] = "";
                 }
+                bones++;
              }
         File.WriteAllLines(myPath, lineas.Where(l => l != "").ToList());
             

@@ -58,8 +58,9 @@ public class OrganizarDatosFile
         string pathTxt = AssetDatabase.GetAssetPath(TXT);
         StreamReader myTXT = new StreamReader(pathTxt);
         string[] auxValue;
+        bool aux = true;
         int i = 0;
-            //while (/*!myTXT.EndOfStream*/i<2)
+        float z = 0f;            //while (/*!myTXT.EndOfStream*/i<2)
             while (!myTXT.EndOfStream)
             {
                 string inp_ln = myTXT.ReadLine();
@@ -72,9 +73,16 @@ public class OrganizarDatosFile
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
             
             float x = float.Parse(auxValue[1], CultureInfo.InvariantCulture);
-            float y = float.Parse(auxValue[2], CultureInfo.InvariantCulture);
-            float z = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
-            Vector3 valores = new Vector3(x, y, z);
+            //vamos a probar cambio y son z y z
+           //asi evitamos qeu anda hacia delantae, es decir se quedará en su sitio
+           // if (aux)
+           // {
+                z= float.Parse(auxValue[2], CultureInfo.InvariantCulture);
+                aux = false;
+           // }
+           
+            float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
+            Vector3 valores = new Vector3(x,  y,z);
             switch (hueso)
             {
                 case 1:
@@ -116,10 +124,10 @@ public class OrganizarDatosFile
                 case 14:
                     cuellobajo.Add(valores);
                     break;
-                case 15:
+                case 16:
                     barbilla.Add(valores);
                     break;
-                case 16:
+                case 15:
                     cabeza.Add(valores);
                     break;
                 case 18:
@@ -167,7 +175,7 @@ public class OrganizarDatosFile
             }
 
         myTXT.Close();
-        calcularTiempo();
+      //  calcularTiempo();
         SetDiccionario( curv, personaje);
     }
     public void calcularTiempo()

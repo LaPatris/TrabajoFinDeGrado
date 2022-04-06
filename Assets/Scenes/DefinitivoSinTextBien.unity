@@ -609,6 +609,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: personaje1Baile
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9e38f0d53af7e964786c8c535ae81b88,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3103283877742750325, guid: 9e38f0d53af7e964786c8c535ae81b88,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1007,7 +1012,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2d0195a306758e44db5bbb8e1f48c183,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3103283877742750325, guid: 2d0195a306758e44db5bbb8e1f48c183,
         type: 3}
@@ -2050,6 +2055,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: personaje3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7aafe549d598f2e4d8198b0580012dfa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7aafe549d598f2e4d8198b0580012dfa, type: 3}
