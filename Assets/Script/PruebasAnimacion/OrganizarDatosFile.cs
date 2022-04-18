@@ -82,6 +82,7 @@ public class OrganizarDatosFile
            // }
            
             float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
+            //Vector3 valores = new Vector3(x,  y,z);
             Vector3 valores = new Vector3(x,  y,z);
             switch (hueso)
             {
@@ -203,8 +204,8 @@ public class OrganizarDatosFile
         totalBody.Add("LeftToeBase", empeineI);
         totalBody.Add("LeftEnd", puntaI);
         totalBody.Add("Spine", pecho);
-        totalBody.Add("Chest", cuellobajo);
-        totalBody.Add("Neck", barbilla);
+        totalBody.Add("Chest", pecho);
+        totalBody.Add("Neck", cuellobajo);
         totalBody.Add("Head", cabeza);
         totalBody.Add("LeftShoulder", hombroI);
         totalBody.Add("LeftArm", codoI);
