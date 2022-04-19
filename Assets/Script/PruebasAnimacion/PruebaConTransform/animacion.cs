@@ -121,6 +121,7 @@ public class animacion : MonoBehaviour
     { 
         //inicializamos los huesos
         InitBones();
+
         Vector3 newPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x, totalBody["Hips"][0].y, totalBody["Hips"][0].z);
         srcRoot.localPosition = newPosition;
         /*srcRoot.rotation = calculateRotation(totalBody["Hips"][0]);
@@ -134,6 +135,7 @@ public class animacion : MonoBehaviour
         float scalatotal = totalBody["Hips"][0].y;
         float scala = scalatotal- scalaSelfJoints;
         Debug.Log("escala" + scala+"scala leida"+scalatotal+"scala mi personaje "+scalaSelfJoints);
+        this.gameObject.transform.position = new Vector3(totalBody["Hips"][0].x / scala, totalBody["Hips"][0].y / scala, totalBody["Hips"][0].z / scala);
         for (int i = 0; i < selfJoints.Count; i++)
         {// poniendo antes bonesToUse tendrá su organización 
            
@@ -152,55 +154,58 @@ public class animacion : MonoBehaviour
                         selfJoints[i].localPosition= transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, totalBody["Hips"][0].y / scala, totalBody["Hips"][0].z / scala);
                         //selfJoints[i].rotation = calculateRotation((totalBody["Hips"][0]));
                         //selfJoints[i].localPosition = selfJoints[i].InverseTransformDirection(totalBody["Hips"][0].x / scala, (totalBody["Hips"][0].y / scala) - scalaSelfJoints, totalBody["Hips"][0].z / scala);
-                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
+
+                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["Hips"][0]);
                         //selfJoints[i].rotation = calculateRotation(totalBody["Hips"][0]);
-                      
+
                         break;
                     #region Hijos de hips 0
-                    case "LeftUpperLeg":
+                    case "LeftUpLeg":
                         selfJoints[i].SetParent(selfJoints[0]);
                        // selfJoints[i].localPosition = selfJoints[2].InverseTransformVector(totalBody["LeftUpLeg"][0].x / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftUpLeg"][0].x / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
-                      
-                       // selfJoints[i].rotation = calculateRotation(totalBody["LeftUpLeg"][0]);
-                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
-                       break;
-                    case "RightUpperLeg":
+                       // selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftUpLeg"][0].x - totalBody["Hips"][0].x) / scala, (totalBody["LeftUpLeg"][0].y- totalBody["Hips"][0].y) / scala,( totalBody["LeftUpLeg"][0].z - totalBody["Hips"][0].z) / scala);
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftUpLeg"][0].x  / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
+
+                        // selfJoints[i].rotation = calculateRotation(totalBody["LeftUpLeg"][0]);
+                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["LeftUpLeg"][0]);
+                        break;
+                    case "RightUpLeg":
                         selfJoints[i].SetParent(selfJoints[0]);
                         //selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["RightUpLeg"][0].x / scala, totalBody["RightUpLeg"][0].y / scala, totalBody["RightUpLeg"][0].z / scala);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightUpLeg"][0].x / scala, totalBody["RightUpLeg"][0].y / scala, totalBody["RightUpLeg"][0].z / scala);
-                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightUpLeg"][0].x  / scala, totalBody["RightUpLeg"][0].y  / scala, totalBody["RightUpLeg"][0].z  / scala);
+
+                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["RightUpLeg"][0]);
                         break;
                     case "UpperChest":
                         selfJoints[i].SetParent(selfJoints[0]);
                         //selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y / scala, totalBody["Spine"][0].z / scala);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y / scala, totalBody["Spine"][0].z / scala);
-                        selfJoints[i].SetParent(selfJoints[0]);
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y  / scala, totalBody["Spine"][0].z / scala);
+                        
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
                         break;
                         #endregion hijos de hips 0
-                        #region hijos de Chest/spine 3/4
+                       #region hijos de Chest/spine 3/4
                         case "Neck":
-
-                         selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["Neck"][0].x/scala , totalBody["Neck"][0].y/scala , totalBody["Neck"][0].z/scala );
                         selfJoints[i].SetParent(selfJoints[3]);
+                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["Neck"][0].x /scala , totalBody["Neck"][0].y  / scala , totalBody["Neck"][0].y  / scala );
+                        
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["Neck"][0]);
                             break;
                         case "LeftShoulder":
-
-                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["LeftShoulder"][0].x / scala, totalBody["LeftShoulder"][0].y / scala, totalBody["LeftShoulder"][0].z / scala);
                         selfJoints[i].SetParent(selfJoints[3]);
-                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
-                            break;
+                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["LeftShoulder"][0].x  / scala, totalBody["LeftShoulder"][0].y  / scala, totalBody["LeftShoulder"][0].z  / scala);
+
+                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["LeftShoulder"][0]);
+                        break;
                         case "RightShoulder":
 
-                         selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["RightShoulder"][0].x / scala, totalBody["RightShoulder"][0].y / scala, totalBody["RightShoulder"][0].z / scala);
-
                         selfJoints[i].SetParent(selfJoints[3]);
-                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
-                            break;
+                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["RightShoulder"][0].x  / scala, totalBody["RightShoulder"][0].y  / scala,totalBody["RightShoulder"][0].z  / scala);
+
+                        Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["RightShoulder"][0]);
+                        break;
                         #endregion hijos chest/spine
-                        #region HIJO DEleftUpLeg 1
+                       #region HIJO DEleftUpLeg 1
                         case "LeftLowerLeg":
 
                         selfJoints[i].SetParent(selfJoints[1]);

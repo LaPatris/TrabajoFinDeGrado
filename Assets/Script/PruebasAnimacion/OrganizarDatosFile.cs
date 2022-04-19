@@ -58,7 +58,8 @@ public class OrganizarDatosFile
         string pathTxt = AssetDatabase.GetAssetPath(TXT);
         StreamReader myTXT = new StreamReader(pathTxt);
         string[] auxValue;
-        bool aux = true;
+        int posicionInicial = 0;
+        Vector3 posicionCadera = Vector3.zero;
         int i = 0;
         float z = 0f;            //while (/*!myTXT.EndOfStream*/i<2)
             while (!myTXT.EndOfStream)
@@ -69,21 +70,20 @@ public class OrganizarDatosFile
             //sustituimos la coma del tiempo por un punto
             inp_ln = inp_ln.Replace(",", ".");
             auxValue = inp_ln.Split(' ');
+            
             int hueso = int.Parse(auxValue[0], CultureInfo.InvariantCulture);
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
             
             float x = float.Parse(auxValue[1], CultureInfo.InvariantCulture);
-            //vamos a probar cambio y son z y z
-           //asi evitamos qeu anda hacia delantae, es decir se quedará en su sitio
-           // if (aux)
-           // {
-                z= float.Parse(auxValue[2], CultureInfo.InvariantCulture);
-                aux = false;
-           // }
-           
+            z= float.Parse(auxValue[2], CultureInfo.InvariantCulture);
             float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
             //Vector3 valores = new Vector3(x,  y,z);
-            Vector3 valores = new Vector3(x,  y,z);
+            /*if (posicionInicial == 0)
+                posicionCadera = new Vector3(x, y, z);
+            posicionInicial++;*/
+            // con esto hacemos qeu todo esté respecto a la cadera
+            //Vector3 valores = new Vector3(x-posicionCadera.x, y-posicionCadera.y, z- posicionCadera.z);
+            Vector3 valores = new Vector3(x, y, z);
             switch (hueso)
             {
                 case 1:
@@ -132,6 +132,7 @@ public class OrganizarDatosFile
                     cabeza.Add(valores);
                     break;
                 case 18:
+                    //18
                     hombroI.Add(valores);
                     break;
                 case 19:
@@ -147,6 +148,7 @@ public class OrganizarDatosFile
                     dedosI.Add(valores);
                     break;
                 case 26:
+                    //26
                     hombroD.Add(valores);
                     break;
                 case 27:
