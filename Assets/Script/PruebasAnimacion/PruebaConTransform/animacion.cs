@@ -150,36 +150,35 @@ public class animacion : MonoBehaviour
                    switch (nombre[0])
                 {
                     case "Hips":
-                       //this.gameObject.transform.localPosition = this.gameObject.transform.InverseTransformPoint(totalBody["Hips"][0].x/scala, (totalBody["Hips"][0].y / scala)-scalaSelfJoints, totalBody["Hips"][0].z / scala);
-                        selfJoints[i].localPosition= transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, totalBody["Hips"][0].y / scala, totalBody["Hips"][0].z / scala);
-                        //selfJoints[i].rotation = calculateRotation((totalBody["Hips"][0]));
-                        //selfJoints[i].localPosition = selfJoints[i].InverseTransformDirection(totalBody["Hips"][0].x / scala, (totalBody["Hips"][0].y / scala) - scalaSelfJoints, totalBody["Hips"][0].z / scala);
+                        //selfJoints[i].localPosition= transform.InverseTransformPoint(0 / scala, 0 / scala, 0 / scala);
+                        // selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, (totalBody["Hips"][0].y / scala) - scalaSelfJoints, totalBody["Hips"][0].z / scala);
+                        selfJoints[i].localPosition = this.gameObject.transform.localPosition; //transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, (totalBody["Hips"][0].y / scala) - scalaSelfJoints, totalBody["Hips"][0].z / scala);
 
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["Hips"][0]);
                         //selfJoints[i].rotation = calculateRotation(totalBody["Hips"][0]);
 
                         break;
                     #region Hijos de hips 0
-                    case "LeftUpLeg":
+                    case "RightUpLeg":
+                        
                         selfJoints[i].SetParent(selfJoints[0]);
-                       // selfJoints[i].localPosition = selfJoints[2].InverseTransformVector(totalBody["LeftUpLeg"][0].x / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
-                       // selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftUpLeg"][0].x - totalBody["Hips"][0].x) / scala, (totalBody["LeftUpLeg"][0].y- totalBody["Hips"][0].y) / scala,( totalBody["LeftUpLeg"][0].z - totalBody["Hips"][0].z) / scala);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftUpLeg"][0].x  / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
+                      // selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftUpLeg"][0].x - totalBody["Hips"][0].x) / scala, (totalBody["LeftUpLeg"][0].y- totalBody["Hips"][0].y) / scala,( totalBody["LeftUpLeg"][0].z - totalBody["Hips"][0].z) / scala);
+                       selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftUpLeg"][0].x  / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
 
                         // selfJoints[i].rotation = calculateRotation(totalBody["LeftUpLeg"][0]);
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["LeftUpLeg"][0]);
                         break;
-                    case "RightUpLeg":
+                    case "LeftUpLeg":
                         selfJoints[i].SetParent(selfJoints[0]);
-                        //selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["RightUpLeg"][0].x / scala, totalBody["RightUpLeg"][0].y / scala, totalBody["RightUpLeg"][0].z / scala);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightUpLeg"][0].x  / scala, totalBody["RightUpLeg"][0].y  / scala, totalBody["RightUpLeg"][0].z  / scala);
+                       // selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightUpLeg"][0].x - totalBody["Hips"][0].x) / scala, (totalBody["RightUpLeg"][0].y - totalBody["Hips"][0].y) / scala, (totalBody["RightUpLeg"][0].z - totalBody["Hips"][0].z) / scala);
 
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["RightUpLeg"][0]);
                         break;
-                    case "UpperChest":
-                        selfJoints[i].SetParent(selfJoints[0]);
-                        //selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y / scala, totalBody["Spine"][0].z / scala);
+                    case "Spine":
+                        selfJoints[i].SetParent(selfJoints[0]); 
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y  / scala, totalBody["Spine"][0].z / scala);
+                       // selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["Spine"][0].x - totalBody["Hips"][0].x) / scala, (totalBody["Spine"][0].y - totalBody["Hips"][0].y) / scala, (totalBody["Spine"][0].z - totalBody["Hips"][0].z) / scala);
                         
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition);
                         break;
@@ -187,26 +186,25 @@ public class animacion : MonoBehaviour
                        #region hijos de Chest/spine 3/4
                         case "Neck":
                         selfJoints[i].SetParent(selfJoints[3]);
-                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["Neck"][0].x /scala , totalBody["Neck"][0].y  / scala , totalBody["Neck"][0].y  / scala );
+                        selfJoints[i].localPosition =transform.InverseTransformPoint((totalBody["Neck"][0].x- selfJoints[3].localPosition.x )/ scala , (totalBody["Neck"][0].y -selfJoints[3].localPosition.y) / scala , (totalBody["Neck"][0].z - selfJoints[3].localPosition.z) / scala );
                         
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["Neck"][0]);
                             break;
-                        case "LeftShoulder":
+                        case "RightShoulder":
                         selfJoints[i].SetParent(selfJoints[3]);
-                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["LeftShoulder"][0].x  / scala, totalBody["LeftShoulder"][0].y  / scala, totalBody["LeftShoulder"][0].z  / scala);
+                        selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftShoulder"][0].x- selfJoints[3].localPosition.x) / scala, (totalBody["LeftShoulder"][0].y - selfJoints[3].localPosition.y) / scala, (totalBody["LeftShoulder"][0].z - selfJoints[3].localPosition.z) / scala);
 
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["LeftShoulder"][0]);
                         break;
-                        case "RightShoulder":
-
+                        case "LeftShoulder":
                         selfJoints[i].SetParent(selfJoints[3]);
-                        selfJoints[i].localPosition = selfJoints[i].InverseTransformPoint(totalBody["RightShoulder"][0].x  / scala, totalBody["RightShoulder"][0].y  / scala,totalBody["RightShoulder"][0].z  / scala);
+                        selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightShoulder"][0].x - selfJoints[3].localPosition.x) / scala, (totalBody["RightShoulder"][0].y - selfJoints[3].localPosition.y) / scala, (totalBody["RightShoulder"][0].z - selfJoints[3].localPosition.z) / scala);
 
                         Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["RightShoulder"][0]);
                         break;
                         #endregion hijos chest/spine
-                       #region HIJO DEleftUpLeg 1
-                        case "LeftLowerLeg":
+                      /* #region HIJO DEleftUpLeg 1
+                        case "LeftLeg":
 
                         selfJoints[i].SetParent(selfJoints[1]);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftLeg"][0].x / scala, totalBody["LeftLeg"][0].y / scala, totalBody["LeftLeg"][0].z / scala);
@@ -214,7 +212,7 @@ public class animacion : MonoBehaviour
                             break;
                     #endregion
                     #region HIJO DE RIGHTLEG2
-                    case "RightLowerLeg":
+                    case "RightLeg":
 
                         selfJoints[i].SetParent(selfJoints[2]);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightLeg"][0].x / scala, totalBody["RightLeg"][0].y / scala, totalBody["RightLeg"][0].z / scala);
@@ -232,7 +230,7 @@ public class animacion : MonoBehaviour
                         #endregion
                         
                     #region HIJO LEFT SHOULDER 12
-                        case "LeftUpperArm": //equivale a nuestro leftArm
+                        case "LeftArm": //equivale a nuestro leftArm
 
                         selfJoints[i].SetParent(selfJoints[12]);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftArm"][0].x / scala, totalBody["LeftArm"][0].y / scala, totalBody["LeftArm"][0].z / scala);
@@ -241,7 +239,7 @@ public class animacion : MonoBehaviour
                     #endregion
 
                     #region hijo de rightshoulder 14
-                    case "RightUpperArm": //equivale a nuestro right Arm
+                    case "RightArm": //equivale a nuestro right Arm
 
                         selfJoints[i].SetParent(selfJoints[14]);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightArm"][0].x / scala, totalBody["RightArm"][0].y / scala, totalBody["RightArm"][0].z / scala);
@@ -249,7 +247,7 @@ public class animacion : MonoBehaviour
                                  break;
                     #endregion
                     #region HIJO LEFTupper arm 15
-                    case "LeftLowerArm":
+                    case "LeftForeArm":
 
                         selfJoints[i].SetParent(selfJoints[15]);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftForeArm"][0].x / scala, totalBody["LeftForeArm"][0].y / scala, totalBody["LeftForeArm"][0].z / scala);
@@ -272,7 +270,7 @@ public class animacion : MonoBehaviour
                     #endregion
 
                     #region HIJO right upper arm 19
-                    case "RightLowerArm":
+                    case "RightForeArm":
 
                         selfJoints[i].SetParent(selfJoints[19]);
                         selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightForeArm"][0].x / scala, totalBody["RightForeArm"][0].y / scala, totalBody["RightForeArm"][0].z / scala);
