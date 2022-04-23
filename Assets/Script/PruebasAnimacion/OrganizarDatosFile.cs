@@ -84,39 +84,50 @@ public class OrganizarDatosFile
             // con esto hacemos qeu todo esté respecto a la cadera
             //Vector3 valores = new Vector3(x-posicionCadera.x, y-posicionCadera.y, z- posicionCadera.z);
             Vector3 valores = new Vector3(x, y, z);
+            //uzquierda y derecha cambiado de signo 
             switch (hueso)
             {
                 case 1:
                    cadera.Add(valores);                    
                 break;
-                case 2:
+                case 7:
+                    //2
                     caderaD.Add(valores);
                     break;
-                case 3:
+                case 8:
+                    //3
                    rodillaD.Add(valores);
                     break;
-                case 4:
+                case 9:
+                    //4
                     tobilloD.Add(valores);
                     break;
-                case 5:
+                case 10:
+                    //5
                     empeineD.Add(valores);
                     break;
-                case 6:
+                case 11:
+                    //6
                     puntaD.Add(valores);
                     break;
-                case 7:
+                case 2:
+                    //7
                     caderaI.Add(valores);
                     break;
-                case 8:
+                case 3:
+                    //8
                     rodillaI.Add(valores);
                     break;
-                case 9:
+                case 4:
+                    //9
                     tobilloI.Add(valores);
                     break;
-                case 10:
+                case 5:
+                    //10
                     empeineI.Add(valores);
                     break;
-                case 11:
+                case 6:
+                    //11
                     puntaI.Add(valores);
                     break;
                 case 13:
@@ -125,42 +136,50 @@ public class OrganizarDatosFile
                 case 14:
                     cuellobajo.Add(valores);
                     break;
-                case 16:
+                case 15:
                     barbilla.Add(valores);
                     break;
-                case 15:
+                case 16:
                     cabeza.Add(valores);
                     break;
-                case 18:
+                case 26:
                     //18
                     hombroI.Add(valores);
                     break;
-                case 19:
+                case 27:
+                    //19
                     codoI.Add(valores);
                     break;
-                case 20:
+                case 28:
+                    //20
                     muñecaI.Add(valores);
                     break;
-                case 22:
+                case 30:
+                    //22
                     pulgarI.Add(valores);
                     break;
-                case 23:
+                case 31:
+                    //23
                     dedosI.Add(valores);
                     break;
-                case 26:
+                case 18:
                     //26
                     hombroD.Add(valores);
                     break;
-                case 27:
+                case 19:
+                    //27
                     codoD.Add(valores);
                     break;
-                case 28:
+                case 20:
+                    //28
                     muñecaD.Add(valores);
                     break;
-                case 30:
+                case 22:
+                    //30
                     pulgarD.Add(valores);
                     break;
-                case 31:
+                case 23:
+                    //31
                     dedosD.Add(valores);
                     i++;//i llega a 3
                     break;
