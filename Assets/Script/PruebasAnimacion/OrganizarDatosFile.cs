@@ -217,12 +217,12 @@ public class OrganizarDatosFile
         totalBody.Add("RightUpLeg", caderaD);
         totalBody.Add("RightLeg", rodillaD);
         totalBody.Add("RightFoot", tobilloD);
-        totalBody.Add("RightToeBase", empeineD);
+        totalBody.Add("RightToeBase", puntaD);
         totalBody.Add("RightEnd", puntaD);
         totalBody.Add("LeftUpLeg", caderaI);
         totalBody.Add("LeftLeg", rodillaI);
         totalBody.Add("LeftFoot", tobilloI);
-        totalBody.Add("LeftToeBase", empeineI);
+        totalBody.Add("LeftToeBase", puntaI);
         totalBody.Add("LeftEnd", puntaI);
         totalBody.Add("Spine", pecho);
         totalBody.Add("Chest", pecho);

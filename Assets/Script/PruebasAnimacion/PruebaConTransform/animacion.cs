@@ -96,8 +96,6 @@ public class animacion : MonoBehaviour
             if (selfJoints[i] != null)
             {
                 selfJointsInitRotation.Add(selfJoints[i].rotation);
-
-                Debug.Log("todos los huesos de los que hay animación " + bonesToUse[i].ToString());
             }
 
         }
@@ -110,15 +108,25 @@ public class animacion : MonoBehaviour
         selfInitPosition = selfRoot.localPosition;
     }
     //se tiene que llamar desde fuera para inicializar los valores
-    private Quaternion calculateRotation(Vector3 vector1)
+    private Quaternion calculateRotation(Vector3 vector1, Vector3 vector2)
     {
-        float x = Vector3.Angle(vector1, Vector3.left);
-        //float y = Vector3.Angle(vector1, Vector3.forward);
-        float z = Vector3.Angle(vector1, Vector3.forward);
+      //  float x = Vector3.Angle(vector1, vector2);
+        float x = Vector3.Angle(vector1, Vector3.right);
+        //float y = Vector3.Angle(vector1, Vector3.zero);
         float y = Vector3.Angle(vector1, Vector3.up);
+        //float z = Vector3.Angle(vector1, Vector3.zero);
+        float z = Vector3.Angle(vector1, Vector3.forward);
         Vector3 aux = new Vector3(x, y, z).normalized;
-
-        return new Quaternion(aux.x, aux.y, aux.z, 1);
+      //  Vector3 quatxyz = Vector3.Cross(vector1, vector2);
+        double maginitudV1 = (double)(vector1.magnitude * vector1.magnitude);
+        double maginitudV2 = (double)(vector2.magnitude * vector2.magnitude);
+        float sqrtV1V2 = (float)Math.Sqrt(maginitudV1 * maginitudV2);
+        float w =Mathf.Clamp( sqrtV1V2 + Vector3.Dot(vector1, vector2),0,1);
+        
+        Debug.Log("Esto es lo que tengo:" + aux + " la w" + w+"Normalizado");
+        return Quaternion.Euler(aux);
+       // return new Quaternion(quatxyz.x, quatxyz.y, quatxyz.z, w);
+        
     }
     public void setParents()
     {
@@ -267,7 +275,7 @@ public class animacion : MonoBehaviour
         }
     }
     public void initAll(Dictionary<String, List<Vector3>> totalBody)
-    { 
+    {
         //inicializamos los huesos
         InitBones();
 
@@ -276,218 +284,264 @@ public class animacion : MonoBehaviour
         /*srcRoot.rotation = calculateRotation(totalBody["Hips"][0]);
         srcInitRotation = srcRoot.localRotation;
         srcInitPosition = srcRoot.localPosition;*/
-        SetJointsInitRotation( );
+        SetJointsInitRotation();
         //SetInitPosition();
         //initRotation and initPosition
-     
+
         float scalaSelfJoints = selfJoints[2].position.y;
         float scalatotal = totalBody["Hips"][0].y;
-        float scala = scalatotal- scalaSelfJoints;
-        Debug.Log("escala" + scala+"scala leida"+scalatotal+"scala mi personaje "+scalaSelfJoints);
+        float scala = scalatotal - scalaSelfJoints;
+        Debug.Log("escala" + scala + "scala leida" + scalatotal + "scala mi personaje " + scalaSelfJoints);
         this.gameObject.transform.position = new Vector3(totalBody["Hips"][0].x / scala, totalBody["Hips"][0].y / scala, totalBody["Hips"][0].z / scala);
         //seteamos los padres de los huesos
         setParents();
         // seteamos la nueva posición /*
+        Vector3 posicionInicial = Vector3.zero;
         for (int i = 0; i < selfJoints.Count; i++)
         {// poniendo antes bonesToUse tendrá su organización 
-           
+
             if (selfJoints[i] != null)
             {
                 String[] nombre = selfJoints[i].ToString().Split(' ');
-              //  foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
-               // {
-                    //mete todo bien
+                //  foreach (KeyValuePair<string, List<Vector3>> hueso in totalBody)
+                // {
+                //mete todo bien
 
-                   // if (hueso.Key.Equals(nombre[0]) )
-                   switch (nombre[0])
+                // if (hueso.Key.Equals(nombre[0]) )
+                switch (nombre[0])
                 {
-                  case "Hips":
-                        //selfJoints[i].localPosition= transform.InverseTransformPoint(0 / scala, 0 / scala, 0 / scala);
-                        // selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, (totalBody["Hips"][0].y / scala) - scalaSelfJoints, totalBody["Hips"][0].z / scala);
-                        // selfJoints[i].localPosition = this.gameObject.transform.localPosition; //transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, (totalBody["Hips"][0].y / scala) - scalaSelfJoints, totalBody["Hips"][0].z / scala);
+                    case "Hips":
+                        
+                        //aquí hemos hecho que hips sea la posicion 0 ,0 ,0 
+                        //por lo que todo ahora va en función de hips
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x / scala, totalBody["Hips"][0].y / scala, totalBody["Hips"][0].z / scala);
+                        //al ser la primera posicion con el eje 0,0
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        //selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
 
-                        //Debug.Log(nombre[0] + "posicionlocal" + selfJoints[i].localPosition + " posicion normal" + totalBody["Hips"][0]);
-                        //selfJoints[i].rotation = calculateRotation(totalBody["Hips"][0]);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["Hips"][0]));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+
                         break;
                     #region Hijos de hips 0
                     case "LeftUpLeg":
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftUpLeg"][0].x  / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftUpLeg"][0]));
-                         break;
+                        // es hijo de cero
+                        // la distancia respecto a cero
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftUpLeg"][0].x / scala, totalBody["LeftUpLeg"][0].y / scala, totalBody["LeftUpLeg"][0].z / scala);
+                        //al ser la primera posicion con el eje 0,0
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                       selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                        //selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
+                        break;
                     case "RightUpLeg":
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightUpLeg"][0].x  / scala, totalBody["RightUpLeg"][0].y  / scala, totalBody["RightUpLeg"][0].z  / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightUpLeg"][0]));
+
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightUpLeg"][0].x / scala, totalBody["RightUpLeg"][0].y / scala, totalBody["RightUpLeg"][0].z / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                        //selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
+
                         break;
                     case "Spine":
-                       selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y  / scala, totalBody["Spine"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["Spine"][0]));
+
+                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Spine"][0].x / scala, totalBody["Spine"][0].y / scala, totalBody["Spine"][0].z / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                       // selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
                         break;
                         #endregion hijos de hips 0
-                       #region hijos de Chest/spine 3/4
-                        case "Neck":
-                       // selfJoints[i].localPosition =transform.InverseTransformPoint((totalBody["Neck"][0].x- selfJoints[3].localPosition.x )/ scala , (totalBody["Neck"][0].y -selfJoints[3].localPosition.y) / scala , (totalBody["Neck"][0].z - selfJoints[3].localPosition.z) / scala );
-                        selfJoints[i].localPosition =transform.InverseTransformPoint((totalBody["Neck"][0].x )/ scala , (totalBody["Neck"][0].y ) / scala , (totalBody["Neck"][0].z) / scala );
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["Neck"][0]));
+                         #region hijos de Chest/spine 3/4
+                         case "Neck":
+                             selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["Neck"][0].x) / scala, (totalBody["Neck"][0].y) / scala, (totalBody["Neck"][0].z) / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                        //selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
                         break;
-                        case "LeftShoulder":
-                        selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftShoulder"][0].x) / scala, (totalBody["LeftShoulder"][0].y ) / scala, (totalBody["LeftShoulder"][0].z ) / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftShoulder"][0]));
-                        //selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftShoulder"][0].x- selfJoints[3].localPosition.x) / scala, (totalBody["LeftShoulder"][0].y - selfJoints[3].localPosition.y) / scala, (totalBody["LeftShoulder"][0].z - selfJoints[3].localPosition.z) / scala);
+                         case "LeftShoulder":
+
+                             posicionInicial = selfJoints[i].localPosition;
+                             selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftShoulder"][0].x) / scala, (totalBody["LeftShoulder"][0].y) / scala, (totalBody["LeftShoulder"][0].z) / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                         selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                        //selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
                         break;
-                        case "RightShoulder":
-                        //selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightShoulder"][0].x - selfJoints[3].localPosition.x) / scala, (totalBody["RightShoulder"][0].y - selfJoints[3].localPosition.y) / scala, (totalBody["RightShoulder"][0].z - selfJoints[3].localPosition.z) / scala);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightShoulder"][0].x ) / scala, (totalBody["RightShoulder"][0].y ) / scala, (totalBody["RightShoulder"][0].z ) / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightShoulder"][0]));
+                         case "RightShoulder":
+
+                             posicionInicial = selfJoints[i].localPosition;
+                             selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightShoulder"][0].x) / scala, (totalBody["RightShoulder"][0].y) / scala, (totalBody["RightShoulder"][0].z) / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                        //selfJoints[i].localRotation = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition);
                         break;
-                        #endregion hijos chest/spine
-                       #region HIJO DEleftUpLeg 1
-                        case "LeftLeg":
-
-                        selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftLeg"][0].x  )/ scala, (totalBody["LeftLeg"][0].y ) / scala, (totalBody["LeftLeg"][0].z ) / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftLeg"][0]));
+                             #endregion hijos chest/spine
+                           #region HIJO DEleftUpLeg 1
+                                 case "LeftLeg":
+                                 posicionInicial = selfJoints[i].localPosition;
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["LeftLeg"][0].x  )/ scala, (totalBody["LeftLeg"][0].y ) / scala, (totalBody["LeftLeg"][0].z ) / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
                         break;
-                    #endregion
-                    #region HIJO DE RIGHTLEG2
-                    case "RightLeg":
+                             #endregion
+                             #region HIJO DE RIGHTLEG2
+                             case "RightLeg":
+                                 posicionInicial = selfJoints[i].localPosition;
 
-                       // selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightLeg"][0].x - selfJoints[2].localPosition.x) / scala, (totalBody["RightLeg"][0].y - selfJoints[2].localPosition.y) / scala, (totalBody["RightLeg"][0].z - selfJoints[2].localPosition.z) / scala);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightLeg"][0].x ) / scala, (totalBody["RightLeg"][0].y) / scala, (totalBody["RightLeg"][0].z ) / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightLeg"][0]));
-                        break;
-                    #endregion
-                  #region hijo neck 13
-                    case "Head":
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint((totalBody["RightLeg"][0].x ) / scala, (totalBody["RightLeg"][0].y) / scala, (totalBody["RightLeg"][0].z ) / scala);
+                        srcJointsInitRotation.Add(calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition));
+                        selfJoints[i].eulerAngles = calculateRotation(selfJoints[i].localPosition, selfJoints[0].localPosition).eulerAngles;
+                        posicionInicial = Vector3.zero;
+                                 break;
+                             #endregion
+                          /* #region hijo neck 13
+                             case "Head":
+                                 posicionInicial = selfJoints[i].localPosition;
 
-                        //selfJoints[i].SetParent(selfJoints[13]);
-                       selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Head"][0].x / scala, totalBody["Head"][0].y / scala, totalBody["Head"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["Head"][0]));
-                        break;
-                        #endregion
-                        
-                    #region HIJO LEFT SHOULDER 12
-                        case "LeftArm": //equivale a nuestro leftArm
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["Head"][0].x / scala, totalBody["Head"][0].y / scala, totalBody["Head"][0].z / scala);
+                                 srcJointsInitRotation.Add(calculateRotation(totalBody["Head"][0], posicionInicial));
+                                 //selfJoints[i].rotation = calculateRotation(totalBody["Head"][0], posicionInicial);
+                                 posicionInicial = Vector3.zero;
+                                 break;
+                                 #endregion
 
-                       // selfJoints[i].SetParent(selfJoints[12]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftArm"][0].x / scala, totalBody["LeftArm"][0].y / scala, totalBody["LeftArm"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftArm"][0]));
-                        break;
-                    #endregion
+                             #region HIJO LEFT SHOULDER 12
+                                 case "LeftArm": //equivale a nuestro leftArm
 
-                    #region hijo de rightshoulder 14
-                    case "RightArm": //equivale a nuestro right Arm
+                                 posicionInicial = selfJoints[i].localPosition;
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftArm"][0].x / scala, totalBody["LeftArm"][0].y / scala, totalBody["LeftArm"][0].z / scala);
+                                 srcJointsInitRotation.Add(calculateRotation(totalBody["LeftArm"][0], posicionInicial));
+                                 //selfJoints[i].rotation = calculateRotation(totalBody["LeftArm"][0], posicionInicial);
+                                 posicionInicial = Vector3.zero;
+                                 break;
+                             #endregion
 
-                        //selfJoints[i].SetParent(selfJoints[14]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightArm"][0].x / scala, totalBody["RightArm"][0].y / scala, totalBody["RightArm"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightArm"][0]));
-                        break;
-                    #endregion
-                    #region HIJO LEFTupper arm 15
-                    case "LeftForeArm":
+                             #region hijo de rightshoulder 14
+                             case "RightArm": //equivale a nuestro right Arm
+                                 posicionInicial = selfJoints[i].localPosition;
 
-                        //selfJoints[i].SetParent(selfJoints[15]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftForeArm"][0].x / scala, totalBody["LeftForeArm"][0].y / scala, totalBody["LeftForeArm"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftForeArm"][0]));
-                        break;
-                    #endregion
-                    #region HIJO de left lower arm 16
-                    case "LeftHand":
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightArm"][0].x / scala, totalBody["RightArm"][0].y / scala, totalBody["RightArm"][0].z / scala);
+                                 srcJointsInitRotation.Add(calculateRotation(totalBody["RightArm"][0], posicionInicial));
+                                 //selfJoints[i].rotation = calculateRotation(totalBody["RightArm"][0], posicionInicial);
+                                 posicionInicial = Vector3.zero;
+                                 break;
+                                 #endregion
+                                    #region HIJO LEFTupper arm 15
+                                    case "LeftForeArm":
 
-                        //selfJoints[i].SetParent(selfJoints[16]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftHand"][0].x / scala, totalBody["LeftHand"][0].y / scala, totalBody["LeftHand"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftHand"][0]));
-                        break;
-                    case "LeftHandThumb1":
+                                 posicionInicial = selfJoints[i].localPosition;
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftForeArm"][0].x / scala, totalBody["LeftForeArm"][0].y / scala, totalBody["LeftForeArm"][0].z / scala);
+                                 srcJointsInitRotation.Add(calculateRotation(totalBody["LeftForeArm"][0], posicionInicial));
+                                // selfJoints[i].rotation = calculateRotation(totalBody["LeftForeArm"][0], posicionInicial);
+                                 posicionInicial = Vector3.zero;
+                                 break;
+                                    #endregion
+                                    #region HIJO de left lower arm 16
+                                    case "LeftHand":
+                                 posicionInicial = selfJoints[i].localPosition;
+                                 selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftHand"][0].x / scala, totalBody["LeftHand"][0].y / scala, totalBody["LeftHand"][0].z / scala);
+                                 srcJointsInitRotation.Add(calculateRotation(totalBody["LeftHand"][0], posicionInicial));
+                                // selfJoints[i].rotation = calculateRotation(totalBody["LeftHand"][0], posicionInicial);
+                                 posicionInicial = Vector3.zero;
+                                 break;
+                                    case "LeftHandThumb1":
 
-                       // selfJoints[i].SetParent(selfJoints[16]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftHandThumb1"][0].x / scala, totalBody["LeftHandThumb1"][0].y / scala, totalBody["LeftHandThumb1"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftHandThumb1"][0]));
-                        break;
-                    #endregion
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftHandThumb1"][0].x / scala, totalBody["LeftHandThumb1"][0].y / scala, totalBody["LeftHandThumb1"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftHandThumb1"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["LeftHandThumb1"][0], selfJoints[i].localPosition);
+                                        break;
+                                    #endregion
 
-                    #region HIJO right upper arm 19
-                    case "RightForeArm":
+                                   #region HIJO right upper arm 19
+                                    case "RightForeArm":
 
-                        //selfJoints[i].SetParent(selfJoints[19]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightForeArm"][0].x / scala, totalBody["RightForeArm"][0].y / scala, totalBody["RightForeArm"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightForeArm"][0]));
-                        break;
-                    #endregion
-                    #region HIJO de lower arm 20
-                    case "RightHand":
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightForeArm"][0].x / scala, totalBody["RightForeArm"][0].y / scala, totalBody["RightForeArm"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightForeArm"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["RightForeArm"][0], selfJoints[i].localPosition);
+                                        break;
+                                    #endregion
+                                    #region HIJO de lower arm 20
+                                    case "RightHand":
 
-                       // selfJoints[i].SetParent(selfJoints[20]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightHand"][0].x / scala, totalBody["RightHand"][0].y / scala, totalBody["RightHand"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightHand"][0]));
-                        break;
-                    case "RightHandThumb1":
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightHand"][0].x / scala, totalBody["RightHand"][0].y / scala, totalBody["RightHand"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightHand"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["RightHand"][0], selfJoints[i].localPosition);
+                                        break;
+                                    case "RightHandThumb1":
 
-                        //selfJoints[i].SetParent(selfJoints[20]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightHandThumb1"][0].x / scala, totalBody["RightHandThumb1"][0].y / scala, totalBody["RightHandThumb1"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightHandThumb1"][0]));
-                        break;
-                    #endregion
-                    #region HIIJO DE lowerr left leg 6
-                    case "LeftFoot":
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightHandThumb1"][0].x / scala, totalBody["RightHandThumb1"][0].y / scala, totalBody["RightHandThumb1"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightHandThumb1"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["RightHandThumb1"][0], selfJoints[i].localPosition);
+                                        break;
+                                    #endregion
+                                    #region HIIJO DE lowerr left leg 6
+                                    case "LeftFoot":
 
-                        //selfJoints[i].SetParent(selfJoints[6]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftFoot"][0].x / scala, totalBody["LeftFoot"][0].y / scala, totalBody["LeftFoot"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftFoot"][0]));
-                        break;
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftFoot"][0].x / scala, totalBody["LeftFoot"][0].y / scala, totalBody["LeftFoot"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftFoot"][0], selfJoints[i].localPosition));
+                                       // selfJoints[i].rotation = calculateRotation(totalBody["LeftFoot"][0], selfJoints[i].localPosition);
+                                        break;
 
-                    #endregion
-                    #region HIIJO DE lowerr left leg 6
-                    case "LeftToeBase":
+                                    #endregion
+                                    #region HIIJO DE lowerr left leg 6
+                                    case "LeftToeBase":
 
-                        //selfJoints[i].SetParent(selfJoints[6]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftToeBase"][0].x / scala, totalBody["LeftToeBase"][0].y / scala, totalBody["LeftToeBase"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftToeBase"][0]));
-                        break;
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["LeftToeBase"][0].x / scala, totalBody["LeftToeBase"][0].y / scala, totalBody["LeftToeBase"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["LeftToeBase"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["LeftToeBase"][0], selfJoints[i].localPosition);
+                                        break;
 
-                    #endregion
-                    #region right lower leg 9
-                    case "RightFoot"://9
+                                    #endregion
+                                    #region right lower leg 9
+                                    case "RightFoot"://9
 
-                        //selfJoints[i].SetParent(selfJoints[9]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightFoot"][0].x / scala, totalBody["RightFoot"][0].y / scala, totalBody["RightFoot"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightFoot"][0]));
-                        break;
-                    #endregion
-                    #region right lower leg 9
-                    case "RightToeEnd"://9
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightFoot"][0].x / scala, totalBody["RightFoot"][0].y / scala, totalBody["RightFoot"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightFoot"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["RightFoot"][0], selfJoints[i].localPosition);
+                                        break;
+                                    #endregion
+                                    #region right lower leg 9
+                                    case "RightToeEnd"://9
 
-                        //selfJoints[i].SetParent(selfJoints[9]);
-                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightToeEnd"][0].x / scala, totalBody["RightToeEnd"][0].y / scala, totalBody["RightToeEnd"][0].z / scala);
-                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightToeEnd"][0]));
-                        break;
-                        #endregion
-                                            }
-                // }
-                List<Quaternion> auxList = new List<Quaternion>();
-                foreach (Vector3 vec in totalBody[nombre[0]])
-                {
-                    auxList.Add(calculateRotation(vec));
-                    
+                                        selfJoints[i].localPosition = transform.InverseTransformPoint(totalBody["RightToeEnd"][0].x / scala, totalBody["RightToeEnd"][0].y / scala, totalBody["RightToeEnd"][0].z / scala);
+                                        srcJointsInitRotation.Add(calculateRotation(totalBody["RightToeEnd"][0], selfJoints[i].localPosition));
+                                        //selfJoints[i].rotation = calculateRotation(totalBody["RightToeEnd"][0], selfJoints[i].localPosition);
+                                        break;
+                                        #endregion
+                         }
+                         // }
+                         /* List<Quaternion> auxList = new List<Quaternion>();
+                          int p = -1;
+
+                          foreach (Vector3 vec in totalBody[nombre[0]])
+                          {if (p == -1)
+                              {
+                                  auxList.Add(calculateRotation(vec, selfJoints[i].localPosition));
+
+                              }
+                              else
+                              {
+
+                                  auxList.Add(calculateRotation(vec, totalBody[nombre[0]][p]));
+                              }
+                              p++;
+                          }
+
+                          totalRotation.Add(nombre[0], auxList);*/
+
                 }
-
-                totalRotation.Add(nombre[0], auxList);
-
-                break;
             }
+            ejecutar = true;
+
         }
-        ejecutar = true;
     }
     void LateUpdate()
     {
-        /*if (ejecutar)
+        if (ejecutar)
         {
             if (terminado == false)
             {
-               // SetJointsRotation();
+               SetJointsRotation();
                 //SetPosition();
                 posicion += 1;
             }
-        }*/
+        }
     }
 
 
