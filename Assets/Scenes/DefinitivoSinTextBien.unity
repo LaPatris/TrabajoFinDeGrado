@@ -3063,7 +3063,6 @@ MonoBehaviour:
   srcModel: {fileID: 2079259922}
   selfJoints: []
   srcJoints: []
-  srcInitRotation: {x: 0, y: 0, z: 0, w: 0}
   selfInitRotation: {x: 0, y: 0, z: 0, w: 0}
   srcJointsInitRotation: []
   selfJointsInitRotation: []
