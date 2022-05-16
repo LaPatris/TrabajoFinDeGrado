@@ -232,12 +232,12 @@ public class OrganizarDatosFile
         totalBody.Add("LeftArm", codoI);
         totalBody.Add("LeftForeArm", muñecaI);
         totalBody.Add("LeftHand", pulgarI);
-        totalBody.Add("LeftHandThumb1", dedosI);
+        totalBody.Add("LeftHand_end", dedosI);
         totalBody.Add("RightShoulder", hombroD);
         totalBody.Add("RightArm", codoD);
         totalBody.Add("RightForeArm", muñecaD);
         totalBody.Add("RightHand", pulgarD);
-        totalBody.Add("RightHandThumb1", dedosD);
+        totalBody.Add("RightHand_end", dedosD);
         finalizado = true;
         // callBezierCurve( curv, personaje);
     }

@@ -135,21 +135,15 @@ public class animacion : MonoBehaviour
     public void setPosition(Vector3 posicion, float sca, Transform hueso)
     {
         Debug.Log("Hueso en posicion " + hueso.name);
-        //hueso.localPosition = transform.InverseTransformPoint(posicion.x / sca, posicion.y / sca, posicion.z / sca);
+        hueso.localPosition = transform.InverseTransformPoint(posicion.x / sca, posicion.y / sca, posicion.z / sca);
 
 
     }
     public Quaternion setRotation(Transform hueso, Vector3 posicion1, Vector3 posicion2)
     {
-        Debug.Log("Hueso en rotation " + hueso.name);
-        return Quaternion.FromToRotation(posicion1, posicion2);
+       return Quaternion.FromToRotation(posicion1, posicion2);
 
-        /*Vector3 eulersAngulos2 = calculateRotation(hueso.localPosition, selfJoints[0].transform);
-        Debug.Log(eulersAngulos2);
-        hueso.transform.eulerAngles.Set(eulersAngulos2.x, eulersAngulos2.y, eulersAngulos2.z);//Quaternion.Euler(eulersAngulos2.x, eulersAngulos2.y, eulersAngulos2.z);
-       /* hueso.transform.rotation *=Quaternion.LookRotation(posicion, Vector3.forward);
-        hueso.transform.rotation *=Quaternion.LookRotation(posicion, Vector3.right);
-        hueso.transform.rotation *=Quaternion.LookRotation(posicion, Vector3.up);*/
+
     }
     public void setParents2()
     {
@@ -322,18 +316,35 @@ public class animacion : MonoBehaviour
                 // if (hueso.Key.Equals(nombre[0]) )
                 switch (nombre[0])
                 {
+                    case "Hips":
 
+                        List<Quaternion> Hips = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["Hips"].Count-1; pos++)
+                        {//posicion, escala hueso
+                            Vector3 direccion1 = selfJoints[i].up - totalBody["Hips"][pos];
+                            Vector3 direccion2 = selfJoints[i].up - totalBody["Hips"][pos + 1];
+                            Hips.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("Hips", Hips);
+                        break;
 
                     case "LeftUpLeg":
                         List<Quaternion> LeftUpLeg = new List<Quaternion>();
-                        for (int pos = 0; pos < totalBody["LeftUpLeg"].Count; pos += 2)
-                        {
+                        for (int pos = 0; pos < totalBody["LeftUpLeg"].Count-1; pos++)
+                        {//posicion, escala hueso
                             Vector3 direccion1 = totalBody["LeftLeg"][pos] - totalBody["LeftUpLeg"][pos];
                             Vector3 direccion2 = totalBody["LeftLeg"][pos + 1] - totalBody["LeftUpLeg"][pos + 1];
                             LeftUpLeg.Add(setRotation(selfJoints[i], direccion1, direccion2));
                             if (pos == 0)
                             {
-                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                                Quaternion quat = setRotation(selfJoints[i], direccion1, direccion2);
+                                Vector3 prueba = quat.eulerAngles;
+                                Debug.Log("Hueso en rotation LeftLeg  " +" los angulos de euler son " + prueba);
+                                srcJointsInitRotation.Add(quat);
                             }
                         }
                         totalRotation.Add("LeftUpLeg", LeftUpLeg);
@@ -341,7 +352,7 @@ public class animacion : MonoBehaviour
                     case "RightUpLeg":
                         //setPosition(totalBody["RightUpLeg"][0], scala, selfJoints[i]);
                         List<Quaternion> RightUpLeg = new List<Quaternion>();
-                        for (int pos = 0; pos < totalBody["RightUpLeg"].Count; pos += 2)
+                        for (int pos = 0; pos < totalBody["RightUpLeg"].Count-1; pos++)
                         {
                             //fin- inicial
                             Vector3 direccion1 = totalBody["RightLeg"][pos] - totalBody["RightUpLeg"][pos];
@@ -359,6 +370,385 @@ public class animacion : MonoBehaviour
                             }
                         }
                         totalRotation.Add("RightUpLeg", RightUpLeg);
+                        break;
+                    case "Spine":
+                        List<Quaternion> Spine = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["Spine"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["Neck"][pos] - totalBody["Spine"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["Neck"][pos + 1] - totalBody["Spine"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            Spine.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("Spine", Spine);
+                        break;
+                    case "Neck":
+                        List<Quaternion> Neck = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["Neck"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["Head"][pos] - totalBody["Neck"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["Head"][pos + 1] - totalBody["Neck"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            Neck.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("Neck", Neck);
+                        break;
+                    case "LeftShoulder":
+                        List<Quaternion> LeftShoulder = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftShoulder"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["LeftArm"][pos] - totalBody["LeftShoulder"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["LeftArm"][pos + 1] - totalBody["LeftShoulder"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            LeftShoulder.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftShoulder", LeftShoulder);
+                        break;
+                    case "RightShoulder":
+                        List<Quaternion> RightShoulder = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightShoulder"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["RightArm"][pos] - totalBody["RightShoulder"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["RightArm"][pos + 1] - totalBody["RightShoulder"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            RightShoulder.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightShoulder", RightShoulder);
+                        break;
+                    #region HIJO DEleftUpLeg 1
+                    case "LeftLeg":
+                        List<Quaternion> LeftLeg = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftLeg"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["LeftFoot"][pos] - totalBody["LeftLeg"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["LeftFoot"][pos + 1] - totalBody["LeftLeg"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            LeftLeg.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftLeg", LeftLeg);
+                        break;
+                    #endregion
+                    #region HIJO DE RIGHTLEG2
+                    case "RightLeg":
+                        List<Quaternion> RightLeg = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightLeg"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["RightFoot"][pos] - totalBody["RightLeg"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["RightFoot"][pos + 1] - totalBody["RightLeg"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            RightLeg.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightLeg", RightLeg);
+                        break;
+                    #endregion
+                    #region hijo neck 13
+                    case "Head":
+                        List<Quaternion> Head = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["Head"].Count-1; pos++)
+                        {//posicion, escala hueso
+                            Vector3 direccion1 = selfJoints[i].up - totalBody["Head"][pos];
+                            Vector3 direccion2 = selfJoints[i].up - totalBody["Head"][pos + 1];
+                            Head.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("Head", Head);
+                        break;
+                    case "LeftArm": //equivale a nuestro leftArm
+                        List<Quaternion> LeftArm = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftArm"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["LeftForeArm"][pos] - totalBody["LeftArm"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["LeftForeArm"][pos + 1] - totalBody["LeftArm"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            LeftArm.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftArm", LeftArm);
+                        break;
+                    #endregion
+
+                    #region hijo de rightshoulder 14
+                    case "RightArm": //equivale a nuestro right Arm
+                        List<Quaternion> RightArm = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightArm"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["RightForeArm"][pos] - totalBody["RightArm"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["RightForeArm"][pos + 1] - totalBody["RightArm"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            RightArm.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightArm", RightArm);
+                        break;
+                    #endregion
+                    #region HIJO LEFTupper arm 15
+                    case "LeftForeArm":
+                        List<Quaternion> LeftForeArm = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftForeArm"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["LeftHand"][pos] - totalBody["LeftForeArm"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["LeftHand"][pos + 1] - totalBody["LeftForeArm"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            LeftForeArm.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftForeArm", LeftForeArm);
+                        break;
+                    #endregion
+                    #region HIJO de left lower arm 16
+                    case "LeftHand":
+                        List<Quaternion> LeftHand = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftHand"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["LeftHand_end"][pos] - totalBody["LeftHand"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["LeftHand_end"][pos + 1] - totalBody["LeftHand"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            LeftHand.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftHand", LeftHand);
+                        break;
+                    case "LeftHand_end":
+                        List<Quaternion> LeftHand_end = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftHand_end"].Count-1; pos++)
+                        {//posicion, escala hueso
+                            Vector3 direccion1 = selfJoints[i].up - totalBody["LeftHand_end"][pos];
+                            Vector3 direccion2 = selfJoints[i].up - totalBody["LeftHand_end"][pos + 1];
+                            LeftHand_end.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftHand_end", LeftHand_end);
+                        break;
+                    case "RightForeArm":
+                        List<Quaternion> RightForeArm = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightForeArm"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["RightHand"][pos] - totalBody["RightForeArm"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["RightHand"][pos + 1] - totalBody["RightForeArm"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            RightForeArm.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightForeArm", RightForeArm);
+                        break;
+                    case "RightHand":
+                        List<Quaternion> RightHand = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightHand"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["RightHand_end"][pos] - totalBody["RightHand"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["RightHand_end"][pos + 1] - totalBody["RightHand"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            RightHand.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightHand", RightHand);
+                        break;
+                    case "RightHand_end":
+                        List<Quaternion> RightHand_end = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightHand_end"].Count-1; pos++)
+                        {//posicion, escala hueso
+                            Vector3 direccion1 = selfJoints[i].up - totalBody["RightHand_end"][pos];
+                            Vector3 direccion2 = selfJoints[i].up - totalBody["RightHand_end"][pos + 1];
+                            RightHand_end.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightHandThumb1", RightHand_end);
+                        break;
+                    case "LeftFoot":
+                        List<Quaternion> LeftFoot = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftFoot"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["LeftToeBase"][pos] - totalBody["LeftFoot"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["LeftToeBase"][pos + 1] - totalBody["LeftFoot"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            LeftFoot.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftFoot", LeftFoot);
+                        break;
+
+                    case "LeftToeBase":
+                        List<Quaternion> LeftToeBase = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["LeftToeBase"].Count-1; pos++)
+                        {//posicion, escala hueso
+                            Vector3 direccion1 = selfJoints[i].up - totalBody["LeftToeBase"][pos];
+                            Vector3 direccion2 = selfJoints[i].up - totalBody["LeftToeBase"][pos + 1];
+                            LeftToeBase.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("LeftToeBase", LeftToeBase);
+                        break;
+
+                    case "RightFoot"://9
+                        List<Quaternion> RightFoot = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightFoot"].Count-1; pos++)
+                        {
+                            //fin- inicial
+                            Vector3 direccion1 = totalBody["RightToeBase"][pos] - totalBody["RightFoot"][pos];
+                            float distance1 = direccion1.magnitude;
+                            Vector3 direction1 = direccion1 / distance1; // T
+                            Vector3 direccion2 = totalBody["RightToeBase"][pos + 1] - totalBody["RightFoot"][pos + 1];
+                            float distance2 = direccion2.magnitude;
+                            Vector3 direction2 = direccion2 / distance1; // T
+
+
+                            RightFoot.Add(setRotation(selfJoints[i], direction1, direction2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightFoot", RightFoot);
+                        break;
+                    #endregion
+                    case "RightToeBase"://9
+                        List<Quaternion> RightToeBase = new List<Quaternion>();
+                        for (int pos = 0; pos < totalBody["RightToeBase"].Count-1; pos++)
+                        {//posicion, escala hueso
+                            Vector3 direccion1 = selfJoints[i].up - totalBody["RightToeBase"][pos];
+                            Vector3 direccion2 = selfJoints[i].up - totalBody["RightToeBase"][pos + 1];
+                            RightToeBase.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            if (pos == 0)
+                            {
+                                srcJointsInitRotation.Add(setRotation(selfJoints[i], direccion1, direccion2));
+                            }
+                        }
+                        totalRotation.Add("RightToeBase", RightToeBase);
                         break;
                 }
             }
@@ -611,22 +1001,14 @@ public class animacion : MonoBehaviour
                     {
                        // if(nombre[0].Equals("RightUpLeg"))
                         Debug.Log("entro en :" + nombre[0]);
-                        /* selfJoints[i].rotation = selfInitRotation;// setea la rotacion inicial del destino
-                                                                   // selfJoints[i].rotation *= (hueso.Value[posicion]);// la multiplica por la rotacion del hueso del orgen
+                        //internet
+                        selfJoints[i].rotation = selfJointsInitRotation[j];
+                        //la rotación iniail * la actual.
+                        selfJoints[i].rotation *= (srcJointsInitRotation[k] * Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
+                        //selfJoints[i].rotation *= ( Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
+                        //selfJoints[i].rotation *= selfJointsInitRotation[j];
 
-                        // selfJoints[i].rotation *= (srcJointsInitRotation[j] * Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
-                         selfJoints[i].rotation *= srcJointsInitRotation[j];// el self es el que se rellena con los huesos qeu tiene el personaje no el txt
-                         selfJoints[i].rotation *= Quaternion.Inverse(totalRotation["RightUpLeg"][posicion]);
-
-                         selfJoints[i].rotation *= selfJointsInitRotation[j];// y la multiplica por la rotacion inicial del hueso destino}*/
-                        /* selfJoints[i].rotation = selfInitRotation;// setea la rotacion inicial del destino
-                         selfJoints[i].rotation *= (srcJoints[i].rotation);// la multiplica por la rotacion del hueso del orgen
-                         selfJoints[i].rotation *= selfJointsInitRotation[i];// y la multiplica por la rotacion inicial del hueso destino*/
-                        selfJoints[i].rotation = srcJointsInitRotation[k]; ;// setea la rotacion inicial del destino
-                        selfJoints[i].rotation *=  Quaternion.Inverse(totalRotation[nombre[0]][posicion]);// la multiplica por la rotacion del hueso del orgen
-                        selfJoints[i].rotation *= selfJointsInitRotation[j];// y la multiplica por la rotacion inicial del hueso destino
-
-                k++;
+                        k++;
                         
                     }
 
@@ -649,6 +1031,7 @@ public class animacion : MonoBehaviour
 
     private void SetPosition()
     {// setea la nueva posicion( posicion root local- la inicial del origen)+ la inicial del destino
+
         selfRoot.localPosition = (srcRoot.localPosition - srcInitPosition) + selfInitPosition;
     }
 }
