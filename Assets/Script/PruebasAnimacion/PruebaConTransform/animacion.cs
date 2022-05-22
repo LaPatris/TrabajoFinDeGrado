@@ -92,6 +92,7 @@ public class animacion : MonoBehaviour
         }
     }
 
+    //rotaciones iniciales del esqueleto que se ve por pantalla
     private void SetJointsInitRotation()
     {
         //rotacion inciial de los joints
@@ -136,34 +137,41 @@ public class animacion : MonoBehaviour
        return Quaternion.FromToRotation(posicion1, posicion2);
     }
     
+    // se utiliza en los extremos Ya uqe se hace la rotación respecto al vector Up de ese mismo hueso
     public void generarRotacionExtremos(List<Vector3> totalB,String nombre,  Vector3 huesoSiguiente0, Vector3 huesoSiguiente1, List<Quaternion> hueso)
     {
         for (int pos = 0; pos < totalB.Count - 1; pos++)
         {
-
+            //se ccalcula la direccion
             Vector3 direccion1 = huesoSiguiente0 - totalB[pos];
             Vector3 direccion2 = huesoSiguiente1 - totalB[pos+1];
+            //se calcula la rotación y se añade al hueso correspondiente
             hueso.Add(setRotation(direccion1, direccion2));
             if (posicion == 0)
             {
+                // si estamos en el frame 0 se añade a la lista de rotaciones iniciales
                 srcJointsInitRotation.Add(setRotation(direccion1, direccion2));
             }
         }
-        totalRotation.Add(nombre, hueso);
+        // se añade a las rotaciones totales
+                totalRotation.Add(nombre, hueso);
     }
+    //se va a aplicar a todos los huesos a excepción de los extremos. 
     public void generarRotacion( String nombre, List<Vector3> huesoActual, List<Vector3> huesoSiguiente, List<Quaternion> hueso)
     {
         for (int pos = 0; pos < huesoActual.Count - 1; pos++)
         {
-
+            //se caclula la dirección 
             Vector3 direccion1 = huesoSiguiente[pos] - huesoActual[pos];
             Vector3 direccion2 = huesoSiguiente[pos+1] - huesoActual[pos + 1];
+            //se calcula la rotaicón y se añade en la lista del hueso actual
             hueso.Add(setRotation(direccion1, direccion2));
             if (posicion == 0)
-            {
+            {//si estamos en el frame 0 se añade a la lista de rotaciones iniciales
                 srcJointsInitRotation.Add(setRotation(direccion1, direccion2));
             }
         }
+        // se añade al dicccionario 
         totalRotation.Add(nombre, hueso);
     }
     //metodo que se llama desde el txtManager para empezar a setear la animación al objeto
@@ -171,22 +179,23 @@ public class animacion : MonoBehaviour
     {
         //inicializamos los huesos
         InitBones();
+        //calculamos la nueva posicion para el esqueleto y la seteamos 
         Vector3 newPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x, totalBody["Hips"][0].y, totalBody["Hips"][0].z);
         srcRoot.localPosition = newPosition;
+        //calculamos las totaciones iniciales
         SetJointsInitRotation();
-        
+        //calculamos la escala 
         float scalaSelfJoints = selfJoints[2].position.y;
         float scalatotal = totalBody["Hips"][0].y;
         float scala = scalatotal - scalaSelfJoints;
-        this.gameObject.transform.position = new Vector3(totalBody["Hips"][0].x / scala, totalBody["Hips"][0].y / scala, totalBody["Hips"][0].z / scala);
-
+        this.gameObject.transform.position = new Vector3(newPosition.x / scala, newPosition.y / scala, newPosition.z / scala);
+        //recorrems todos los huesos
         for (int i = 0; i < selfJoints.Count; i++)
-        {// poniendo antes bonesToUse tendrá su organización 
-
+        {   //si es distinto a null
             if (selfJoints[i] != null)
-            {
+            {// seleccionamos el nombre
                 String[] nombre = selfJoints[i].ToString().Split(' ');
-               
+               //switch con el nombre y llamada a generar rotación 
                     switch (nombre[0])
                     {
                         case "Hips":
@@ -317,18 +326,19 @@ public class animacion : MonoBehaviour
         ejecutar = true;
 
     }
- /*case "LeftUpLeg":
-            setPosition(totalBody["LeftUpLeg"][0], scala, selfJoints[i]);
-            setRotation(totalBody["LeftUpLeg"][0],  selfJoints[i]);
-*/
+
+
     void LateUpdate()
     {
+        // si se ha leido todas las animaciones
      if (ejecutar)
-        {
+        {// si se han recorrido todas los huesos
             if (terminado == false)
             {
-               SetJointsRotation();
+                //llamamos  al retargeting
+               Retargeting();
                 //SetPosition();
+                // aumentamos la posición del frame
                 posicion += 1;
             }
         }
@@ -338,48 +348,47 @@ public class animacion : MonoBehaviour
                         
                 
     
-
-    private void SetJointsRotation()
+    //MÉTODO DE ROTACIÓN DE RETARGETING
+    private void Retargeting()
     {
+        //indicie de la lista de rotaciones del objeto que se ve en pantalla
         int j = 0;
+        //indicie de la lista de rotaciones de lo que leemos
         int k = 0;
+        // terminado a true
         terminado = true;
-
+        //para recorreernos cada uno de los huesos
        for (int i = 0; i < selfJoints.Count; i++)
-         {   
+         {   //comprobamos que no sea null
             if (selfJoints[i] != null)
             {
                 String[] nombre = selfJoints[i].ToString().Split(' ');
                
+                // lista auxiliar  para el trygetvalue
                 List<Quaternion> aux = new List<Quaternion>();
-
-              // Debug.Log("estoy en :" + selfJoints[i]+ "tiene en lista"+ totalRotation[selfJoints[i].ToString()].ToString());
+                // si existe ese elemento en la lista de rotaciones
                 if (totalRotation.TryGetValue(nombre[0], out aux))
                 {
+                    //primero comprobar si hemos llagado a la ultima posucion de la lista de animación, si es así volver a poner a 0 par que esté en loop
                     if (posicion >= totalRotation[nombre[0]].Count) posicion = 0;
-                    // se pone así el k porquie solo hay una posición inicial así que solo tiene que comprobar que sea menor que el numero de huesos, pero 
-                    //como el numero de huesos hay algunos que estan en null, cogemos el selfjointinitRotation
+                    
+                   // comprobamos que la lista de rotaciones sea mayor a 0, y que los indicies j y k estén dentro de rango
                     if (totalRotation[nombre[0]].Count > 0 && j<selfJointsInitRotation.Count && k< srcJointsInitRotation.Count)
                     {
-                       // if(nombre[0].Equals("RightUpLeg"))
-                      
-                        //internet
+                        // seteamos la rotacion inicial del objeto de pantalla
                         selfJoints[i].rotation = selfJointsInitRotation[j];
-                        //la rotación iniail * la actual.
+                        //le añadimos la rotación  inicial de nuestro objeto y la rotación en el momento
                         selfJoints[i].rotation *= (srcJointsInitRotation[k] * Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
-                        //selfJoints[i].rotation *= ( Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
-                        //selfJoints[i].rotation *= selfJointsInitRotation[j];
-
+                        //aumentamos indice
                         k++;
                         
                     }
-
-
                 }
                 j++;
 
             }
 
+            // si ha terminado poner a false para que pase al siguiente frame
             if (i + 1 >= selfJoints.Count)
             { terminado = false; 
             }
@@ -391,9 +400,21 @@ public class animacion : MonoBehaviour
     }
 
 
+    //No podemos usar las rotaciones
     private void SetPosition()
     {// setea la nueva posicion( posicion root local- la inicial del origen)+ la inicial del destino
 
         selfRoot.localPosition = (srcRoot.localPosition - srcInitPosition) + selfInitPosition;
     }
+    //metodo para parar la animación
+    public void setEjecutar(bool ejecutar)
+    {
+        this.ejecutar = ejecutar;
+    }
+    
 }
+
+/*case "LeftUpLeg":
+           setPosition(totalBody["LeftUpLeg"][0], scala, selfJoints[i]);
+           setRotation(totalBody["LeftUpLeg"][0],  selfJoints[i]);
+*/

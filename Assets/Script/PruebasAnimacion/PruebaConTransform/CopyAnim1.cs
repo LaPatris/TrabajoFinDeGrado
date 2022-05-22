@@ -17,7 +17,7 @@ public class CopyAnim1 : MonoBehaviour
 {
 
     //need for animation
-
+    /*
     [Header("Animations")]
     [SerializeField] AnimationClip animationClipEmpty;// animación vacía que rellenaré
     [SerializeField] AnimationClip animationSelf;//MI ANIMACION
@@ -56,7 +56,7 @@ public class CopyAnim1 : MonoBehaviour
         }*/
     }
     //private void SetNewCurve(float temp, float def, AnimationCurve auxAnim)
-    private void SetNewCurve(float temp, Vector3 def, AnimationCurve auxAnim)
+    /*private void SetNewCurve(float temp, Vector3 def, AnimationCurve auxAnim)
     {
         auxAnim.AddKey(temp, def.magnitude);
      }
@@ -81,7 +81,7 @@ public class CopyAnim1 : MonoBehaviour
         }
     }*/
     //modificamos los valores en función de lo que tiene la animación de lo que hemos leido
-    public void ChangeToMyAnim(Dictionary<String,List<Vector3>>totalBody, float selectedTime)
+  /*/*  public void ChangeToMyAnim(Dictionary<String,List<Vector3>>totalBody, float selectedTime)
     {
         int i = 0;
         float timeXFrame = 0;
@@ -139,7 +139,7 @@ public class CopyAnim1 : MonoBehaviour
         }
        
        
-    }
+    }*/
  /*   public void ChangeToMyAnim(/*AnimationClip animacionNuevaDictionary<String, List<Vector3>> totalBody, float selectedTime)
     {
         //gardamos todas las animaciones en animacion leida
@@ -191,7 +191,7 @@ public class CopyAnim1 : MonoBehaviour
         }
 
     }*/
-    public void CreateNewStateAndConexion()
+   /* public void CreateNewStateAndConexion()
     {
 
         //selecciono el animator de prueba( el animator ya está guardado ahí)
@@ -238,5 +238,5 @@ public class CopyAnim1 : MonoBehaviour
         creadoStado = false;
 
     }
-}
+}*/
 

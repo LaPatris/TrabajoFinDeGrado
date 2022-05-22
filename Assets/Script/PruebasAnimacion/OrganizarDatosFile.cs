@@ -47,11 +47,14 @@ public class OrganizarDatosFile
     [SerializeField] List<Vector3> dedosD = new List<Vector3>();
     #endregion
     //total
+    //diccionario con nombre de hueso y lista de vectores leidos
     [SerializeField] public Dictionary<string, List<Vector3> > totalBody = new Dictionary<string, List<Vector3>>();
     //frames
-    [SerializeField] List<float> timesPerFrame = new List<float>();
+   // [SerializeField] List<float> timesPerFrame = new List<float>();
+   //boolean para decir que se ha terminado de organizar
     [SerializeField] public bool finalizado = false;
-      public void SetListBones(TextAsset TXT, AngleCurveCreator curv, GameObject personaje)
+      //public void SetListBones(TextAsset TXT, AngleCurveCreator curv, GameObject personaje)
+      public void SetListBones(TextAsset TXT, GameObject personaje)
         {
 
 
@@ -61,7 +64,6 @@ public class OrganizarDatosFile
         int posicionInicial = 0;
         Vector3 posicionCadera = Vector3.zero;
         int i = 0;
-        float z = 0f;            //while (/*!myTXT.EndOfStream*/i<2)
             while (!myTXT.EndOfStream)
             {
                 string inp_ln = myTXT.ReadLine();
@@ -75,7 +77,8 @@ public class OrganizarDatosFile
             //el tiempo se encuentra en la posición 0, sñolo cambiará al siguiente valor cuando ya haya hecho todos los huesos del primer frame
             
             float x = float.Parse(auxValue[1], CultureInfo.InvariantCulture);
-            z= float.Parse(auxValue[2], CultureInfo.InvariantCulture);
+            // direcciones de zy idstinta a unity por lo que se cambian 
+           float z=float.Parse(auxValue[2], CultureInfo.InvariantCulture);
             float y = float.Parse(auxValue[3], CultureInfo.InvariantCulture);/// 1500;
             //Vector3 valores = new Vector3(x,  y,z);
             /*if (posicionInicial == 0)
@@ -198,9 +201,10 @@ public class OrganizarDatosFile
 
         myTXT.Close();
       //  calcularTiempo();
-        SetDiccionario( curv, personaje);
+       // SetDiccionario( curv, personaje);
+        SetDiccionario(  personaje);
     }
-    public void calcularTiempo()
+    /*public void calcularTiempo()
     {//todos tienen el mismo numero
         int total = cadera.Count;
         float timexFrame = 1.0f / total;// 1 es igual a un minuto
@@ -210,8 +214,9 @@ public class OrganizarDatosFile
 
         }
 
-    }
-      public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
+    }*/
+     // public void SetDiccionario(AngleCurveCreator curv, GameObject personaje)
+      public void SetDiccionario( GameObject personaje)
     {
         totalBody.Add("Hips", cadera);
         totalBody.Add("RightUpLeg", caderaD);
@@ -242,7 +247,7 @@ public class OrganizarDatosFile
         // callBezierCurve( curv, personaje);
     }
         
-    public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)
+  /*  public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)
     {
 
        //recorremos el diccionario teniendo en cuenta el nombre del hueso y la lista de vectores 3
@@ -258,5 +263,5 @@ public class OrganizarDatosFile
         }
         finalizado = true;
     }
-       
+       */
    }

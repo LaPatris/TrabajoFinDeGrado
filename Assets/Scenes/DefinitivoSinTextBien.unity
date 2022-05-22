@@ -217,7 +217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &63558183
 RectTransform:
   m_ObjectHideFlags: 0
@@ -430,7 +430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &170488509
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1094,7 +1094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &358958379
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1365,6 +1365,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: personaje2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e96495142d4b6b34c8d910d7bc76db39,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1285705782834317151, guid: e96495142d4b6b34c8d910d7bc76db39,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1453,7 +1458,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &832181187
 Transform:
   m_ObjectHideFlags: 0
@@ -1639,14 +1644,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90c90b80c190e2748b095a7c4efcf110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curva: {fileID: 1090372509}
   myTxt: {fileID: 4900000, guid: d2760c7e0ed3c734ba23fff8bc4ab7d7, type: 3}
   finalizado: 0
+  buscado: 0
   personaje: {fileID: 2079259919}
-  copyAnimacion: {fileID: 2079259920}
   copyA: {fileID: 0}
   elegido: {fileID: 341426873}
-  selectedTime: 0
   totalAnimaciomaciones: []
   totalAnimaciomacionesNombres: []
 --- !u!114 &1090372509
@@ -2740,7 +2743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1943099057
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3010,49 +3013,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f487c53d908899439be2cf120fcd79c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationClipEmpty: {fileID: 7400000, guid: ef35d79b59a819745b77d2cf268bf8a3, type: 2}
-  animationSelf: {fileID: -623603649343465320, guid: 6498e786462289a489cbc27ee5baa292,
-    type: 3}
-  changeAnim: 0
-  currentState: {fileID: 0}
-  newTransition: {fileID: 0}
-  animatorController: {fileID: 9100000, guid: 0302ced8d8496c14482d97c0317ce46e, type: 2}
-  defaultState: {fileID: 0}
-  creadoStado: 0
-  myHips: {fileID: 0}
-  misHuesos:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!95 &2079259921
 Animator:
   serializedVersion: 3
