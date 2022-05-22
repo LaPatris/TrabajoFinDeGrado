@@ -29,6 +29,8 @@ public class TxtManager : MonoBehaviour
     [SerializeField] animacion copyA;
     // personaje elegido
     [SerializeField] GameObject elegido;
+    [SerializeField] GestionarMenu menu;
+
 
     int index = 0;
     // las animaciones
@@ -40,7 +42,8 @@ public class TxtManager : MonoBehaviour
     void Start()
     {        /*coger el txt, llamar organizar datos y después a curva de bezier*/
         AssetDatabase.Refresh();
-        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt + ".txt");
+        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + menu.nombreTxt + ".txt");
+        Debug.Log(nombreTxt);
         foreach (TextAsset txt in Resources.FindObjectsOfTypeAll(typeof(TextAsset)) as TextAsset[])
         {
             string nombre =AssetDatabase.GetAssetPath(txt);

@@ -23,14 +23,17 @@ public class GestionarMenu : MonoBehaviour
     [SerializeField] Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
     [SerializeField] TextAsset myTxt;
     [SerializeField] string pathTXT = "Assets/TXT/";
+    public string nombreTxt;
     int index = 0;
     [SerializeField] public bool buscado = false;
     // Start is called before the first frame update
     void Start()
     {
-        //carga.SetActive(false);
-        cf = this.GetComponent<ConvertidorFichero>();
-        
+        LoadString();
+           //carga.SetActive(false);
+           cf = this.GetComponent<ConvertidorFichero>();
+
+        botonEmpezar.SetActive(false);
         AssetDatabase.Refresh();
         //introducir aquí el nombre
         
@@ -46,7 +49,7 @@ public class GestionarMenu : MonoBehaviour
         foreach (TextAsset txt in Resources.FindObjectsOfTypeAll(typeof(TextAsset)) as TextAsset[])
         {
             string nombre = AssetDatabase.GetAssetPath(txt);
-            if (nombre.Contains("TXT") && !nombre.Contains("RtR"))
+            if (nombre.Contains(nombreTxt) && !nombre.Contains("RtR"))
             {
                 Debug.Log(nombre);
                 string[] valor = nombre.Split('.');
@@ -63,8 +66,8 @@ public class GestionarMenu : MonoBehaviour
     }
     public void buscarFicheroPorTexto()
     {
-        string nuevoTexto = textoEntrada.GetComponent<TMP_InputField>().text;;
-        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nuevoTexto+".txt");
+        nombreTxt = textoEntrada.GetComponent<TMP_InputField>().text;
+        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt + ".txt");
         Debug.Log(lista);
         encontrarFicheros();
         if (totalAnimaciomacionesNombres.Count == 0)
@@ -75,7 +78,10 @@ public class GestionarMenu : MonoBehaviour
         }
         else
         {
+
+            botonEmpezar.SetActive(true);
             buscado = true;
+
         }
 
     }
@@ -111,8 +117,6 @@ public class GestionarMenu : MonoBehaviour
                 string solucion = cf.nameAndFile(myTxt) ? "El fichero se creó perfectamete" : "No se ha podido crear el fichero";
                 ficheroAdvertencia.text = solucion;
 
-                botonEmpezar.SetActive(false);
-
             }
 
            
@@ -127,5 +131,17 @@ public class GestionarMenu : MonoBehaviour
     {
         SceneManager.LoadScene("DefinitivoSinTextBien");
 
+    }
+    public void SaveString(string value)
+    {
+        PlayerPrefs.SetString("nombreTxt", value);
+    }
+    public void LoadString()
+    {
+        nombreTxt = PlayerPrefs.GetString("nombreTxt");
+    }
+    public void OnDestroy()
+    {
+        SaveString(nombreTxt);
     }
 }
