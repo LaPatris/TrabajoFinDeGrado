@@ -40,21 +40,55 @@ public class TxtManager : MonoBehaviour
     [SerializeField] Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
     // Start is called before the first frame update
     void Start()
-    {        /*coger el txt, llamar organizar datos y después a curva de bezier*/
+    {
         AssetDatabase.Refresh();
-        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + menu.nombreTxt + ".txt");
-        Debug.Log(nombreTxt);
-        foreach (TextAsset txt in Resources.FindObjectsOfTypeAll(typeof(TextAsset)) as TextAsset[])
+        List<string> prueba = new List<string>();
+        if (!menu.listaAnimaciones.Equals(""))
         {
-            string nombre =AssetDatabase.GetAssetPath(txt);
-            if (nombre.Contains(nombreTxt) && nombre.Contains("RtR"))
-            { todoTXT.Add(txt.name, txt);
-                totalAnimaciomacionesNombres.Add(txt.name);
+            Debug.Log("en txtmanager");
+            prueba = menu.listaAnimaciones.Split('_').ToList();
+            Debug.Log(menu.listaAnimaciones);
+            foreach(string p in prueba)
+            {
+
+                TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(menu.pathTXT +p+ "RtR.txt");
             }
+            Debug.Log(prueba);
+            //comprobamos que sigan existiendo los ficheros guardados
 
+            /*for (int i = 0; i < prueba.Count; i++)
+            {
+                Debug.Log(prueba[i]);
+                TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(prueba[i] + "RtR.txt");
+                if (lista == null)
+                {
+                    Debug.Log("no existe");
+
+                    prueba[i] = "";
+
+
+                }
+                else
+                {
+
+                    totalAnimaciomacionesNombres.Add(lista.name);
+                }
+
+
+            }*/
         }
-        buscado = true;
+   
+          foreach (TextAsset txt in Resources.FindObjectsOfTypeAll(typeof(TextAsset)) as TextAsset[])
+          {
+              string nombre =AssetDatabase.GetAssetPath(txt);
+              if (nombre.Contains(nombreTxt) && nombre.Contains("RtR") )
+              { todoTXT.Add(txt.name, txt);
+                totalAnimaciomacionesNombres.Add(txt.name);
+              }
 
+          }
+          buscado = true;
+        
         orgDatos = new OrganizarDatosFile();
         personaje = GameObject.Find("P4DEF");
         //copyAnimacion = personaje.GetComponent<CopyAnim1>();

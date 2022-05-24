@@ -19,20 +19,55 @@ public class GestionarMenu : MonoBehaviour
     [SerializeField] ConvertidorFichero cf;
     [SerializeField] Text ficheroAdvertencia;
     [SerializeField] List<string> totalAnimaciomacionesNombres = new List<string>();
+    public string listaAnimaciones="";
     [SerializeField] List<string> totalAnimaciomacionesNombresrTr = new List<string>();
-    [SerializeField] Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
+    [SerializeField] List<string> animacionesExistentes = new List<string>();
+   [SerializeField] Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
     [SerializeField] TextAsset myTxt;
-    [SerializeField] string pathTXT = "Assets/TXT/";
+    public string pathTXT = "Assets/TXT/";
     public string nombreTxt;
     int index = 0;
+    bool yaExite = false;
     [SerializeField] public bool buscado = false;
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         LoadString();
+        //listaAnimaciones = "";
+    }
+    void Start()
+    {
            //carga.SetActive(false);
            cf = this.GetComponent<ConvertidorFichero>();
+        if (!listaAnimaciones.Equals(""))
+        {
+            animacionesExistentes = listaAnimaciones.Split('_').ToList();
+            Debug.Log(listaAnimaciones);
+            //comprobamos que sigan existiendo los ficheros guardados
 
+            for (int i=0; i<animacionesExistentes.Count;i++)
+            {
+                Debug.Log(animacionesExistentes[i]);
+                TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + animacionesExistentes[i]+".txt");
+                if (lista == null)
+                {
+                    Debug.Log("no existe");
+
+                    animacionesExistentes[i] = "";
+
+
+                }
+                else
+                {
+                    Debug.Log("Bien");
+                    listaAnimaciones +="_"+ animacionesExistentes[i];
+                }
+
+
+            }
+        }
+
+        //una vez revisados volvemos a introducir en la lista
         botonEmpezar.SetActive(false);
         AssetDatabase.Refresh();
         //introducir aquí el nombre
@@ -51,38 +86,50 @@ public class GestionarMenu : MonoBehaviour
             string nombre = AssetDatabase.GetAssetPath(txt);
             if (nombre.Contains(nombreTxt) && !nombre.Contains("RtR"))
             {
-                Debug.Log(nombre);
                 string[] valor = nombre.Split('.');
                 TextAsset prueba = (TextAsset)AssetDatabase.LoadMainAssetAtPath(valor[0] + "RtR.txt");
+                //quiere decir que no existe el documento reescrito
                 if (prueba == null)
                 {
+                    //entonces añadimos en el diccionario
                     todoTXT.Add(txt.name, txt);
                     totalAnimaciomacionesNombres.Add(txt.name);
+                    buscado = true;
                 }
             }
 
         }
        
     }
+    //se llama desde el boton
     public void buscarFicheroPorTexto()
     {
         nombreTxt = textoEntrada.GetComponent<TMP_InputField>().text;
-        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt + ".txt");
-        Debug.Log(lista);
-        encontrarFicheros();
-        if (totalAnimaciomacionesNombres.Count == 0)
+        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt+".txt" );
+        bool existe = false;
+        if (lista != null)
         {
-            buscado = false;
-            botonEmpezar.SetActive(false);
-            ficheroAdvertencia.text = "No existe ningún fichero Con ese nombre";
+            animacionesExistentes = listaAnimaciones.Split('_').ToList();
+            Debug.Log(lista.name);
+            Debug.Log(listaAnimaciones);
+            foreach (string nombre in animacionesExistentes)
+            {
+                if (nombre.Equals(lista.name))
+                {
+                    Debug.Log("existe");
+                    existe = true;
+                    botonEmpezar.SetActive(true);
+                    buscado = false;
+                }
+            }
+            if (!existe) encontrarFicheros();
         }
         else
         {
-
-            botonEmpezar.SetActive(true);
-            buscado = true;
+            ficheroAdvertencia.text = "No existe fichero con ese nombre";
 
         }
+     
 
     }
 
@@ -105,17 +152,19 @@ public class GestionarMenu : MonoBehaviour
         {
             GUILayout.BeginArea(new Rect(100, 50, 100,100));
             GUILayout.FlexibleSpace();
-            EditorGUILayout.LabelField("Select");
+            EditorGUILayout.LabelField("Selecciona la animación buscada y pulsa Reescribir");
             GUILayout.BeginVertical("Box");
             //guardo el indice de la animación que he seleccionado
             index = GUILayout.SelectionGrid(index, totalAnimaciomacionesNombres.Select(x => x).ToArray(), 1);
             if (GUILayout.Button("Reescribir"))
             {
-                Debug.Log("La aniamcion seleccionada es  : " + totalAnimaciomacionesNombres[index]);
-               
                 myTxt = todoTXT[totalAnimaciomacionesNombres[index]];
+                Debug.Log(myTxt.name);
                 string solucion = cf.nameAndFile(myTxt) ? "El fichero se creó perfectamete" : "No se ha podido crear el fichero";
                 ficheroAdvertencia.text = solucion;
+                botonEmpezar.SetActive(true);
+                //metemos el nombre del fichero
+                 listaAnimaciones = listaAnimaciones + "_"+totalAnimaciomacionesNombres[index];
 
             }
 
@@ -134,14 +183,16 @@ public class GestionarMenu : MonoBehaviour
     }
     public void SaveString(string value)
     {
-        PlayerPrefs.SetString("nombreTxt", value);
+        PlayerPrefs.SetString("listaAnimaciones", listaAnimaciones);
     }
     public void LoadString()
     {
-        nombreTxt = PlayerPrefs.GetString("nombreTxt");
+        listaAnimaciones = PlayerPrefs.GetString("listaAnimaciones");
+        
     }
     public void OnDestroy()
     {
-        SaveString(nombreTxt);
+        SaveString(listaAnimaciones);
+       
     }
 }
