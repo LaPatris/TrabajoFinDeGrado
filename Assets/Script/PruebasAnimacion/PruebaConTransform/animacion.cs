@@ -411,6 +411,18 @@ public class animacion : MonoBehaviour
     {
         this.ejecutar = ejecutar;
     }
+    public void borrado()
+    {
+        selfJoints.Clear();
+        srcJoints.Clear();
+        totalRotation.Clear();
+        srcJointsInitRotation.Clear();
+        selfJointsInitRotation.Clear();
+        
+        ejecutar = false;
+        posicion = 0;
+        terminado = false;
+    }
     
 }
 

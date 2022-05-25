@@ -41,7 +41,6 @@ public class GestionarMenu : MonoBehaviour
         if (!listaAnimaciones.Equals(""))
         {
             animacionesExistentes = listaAnimaciones.Split('_').ToList();
-            Debug.Log(listaAnimaciones);
             //comprobamos que sigan existiendo los ficheros guardados
 
             for (int i=0; i<animacionesExistentes.Count;i++)
@@ -57,8 +56,6 @@ public class GestionarMenu : MonoBehaviour
 
                 }
                 
-
-
             }
         }
 
@@ -73,7 +70,7 @@ public class GestionarMenu : MonoBehaviour
     public void FixedUpdate()
     {
 
-        //listaAnimaciones = "";
+       // listaAnimaciones = "";
     }
     public void encontrarFicheros()
     {
@@ -113,7 +110,10 @@ public class GestionarMenu : MonoBehaviour
             {
                 Debug.Log(lista2.name);
                 //ya existe
-                if (listaAnimaciones.Contains(lista2.name))
+
+                Debug.Log(listaAnimaciones+ "todo"+ lista2.name);
+
+                if (listaAnimaciones.Contains(lista.name))
                 {
                     Debug.Log("existe");
                     
@@ -121,7 +121,7 @@ public class GestionarMenu : MonoBehaviour
                 else
                 {
 
-                    Debug.Log(lista2.name);
+                    Debug.Log("supuestamente no está escrito el nombre ya"+ lista.name);
                     listaAnimaciones += "_" + lista.name;
                 }
                 existe = true;

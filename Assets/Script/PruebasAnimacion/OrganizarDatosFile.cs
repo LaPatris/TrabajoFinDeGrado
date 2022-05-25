@@ -246,7 +246,39 @@ public class OrganizarDatosFile
         finalizado = true;
         // callBezierCurve( curv, personaje);
     }
+    public void borrado()
+    {
+        //se va a setear a null todo
         
+        totalBody.Clear();
+        cadera.Clear();
+        caderaD.Clear();
+        rodillaD.Clear();
+        tobilloD.Clear();
+        puntaD.Clear();
+        puntaD.Clear();
+        caderaI.Clear();
+        rodillaI.Clear();
+        tobilloI.Clear();
+        puntaI.Clear();
+        puntaI.Clear();
+        pecho.Clear();
+        pecho.Clear();
+        cuellobajo.Clear();
+        cabeza.Clear();
+        hombroI.Clear();
+        codoI.Clear();
+        muñecaI.Clear();
+        pulgarI.Clear();
+        dedosI.Clear();
+        hombroD.Clear();
+        codoD.Clear();
+        muñecaD.Clear();
+        pulgarD.Clear();
+        dedosD.Clear();
+        finalizado = false;
+    }
+
   /*  public void callBezierCurve(AngleCurveCreator curv, GameObject personaje)
     {
 

@@ -45,7 +45,6 @@ public class TxtManager : MonoBehaviour
         List<string> prueba = new List<string>();
         if (!menu.listaAnimaciones.Equals(""))
         {
-            Debug.Log("en txtmanager");
             prueba = menu.listaAnimaciones.Split('_').ToList();
             Debug.Log(menu.listaAnimaciones);
             foreach(string p in prueba)
@@ -54,28 +53,7 @@ public class TxtManager : MonoBehaviour
                 TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(menu.pathTXT +p+ "RtR.txt");
             }
             Debug.Log(prueba);
-            //comprobamos que sigan existiendo los ficheros guardados
-
-            /*for (int i = 0; i < prueba.Count; i++)
-            {
-                Debug.Log(prueba[i]);
-                TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(prueba[i] + "RtR.txt");
-                if (lista == null)
-                {
-                    Debug.Log("no existe");
-
-                    prueba[i] = "";
-
-
-                }
-                else
-                {
-
-                    totalAnimaciomacionesNombres.Add(lista.name);
-                }
-
-
-            }*/
+            
         }
    
           foreach (TextAsset txt in Resources.FindObjectsOfTypeAll(typeof(TextAsset)) as TextAsset[])
@@ -91,13 +69,13 @@ public class TxtManager : MonoBehaviour
         
         orgDatos = new OrganizarDatosFile();
         personaje = GameObject.Find("P4DEF");
+        copyA = copyA = personaje.GetComponent<animacion>();
         //copyAnimacion = personaje.GetComponent<CopyAnim1>();
-        copyA = personaje.GetComponent<animacion>();
-       // curva = this.gameObject.GetComponent<AngleCurveCreator>();
-       // orgDatos.SetListBones(myTxt, curva, personaje);
-       //llama para crear el diccionario de las animaciones 
- 
-        
+        // curva = this.gameObject.GetComponent<AngleCurveCreator>();
+        // orgDatos.SetListBones(myTxt, curva, personaje);
+        //llama para crear el diccionario de las animaciones 
+
+
     }
 
     [MenuItem("Window/Animation Copier")]
@@ -141,7 +119,7 @@ public class TxtManager : MonoBehaviour
                     //totalAnimaciomaciones.Add(curva.animacionFinal);
                     //totalAnimaciomaciones.Add(curva.animacionBezierHueso);
 
-                         copyA.initAll(orgDatos.totalBody);
+                    copyA.initAll(orgDatos.totalBody);
 
                 }
                 //llamo a la accion de cambiar de estado
@@ -162,6 +140,8 @@ public class TxtManager : MonoBehaviour
             if (GUILayout.Button("Remove"))
             {// si damos a remove solo si el estado esta creado eliminamos el estado y la transición 
                 copyA.setEjecutar(false);
+                copyA.borrado();
+                orgDatos.borrado();
             }
             GUILayout.EndVertical();
 
