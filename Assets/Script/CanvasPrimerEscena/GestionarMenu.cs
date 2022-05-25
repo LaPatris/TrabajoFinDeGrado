@@ -33,7 +33,6 @@ public class GestionarMenu : MonoBehaviour
     private void Awake()
     {
         LoadString();
-        //listaAnimaciones = "";
     }
     void Start()
     {
@@ -57,11 +56,7 @@ public class GestionarMenu : MonoBehaviour
 
 
                 }
-                else
-                {
-                    Debug.Log("Bien");
-                    listaAnimaciones +="_"+ animacionesExistentes[i];
-                }
+                
 
 
             }
@@ -77,7 +72,8 @@ public class GestionarMenu : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        
+
+        //listaAnimaciones = "";
     }
     public void encontrarFicheros()
     {
@@ -109,20 +105,41 @@ public class GestionarMenu : MonoBehaviour
         bool existe = false;
         if (lista != null)
         {
+            Debug.Log("Existe el fichero");
+
+            TextAsset lista2 = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt + "RtR.txt");
             animacionesExistentes = listaAnimaciones.Split('_').ToList();
-            Debug.Log(lista.name);
-            Debug.Log(listaAnimaciones);
+            if (lista2 != null)
+            {
+                Debug.Log(lista2.name);
+                //ya existe
+                if (listaAnimaciones.Contains(lista2.name))
+                {
+                    Debug.Log("existe");
+                    
+                }
+                else
+                {
+
+                    Debug.Log(lista2.name);
+                    listaAnimaciones += "_" + lista.name;
+                }
+                existe = true;
+                botonEmpezar.SetActive(true);
+                buscado = false;
+            }
+            else
+            {
+                encontrarFicheros();
+            }
+            /*
             foreach (string nombre in animacionesExistentes)
             {
                 if (nombre.Equals(lista.name))
                 {
-                    Debug.Log("existe");
-                    existe = true;
-                    botonEmpezar.SetActive(true);
-                    buscado = false;
+                   
                 }
-            }
-            if (!existe) encontrarFicheros();
+            }*/
         }
         else
         {
@@ -164,7 +181,8 @@ public class GestionarMenu : MonoBehaviour
                 ficheroAdvertencia.text = solucion;
                 botonEmpezar.SetActive(true);
                 //metemos el nombre del fichero
-                 listaAnimaciones = listaAnimaciones + "_"+totalAnimaciomacionesNombres[index];
+                if (!listaAnimaciones.Contains(totalAnimaciomacionesNombres[index]))
+                    listaAnimaciones = listaAnimaciones + "_"+totalAnimaciomacionesNombres[index];
 
             }
 
