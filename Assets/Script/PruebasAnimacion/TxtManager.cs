@@ -68,7 +68,7 @@ public class TxtManager : MonoBehaviour
           buscado = true;
         
         orgDatos = new OrganizarDatosFile();
-        personaje = GameObject.Find("P4DEF");
+       // personaje = GameObject.Find("P4DEF");
         copyA = copyA = personaje.GetComponent<animacion>();
         //copyAnimacion = personaje.GetComponent<CopyAnim1>();
         // curva = this.gameObject.GetComponent<AngleCurveCreator>();

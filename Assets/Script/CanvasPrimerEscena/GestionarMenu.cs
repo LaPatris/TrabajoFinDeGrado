@@ -86,6 +86,13 @@ public class GestionarMenu : MonoBehaviour
                 {
                     //entonces añadimos en el diccionario
                     todoTXT.Add(txt.name, txt);
+                    bool tiene = false;
+                    foreach(string s in totalAnimaciomacionesNombres)
+                    {
+                        if (s.Equals(txt.name))
+                            tiene = true;
+                    }
+                    if(tiene==false)
                     totalAnimaciomacionesNombres.Add(txt.name);
                     buscado = true;
                 }
@@ -167,9 +174,8 @@ public class GestionarMenu : MonoBehaviour
     {
         if (buscado && totalAnimaciomacionesNombres.Count>0)
         {
-            GUILayout.BeginArea(new Rect(100, 50, 100,100));
+            GUILayout.BeginArea(new Rect(510, 270, 100,100));
             GUILayout.FlexibleSpace();
-            EditorGUILayout.LabelField("Selecciona la animación buscada y pulsa Reescribir");
             GUILayout.BeginVertical("Box");
             //guardo el indice de la animación que he seleccionado
             index = GUILayout.SelectionGrid(index, totalAnimaciomacionesNombres.Select(x => x).ToArray(), 1);
