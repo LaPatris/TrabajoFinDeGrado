@@ -35,6 +35,7 @@ public class animacion : MonoBehaviour
     [SerializeField] int posicion = 0;
     //el retargeting se pone la rotación de todos los huesos, cuando se ha acabado se puede pasar al siguiente frame
     bool terminado = false;
+    public Vector3 posicionInicial;
     // los huesos que se van a utilziar en función del humanBody
     [SerializeField]
     static HumanBodyBones[] bonesToUse = new[]{
@@ -177,6 +178,7 @@ public class animacion : MonoBehaviour
     //metodo que se llama desde el txtManager para empezar a setear la animación al objeto
     public void initAll(Dictionary<String, List<Vector3>> totalBody)
     {
+        posicionInicial = this.transform.position;
         //inicializamos los huesos
         InitBones();
         //calculamos la nueva posicion para el esqueleto y la seteamos 

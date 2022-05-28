@@ -23,12 +23,12 @@ public class TxtManager : MonoBehaviour
 
     [SerializeField] public bool buscado = false;
     // el personaje a que se le va a aplicar la animación 
-    [SerializeField] GameObject personaje;
+    public GameObject personaje;
    // [SerializeField] CopyAnim1 copyAnimacion;
    // clase donde se hace el retargeting
-    [SerializeField] animacion copyA;
+    public animacion copyA;
     // personaje elegido
-    [SerializeField] GameObject elegido;
+   //GameObject elegido;
     [SerializeField] GestionarMenu menu;
 
 
@@ -69,7 +69,6 @@ public class TxtManager : MonoBehaviour
         
         orgDatos = new OrganizarDatosFile();
        // personaje = GameObject.Find("P4DEF");
-        copyA = copyA = personaje.GetComponent<animacion>();
         //copyAnimacion = personaje.GetComponent<CopyAnim1>();
         // curva = this.gameObject.GetComponent<AngleCurveCreator>();
         // orgDatos.SetListBones(myTxt, curva, personaje);
@@ -97,7 +96,7 @@ public class TxtManager : MonoBehaviour
     }*/
     public void OnGUI()
     {
-        if ( buscado)
+        if ( buscado && personaje!=null)
         {
             
             EditorGUILayout.LabelField("Select");
@@ -106,7 +105,7 @@ public class TxtManager : MonoBehaviour
             index = GUILayout.SelectionGrid(index, totalAnimaciomacionesNombres.Select(x => x).ToArray(), 1);
             if (GUILayout.Button("Copy") )
             {
-                elegido.active = false;
+                //elegido.active = false;
                 // si doy a copiar guardo la animacion
                 //selectedAnimationClip = animationClips[index];
                 Debug.Log("La aniamcion seleccionada es  : " + totalAnimaciomacionesNombres[index]);
@@ -142,6 +141,7 @@ public class TxtManager : MonoBehaviour
                 copyA.setEjecutar(false);
                 copyA.borrado();
                 orgDatos.borrado();
+                personaje.transform.position = copyA.posicionInicial;
             }
             GUILayout.EndVertical();
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,41 +7,37 @@ using UnityEngine.UI;
 public class UImanager : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] GameObject []personajeSeleccionado= new GameObject[4];
+    [SerializeField] GameObject personajeseleccionado;
+    [SerializeField] TxtManager txtManger;
     [Header("Botones")]
     [SerializeField] Button botonCosa;
     [SerializeField] Button botonNiña;
     [SerializeField] Button botonVieja;
+    [SerializeField] Button botonPoli;
     bool[] presionado = new bool[4];
 
-    
-    void Start()
+    public void setCosa()
     {
-        personajeSeleccionado[0] = GameObject.Find("personaje1");
-        personajeSeleccionado[1] = GameObject.Find("personaje2");
-        personajeSeleccionado[2] = GameObject.Find("personaje3");
-        personajeSeleccionado[3] = GameObject.Find("P4DEF");
-        botonVieja.onClick.AddListener(()=> {
-            if (!presionado[2])
-            {
-                personajeSeleccionado[2].AddComponent<Personaje>();
-                presionado[2] = true;
-            }
+        txtManger.personaje = GameObject.Find("personaje1Modificado");
 
-        });
-    
+        txtManger.copyA = txtManger.personaje.GetComponent<animacion>();
     }
-    
-    public void Awake()
-    {
-        
-    } 
 
-    // Update is called once per frame
-    void Update()
+    public void setNiña()
     {
-        
+        txtManger.personaje = GameObject.Find("personajeNiña");
     }
+    public void setVieja()
+    {
+        txtManger.personaje = GameObject.Find("personajeVieja");
+    }
+    public void setPoli()
+    {
+        txtManger.personaje = GameObject.Find("P4DEF");
+
+        txtManger.copyA = txtManger.personaje.GetComponent<animacion>();
+    }
+  
 
 
 }
