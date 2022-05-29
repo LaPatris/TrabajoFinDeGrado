@@ -16,9 +16,9 @@ public class GestionarMenu : MonoBehaviour
     [SerializeField] GameObject textoEntrada;
 
     [Header("Funcionalidad")]
-    [SerializeField] ConvertidorFichero cf;
+    public ConvertidorFichero cf;
     [SerializeField] Text ficheroAdvertencia;
-    [SerializeField] List<string> totalAnimaciomacionesNombres = new List<string>();
+   public List<string> totalAnimaciomacionesNombres = new List<string>();
     public string listaAnimaciones="";
     [SerializeField] List<string> totalAnimaciomacionesNombresrTr = new List<string>();
     [SerializeField] List<string> animacionesExistentes = new List<string>();
@@ -70,7 +70,7 @@ public class GestionarMenu : MonoBehaviour
     public void FixedUpdate()
     {
 
-       // listaAnimaciones = "";
+       //listaAnimaciones = "";
     }
     public void encontrarFicheros()
     {

@@ -11,6 +11,7 @@ public class TxtManager : MonoBehaviour
     // objeto de clase organizar datos
 
     [SerializeField] OrganizarDatosFile orgDatos;
+    [SerializeField] UImanager uiManager;
 
     //[SerializeField] AngleCurveCreator curva;
     //[SerializeField] AngleCurveCreator curva;
@@ -36,8 +37,8 @@ public class TxtManager : MonoBehaviour
     // las animaciones
     [SerializeField] List<AnimationClip> totalAnimaciomaciones = new List<AnimationClip>();
     //el nomrbe de las animaciones
-    [SerializeField] List<string> totalAnimaciomacionesNombres = new List<string>();
-    [SerializeField] Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
+    public List<string> totalAnimaciomacionesNombres = new List<string>();
+    public Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
     // Start is called before the first frame update
     void Start()
     {
@@ -109,7 +110,7 @@ public class TxtManager : MonoBehaviour
                 // si doy a copiar guardo la animacion
                 //selectedAnimationClip = animationClips[index];
                 Debug.Log("La aniamcion seleccionada es  : " + totalAnimaciomacionesNombres[index]);
-
+               
                 myTxt = todoTXT[totalAnimaciomacionesNombres[index]];
                 orgDatos.SetListBones(myTxt, personaje);
                 //si se ha terminado de organizar los datos en un diccionario 
@@ -141,6 +142,9 @@ public class TxtManager : MonoBehaviour
                 copyA.setEjecutar(false);
                 copyA.borrado();
                 orgDatos.borrado();
+
+                uiManager.panel.SetActive(false);
+                uiManager.botonMas.SetActive(false);
                 personaje.transform.position = copyA.posicionInicial;
             }
             GUILayout.EndVertical();

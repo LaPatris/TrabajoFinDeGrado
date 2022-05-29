@@ -176,21 +176,26 @@ public class animacion : MonoBehaviour
         totalRotation.Add(nombre, hueso);
     }
     //metodo que se llama desde el txtManager para empezar a setear la animación al objeto
-    public void initAll(Dictionary<String, List<Vector3>> totalBody)
+    public void posicioneEn0()
     {
         posicionInicial = this.transform.position;
+        this.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+    }
+    public void initAll(Dictionary<String, List<Vector3>> totalBody)
+    {
+        //posicionInicial = this.transform.position;
         //inicializamos los huesos
         InitBones();
         //calculamos la nueva posicion para el esqueleto y la seteamos 
-        Vector3 newPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x, totalBody["Hips"][0].y, totalBody["Hips"][0].z);
-        srcRoot.localPosition = newPosition;
+        //Vector3 newPosition = transform.InverseTransformPoint(totalBody["Hips"][0].x, totalBody["Hips"][0].y, totalBody["Hips"][0].z);
+        //srcRoot.localPosition = newPosition;
         //calculamos las totaciones iniciales
         SetJointsInitRotation();
         //calculamos la escala 
         float scalaSelfJoints = selfJoints[2].position.y;
         float scalatotal = totalBody["Hips"][0].y;
         float scala = scalatotal - scalaSelfJoints;
-        this.gameObject.transform.position = new Vector3(newPosition.x / scala, newPosition.y / scala, newPosition.z / scala);
+        //this.gameObject.transform.position = new Vector3(newPosition.x / scala, newPosition.y / scala, newPosition.z / scala);
         //recorrems todos los huesos
         for (int i = 0; i < selfJoints.Count; i++)
         {   //si es distinto a null
