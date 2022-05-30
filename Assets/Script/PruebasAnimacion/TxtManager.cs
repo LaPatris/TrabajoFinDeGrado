@@ -100,7 +100,6 @@ public class TxtManager : MonoBehaviour
         if ( buscado && personaje!=null)
         {
             
-            EditorGUILayout.LabelField("Select");
             GUILayout.BeginVertical("Box");
             //guardo el indice de la animación que he seleccionado
             index = GUILayout.SelectionGrid(index, totalAnimaciomacionesNombres.Select(x => x).ToArray(), 1);

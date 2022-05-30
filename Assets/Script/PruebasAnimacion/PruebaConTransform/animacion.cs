@@ -383,7 +383,10 @@ public class animacion : MonoBehaviour
                     if (totalRotation[nombre[0]].Count > 0 && j<selfJointsInitRotation.Count && k< srcJointsInitRotation.Count)
                     {
                         // seteamos la rotacion inicial del objeto de pantalla
-                        selfJoints[i].rotation = selfJointsInitRotation[j];
+                
+                            selfJoints[i].rotation = selfJointsInitRotation[j];
+                        
+                      
                         //le añadimos la rotación  inicial de nuestro objeto y la rotación en el momento
                         selfJoints[i].rotation *= (srcJointsInitRotation[k] * Quaternion.Inverse(totalRotation[nombre[0]][posicion]));
                         //aumentamos indice
