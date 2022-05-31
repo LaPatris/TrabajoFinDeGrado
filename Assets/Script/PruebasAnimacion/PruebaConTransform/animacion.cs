@@ -192,7 +192,7 @@ public class animacion : MonoBehaviour
         //calculamos las totaciones iniciales
         SetJointsInitRotation();
         //calculamos la escala 
-        float scalaSelfJoints = selfJoints[2].position.y;
+        float scalaSelfJoints = selfJoints[0].position.y;
         float scalatotal = totalBody["Hips"][0].y;
         float scala = scalatotal - scalaSelfJoints;
         //this.gameObject.transform.position = new Vector3(newPosition.x / scala, newPosition.y / scala, newPosition.z / scala);
