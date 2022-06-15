@@ -160,7 +160,7 @@ MonoBehaviour:
   totalAnimaciomacionesNombresrTr: []
   animacionesExistentes: []
   myTxt: {fileID: 0}
-  pathTXT: Assets/TXT/
+  pathTXT: Assets/BVH/
   nombreTxt: 
   buscado: 0
 --- !u!4 &91428921

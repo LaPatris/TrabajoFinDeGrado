@@ -24,7 +24,7 @@ public class GestionarMenu : MonoBehaviour
     [SerializeField] List<string> animacionesExistentes = new List<string>();
    [SerializeField] Dictionary<string, TextAsset> todoTXT = new Dictionary<string, TextAsset>();
     [SerializeField] TextAsset myTxt;
-    public string pathTXT = "Assets/TXT/";
+    public string pathTXT = "Assets/BVH/";
     public string nombreTxt;
     int index = 0;
     bool yaExite = false;
@@ -46,14 +46,20 @@ public class GestionarMenu : MonoBehaviour
             for (int i=0; i<animacionesExistentes.Count;i++)
             {
                 Debug.Log(animacionesExistentes[i]);
-                TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + animacionesExistentes[i]+".txt");
-                if (lista == null)
+
+                if (!animacionesExistentes[i].Equals(""))
                 {
-                    Debug.Log("no existe");
+                    string[] lineas = File.ReadAllLines(animacionesExistentes[i]);
 
-                    animacionesExistentes[i] = "";
+                    if (lineas == null)
+                    {
+                        Debug.Log("no existe");
+
+                        animacionesExistentes[i] = "";
 
 
+                    }
+                    else { Debug.Log("existe"); }
                 }
                 
             }
@@ -77,12 +83,16 @@ public class GestionarMenu : MonoBehaviour
         foreach (TextAsset txt in Resources.FindObjectsOfTypeAll(typeof(TextAsset)) as TextAsset[])
         {
             string nombre = AssetDatabase.GetAssetPath(txt);
-            if (nombre.Contains(nombreTxt) && !nombre.Contains("RtR"))
+            Debug.Log("Nombre" + nombre);
+            if (nombre.Contains(nombreTxt) )
             {
                 string[] valor = nombre.Split('.');
-                TextAsset prueba = (TextAsset)AssetDatabase.LoadMainAssetAtPath(valor[0] + "RtR.txt");
+                Debug.Log(valor[0]+ valor[1]);
+                TextAsset prueba = (TextAsset)AssetDatabase.LoadMainAssetAtPath(valor[0]+ ".bvh");
+
+                string[] lista = File.ReadAllLines(valor[0]+valor[1]);
                 //quiere decir que no existe el documento reescrito
-                if (prueba == null)
+                if (lista == null)
                 {
                     //entonces añadimos en el diccionario
                     todoTXT.Add(txt.name, txt);
@@ -105,49 +115,38 @@ public class GestionarMenu : MonoBehaviour
     public void buscarFicheroPorTexto()
     {
         nombreTxt = textoEntrada.GetComponent<TMP_InputField>().text;
-        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt+".txt" );
+
+        string[] lista = File.ReadAllLines(pathTXT + nombreTxt + ".bvh");
+        Debug.Log("que es"+ pathTXT + nombreTxt + ".bvh");
         bool existe = false;
         if (lista != null)
         {
             Debug.Log("Existe el fichero");
 
-            TextAsset lista2 = (TextAsset)AssetDatabase.LoadMainAssetAtPath(pathTXT + nombreTxt + "RtR.txt");
             animacionesExistentes = listaAnimaciones.Split('_').ToList();
-            if (lista2 != null)
+
+            if (listaAnimaciones.Contains(nombreTxt))
             {
-                Debug.Log(lista2.name);
-                //ya existe
+                Debug.Log("existe");
 
-                Debug.Log(listaAnimaciones+ "todo"+ lista2.name);
-
-                if (listaAnimaciones.Contains(lista.name))
-                {
-                    Debug.Log("existe");
-                    
-                }
-                else
-                {
-
-                    Debug.Log("supuestamente no está escrito el nombre ya"+ lista.name);
-                    listaAnimaciones += "_" + lista.name;
-                }
-                existe = true;
-                botonEmpezar.SetActive(true);
-                buscado = false;
             }
             else
             {
-                encontrarFicheros();
+
+                Debug.Log("supuestamente no está escrito el nombre ya" + pathTXT + nombreTxt + ".bvh");
+                listaAnimaciones += "_" + pathTXT + nombreTxt + ".bvh";
+
             }
-            /*
-            foreach (string nombre in animacionesExistentes)
-            {
-                if (nombre.Equals(lista.name))
-                {
-                   
-                }
-            }*/
+            existe = true;
+            botonEmpezar.SetActive(true);
+            buscado = false;
         }
+        /*  else
+          {
+              encontrarFicheros();
+          }*/
+    
+        
         else
         {
             ficheroAdvertencia.text = "No existe fichero con ese nombre";

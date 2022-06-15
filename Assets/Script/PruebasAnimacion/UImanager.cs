@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEditor;
@@ -13,6 +14,7 @@ public class UImanager : MonoBehaviour
     [Header("Objetos")]
     [SerializeField] GameObject personajeseleccionado;
     [SerializeField] TxtManager txtManger;
+    [SerializeField] FileReader fichero;
     public GameObject panel;
     public GameObject botonMas;
     [SerializeField] GameObject texto;
@@ -48,64 +50,50 @@ public class UImanager : MonoBehaviour
     public void botonEncontrar()
     {
        string nombre=texto.GetComponent<TMP_InputField>().text;
-        TextAsset lista = (TextAsset)AssetDatabase.LoadMainAssetAtPath("Assets/TXT/" + nombre + ".txt");
-        if (!txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Contains(nombre) && lista==null)
+        string[] lista = File.ReadAllLines("Assets/BVH/" + nombre + ".bvh");
+        if (!txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Contains(nombre) && lista == null)
         {
             textoAviso.SetActive(true);
             textoAviso.GetComponent<TMP_Text>().text = "Este fichero no existe";
         }
         else
         {
-          
+
             //si no existe en la lista pero si existe el fichero 
-                if ( lista != null)
-                {
-                    Debug.Log("este caso");
-                    textoAviso.SetActive(false);
-                    //existe
-
-                    TextAsset lista2 = (TextAsset)AssetDatabase.LoadMainAssetAtPath("Assets/TXT/" + nombre + "RtR.txt");
-                    animacionesExistentes = txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Split('_').ToList();
+            if (lista != null)
+            {
+                Debug.Log("este caso");
+                textoAviso.SetActive(false);
+                animacionesExistentes = txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Split('_').ToList();
+                Debug.Log(animacionesExistentes);
                 // comprobar si esta el fichero reescrito
-                    if (lista2 != null)
+                if (!animacionesExistentes.Contains(nombre))
+                {
+                    if (!txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Contains(nombre))
                     {
-                        Debug.Log("lista2Existe");
-                    //ya existe
-                    textoAviso.GetComponent<TMP_Text>().text = "Ya existe";
-                    textoAviso.SetActive(true);
-                        Debug.Log(txtManger.GetComponent<GestionarMenu>().listaAnimaciones + "todo" + lista2.name);
-                    //comprobar que no esté dentro de la lista
-                        if (!txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Contains(lista.name))
-                        {
-                        txtManger.GetComponent<GestionarMenu>().listaAnimaciones += "_" + lista.name;
-                        }
-                        txtManger.GetComponent<GestionarMenu>().buscado = false;
-                    }
-                    // si no está el fichero reescrito
-                    else
-                    {
-                    string solucion = txtManger.GetComponent<GestionarMenu>().cf.nameAndFile(lista) ? "El fichero se creó perfectamete" : "No se ha podido crear el fichero";
-                    
-                    if (!txtManger.GetComponent<GestionarMenu>().listaAnimaciones.Contains(lista.name))
-                        txtManger.GetComponent<GestionarMenu>().listaAnimaciones = txtManger.GetComponent<GestionarMenu>().listaAnimaciones + "_" + lista.name;
+                        Debug.Log("hola");
+                        txtManger.GetComponent<GestionarMenu>().listaAnimaciones += "_" + "Assets/BVH/" + nombre + ".bvh";
 
+                        txtManger.totalAnimaciomacionesNombres.Add(nombre);
 
-                    AssetDatabase.Refresh();
-                    TextAsset listaReescrita = (TextAsset)AssetDatabase.LoadMainAssetAtPath("Assets/TXT/" + nombre + "RtR.txt");
-                    txtManger.totalAnimaciomacionesNombres.Add(listaReescrita.name);
-                    txtManger.todoTXT.Add(listaReescrita.name, listaReescrita);
                     }
+                }
+                else
+                {
+
+                    textoAviso.GetComponent<TMP_Text>().text = "Este fichero no existe";
+
+                }
+                AssetDatabase.Refresh();
             }
-
-
-            AssetDatabase.Refresh();
-
         }
+
+        
         //refresh
     }
     public void datos(string nombre)
     {
-        if (txtManger.personaje == null)
+        /*if (txtManger.personaje == null)
         {
             txtManger.personaje = GameObject.Find(nombre);
             txtManger.copyA = txtManger.personaje.GetComponent<animacion>();
@@ -117,6 +105,21 @@ public class UImanager : MonoBehaviour
             txtManger.personaje = GameObject.Find(nombre);
             txtManger.copyA = txtManger.personaje.GetComponent<animacion>();
             txtManger.copyA.posicioneEn0();
+        }*/
+        if (txtManger.personaje == null)
+        {
+            txtManger.personaje = GameObject.Find(nombre);
+            txtManger.animP = txtManger.personaje.GetComponent<animacionPersonaje>();
+            txtManger.animP.posicioneEn0();//setea en la posicion 0
+        }
+        else
+        {
+            txtManger.personaje.transform.position = txtManger.animP.posicionInicial;
+            txtManger.personaje = GameObject.Find(nombre);
+
+            txtManger.animP = txtManger.personaje.GetComponent<animacionPersonaje>();
+            Debug.Log("qeu" + txtManger.animP);
+            txtManger.animP.posicioneEn0();//setea en la posicion 0
         }
         botonMas.SetActive(true);
         panel.SetActive(false);
@@ -129,7 +132,7 @@ public class UImanager : MonoBehaviour
 
     public void setNiña()
     {
-        datos("personajeNiña");
+        datos("niniaModif");
     }
     public void setVieja()
     {
