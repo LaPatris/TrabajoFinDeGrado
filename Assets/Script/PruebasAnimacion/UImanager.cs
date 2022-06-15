@@ -76,6 +76,7 @@ public class UImanager : MonoBehaviour
 
                         txtManger.totalAnimaciomacionesNombres.Add(nombre);
 
+                        txtManger.totalAnimaciomacionesPath.Add("Assets/BVH/" + nombre + ".bvh");
                     }
                 }
                 else

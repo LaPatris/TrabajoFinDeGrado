@@ -135,7 +135,7 @@ public class GestionarMenu : MonoBehaviour
 
                 Debug.Log("supuestamente no está escrito el nombre ya" + pathTXT + nombreTxt + ".bvh");
                 listaAnimaciones += "_" + pathTXT + nombreTxt + ".bvh";
-
+                //orgDatos.SetListBones(myTxt, personaje);
             }
             existe = true;
             botonEmpezar.SetActive(true);
